@@ -2,7 +2,6 @@ package com.haedream.haedream.config;
 
 import java.util.concurrent.TimeUnit;
 
-import org.springframework.boot.autoconfigure.web.WebProperties.Resources.Cache.Cachecontrol;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.CacheControl;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
