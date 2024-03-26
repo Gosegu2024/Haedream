@@ -1,4 +1,4 @@
-package com.haedream.haedream.Config;
+package com.haedream.haedream.config;
 
 import java.util.concurrent.TimeUnit;
 

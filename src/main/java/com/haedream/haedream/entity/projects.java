@@ -1,4 +1,4 @@
-package com.haedream.haedream.Model;
+package com.haedream.haedream.entity;
 
 import java.util.Date;
 

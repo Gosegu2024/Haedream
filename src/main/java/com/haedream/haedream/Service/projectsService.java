@@ -1,8 +1,8 @@
-package com.haedream.haedream.Service;
+package com.haedream.haedream.service;
 
 import java.util.List;
 
-import com.haedream.haedream.Model.projects;
+import com.haedream.haedream.entity.projects;
 
 public interface projectsService {
 
