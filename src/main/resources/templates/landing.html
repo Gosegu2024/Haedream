@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>해드림</title>
+    <link rel="icon" th:href="@{/img/haedream.ico}" />
+    <!-- css -->
+    <link rel="stylesheet" th:href="@{/css/etc/reset.css}" />
+    <link rel="stylesheet" th:href="@{/css/landing.css}" />
+    <!-- fontawesome -->
+    <script src="https://kit.fontawesome.com/d5377ff581.js" crossorigin="anonymous"></script>
+    <!-- google font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <!-- animate.style -->
+    <link rel="stylesheet" th:href="@{/css/etc/animate.css}" />
+    <!-- wow.js -->
+    <script th:src="@{/js/wow.min.js}"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script>
+      new WOW().init();
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="con1">
+        <a href="#" class="logo">
+          <img th:src="@{/img/HaeLogo.png}" alt="해드림로고" />
+        </a>
+        <div class="exam wow animate__fadeInUp animate__animated"></div>
+        <div class="Login">
+          <p>작문 AI를 해드림으로 평가해보세요!</p>
+          <a th:href="@{/login}" class="getLogin">로그인</a>
+        </div>
+      </div>
+      <!-- con1 end -->
+      <div class="con2" data-wow-offset="10">
+        <div class="fast">
+          <div class="miniExam wow animate__fadeInBottomLeft animate__animated"></div>
+          <div class="fast_text">
+            <h2>빠르다!</h2>
+            <p>해드림은 빠르게 한국어 작문 AI를 평가 할 수 있습니다!</p>
+          </div>
+        </div>
+        <div class="easy">
+          <div class="easy_text">
+            <h2>쉽다!</h2>
+            <p>해드림은 평가하기가 아주 쉽습니다!</p>
+          </div>
+          <div class="miniExam wow animate__fadeInBottomRight animate__animated"></div>
+        </div>
+        <div class="Join">
+          <h1>바로 회원가입 해보세요!</h1>
+          <!-- 현준이가 만든 컨트롤러에 따라 이름 바꿀것 -->
+          <a th:href="@{/login?register=true}" class="getLogin">회원가입</a>
+        </div>
+      </div>
+      <!-- con2 end -->
+    </div>
+    <!-- container end -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+  // URL에서 쿼리 파라미터 확인
+  const params = new URLSearchParams(window.location.search);
+  const register = params.get('register');
+
+  // 쿼리 파라미터에 따라 회원가입 폼 표시
+  if (register === 'true') {
+    // signUp 클래스 영역을 펼친 상태로 보여주는 코드
+    // 예를 들어, display 스타일 변경 또는 특정 함수 호출 등
+    document.querySelector('.signUp').style.display = 'block';
+  }
+});
+    </script>
+  </body>
+</html>

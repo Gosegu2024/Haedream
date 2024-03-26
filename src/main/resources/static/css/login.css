@@ -1,0 +1,247 @@
+@charset "utf-8";
+
+:root {
+  /* Color */
+  --white-color: #f3f3f3;
+  --black-color: #111;
+  --main-color: #5195f4ce;
+  --lightblue-color: #85b5f7;
+  --red-color: #ff402b;
+  --orange-color: #ff964abb;
+  --lightorange-color: #ff954a58;
+  --font-color: #444;
+  --placeholder-color: #b4b4b4;
+  --gray-color: #dfdfdf96;
+  --shadow-color: #bebebe86;
+
+  /* Size */
+  --side-padding: 20px;
+  --button-padding: 15px 20px;
+  --text-padding: 20px 10px;
+  --border-radius-size: 10px;
+
+  /* Font Size */
+  --font-title: 35px;
+  --font-large: 18px;
+  --font-medium: 16px;
+  --font-small: 12px;
+  --font-micro: 10px;
+}
+
+.wow {
+  visibility: hidden;
+}
+
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.conatainer {
+  width: 1200px;
+  height: 100vh;
+  margin: 0 auto;
+  background-color: var(--gray-color);
+  padding: var(--side-padding);
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+.loginContainer {
+  width: 800px;
+  height: 500px;
+  box-sizing: border-box;
+  padding: 50px;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: var(--border-radius-size);
+  box-shadow: 0 0 30px rgba(163, 163, 163, 0.286);
+  overflow: hidden;
+  position: relative;
+}
+.left {
+  width: 90%;
+}
+.logo {
+  width: 90%;
+  height: 70px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.logo a {
+  height: 100%;
+}
+.logo img {
+  height: 100%;
+}
+.logo span {
+  font-size: var(--font-title);
+  margin-left: 15px;
+  color: #5195f4;
+  font-weight: 600;
+}
+.close {
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+}
+.loginForm {
+  width: 100%;
+  margin-top: 40px;
+}
+.loginForm p {
+  color: gray;
+  font-weight: 600;
+}
+.loginForm input {
+  width: 100%;
+  border: none;
+  background-color: var(--gray-color);
+  outline: none;
+  display: block;
+  border-radius: 4px;
+  box-sizing: border-box;
+  padding: 15px 20px;
+  margin-top: 10px;
+}
+.pw {
+  margin-top: 24px;
+}
+.etc {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 24px 0;
+  display: flex;
+  justify-content: space-between;
+}
+.etc a {
+  color: #5195f4;
+}
+.wrongUser{
+  color: var(--red-color);
+}
+button {
+  outline: none;
+  background: #5195f4;
+  width: 100%;
+  border: 0;
+  border-radius: 4px;
+  padding: 15px 20px;
+  color: white;
+  cursor: pointer;
+  font-size: var(--font-medium);
+  font-weight: 600;
+}
+
+.popup {
+  width: 800px;
+  height: 500px;
+  box-sizing: border-box;
+  background-color: #111111c8;
+  border-radius: var(--border-radius-size);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  overflow: hidden;
+}
+
+.signUp {
+  width: 800px;
+  height: 500px;
+  box-sizing: border-box;
+  padding: 50px;
+  background-color: #5195f4;
+  position: absolute;
+  top: 0;
+  left: 750px;
+  transition: all 0.5s;
+}
+/* width: 800px;
+  height: 500px;
+  box-sizing: border-box;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: var(--border-radius-size);
+  box-shadow: 0 0 30px rgba(163, 163, 163, 0.286);
+  overflow: hidden;
+  position: relative; */
+.addClass {
+  left: 50px;
+}
+.right {
+  width: 50px;
+  height: 100%;
+  background-color: #5195f4;
+  position: absolute;
+  top: 0;
+  right: 0;
+  transition: all 0.5s linear;
+}
+.right:hover {
+  width: 60px;
+  cursor: pointer;
+}
+.right:hover .panel {
+  display: none;
+}
+.panel {
+  position: absolute;
+  top: 60px;
+  left: 30px;
+  background: rgba(255, 255, 255, 0.2);
+  height: 30px;
+  width: 2px;
+  transition: 0.3s ease;
+}
+.panel:nth-child(2) {
+  position: absolute;
+  top: 60px;
+  left: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  height: 30px;
+  width: 2px;
+}
+.signUp > .logo {
+  display: flex;
+  justify-content: space-between;
+}
+.signUp > .logo > span:first-child {
+  color: white;
+}
+.close {
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  background-color: white;
+  color: #5195f4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.signUp > .loginForm {
+  width: 90%;
+}
+.signUp > .loginForm input {
+  background-color: #1855aa67;
+  color: white;
+}
+.signUp > .loginForm p {
+  color: white;
+}
+.signUp button {
+  margin-top: 50px;
+  background-color: white;
+  width: 90%;
+  color: #5195f4;
+}

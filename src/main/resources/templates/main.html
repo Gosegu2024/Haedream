@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>해드림</title>
+    <link rel="icon" th:href="@{/img/haedream.ico}" />
+    <!-- css -->
+    <link rel="stylesheet" th:href="@{/css/etc/reset.css}" />
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
+    <!-- fontawesome -->
+    <script src="https://kit.fontawesome.com/d5377ff581.js" crossorigin="anonymous"></script>
+    <!-- google font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet" />
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <!-- js -->
+    <script th:src="@{/js/main.js}" defer></script>
+</head>
+
+  <body>
+    <header>
+      <div class="con">
+          <div class="logo">
+              <a href="/"><img th:src="@{/img/HaeLogo.png}" alt="해드림로고" /></a>
+          </div>
+          <ul class="menu">
+              <li><a th:href="@{/profile}" th:text="${username}">username</a></li>
+              <li>
+                  <form th:action="@{/logout}" method="post">
+                      <button class="delete" type="submit"><i class="fa-solid fa-arrow-right-from-bracket"></i> 로그아웃</button>
+                  </form>
+              </li>
+          </ul>
+      </div>
+  </header>
+
+    <div class="container">
+      <div class="con">
+        <div class="projectAdd">
+          <button type="button">프로젝트 추가</button>
+          <div class="delete">
+            <button type="button">삭제<i class="fa-solid fa-trash-can"></i></button>
+            <button type="button">삭제하기<i class="fa-solid fa-xmark"></i></button>
+            <button type="button">취소</button>
+          </div>
+        </div>
+        <div class="projectInfo">
+          <form th:action="@{/project/save}" method="post" class="projectForm">
+              <div class="id">
+                  <p>프로젝트 이름</p>
+                  <input type="text" name="projectName" placeholder="프로젝트 이름을 입력해주세요." />
+              </div>
+              <div class="pw">
+                  <p>평가 기준</p>
+                  <textarea name="evaluationCriteria" cols="30" rows="10" placeholder="평가 기준을 입력해주세요."></textarea>
+              </div>
+              <div class="make">
+                  <button type="submit" class="makeButton">추가하기</button>
+                  <button type="button" class="back" th:onclick="'location.href=\'' + @{/} + '\''">취소</button>
+              </div>
+          </form>
+      </div>
+        <ul class="projectList">
+          <li th:each="project : ${projects}">
+            <input type="checkbox" th:name="${project.id}" th:id="${project.id}" />
+            <img th:src="@{/img/folder.png}" alt="폴더그림" th:alt="${project.name}" />
+            <span th:text="${project.name}">Project1</span>
+          </li>
+          <li th:each="project : ${projects}">
+            <input type="checkbox" th:name="${project.id}" th:id="${project.id}" />
+            <img th:src="@{/img/folder.png}" alt="폴더그림" th:alt="${project.name}" />
+            <span th:text="${project.name}">Project2</span>
+          </li>
+          <li th:each="project : ${projects}">
+            <input type="checkbox" th:name="${project.id}" th:id="${project.id}" />
+            <img th:src="@{/img/folder.png}" alt="폴더그림" th:alt="${project.name}" />
+            <span th:text="${project.name}">Project3</span>
+         </li>
+         <li th:each="project : ${projects}">
+            <input type="checkbox" th:name="${project.id}" th:id="${project.id}" />
+            <img th:src="@{/img/folder.png}" alt="폴더그림" th:alt="${project.name}" />
+            <span th:text="${project.name}">Project4</span>
+         </li>
+         <li th:each="project : ${projects}">
+            <input type="checkbox" th:name="${project.id}" th:id="${project.id}" />
+            <img th:src="@{/img/folder.png}" alt="폴더그림" th:alt="${project.name}" />
+            <span th:text="${project.name}">Project5</span>
+         </li>
+        <li th:each="project : ${projects}">
+            <input type="checkbox" th:name="${project.id}" th:id="${project.id}" />
+            <img th:src="@{/img/folder.png}" alt="폴더그림" th:alt="${project.name}" />
+            <span th:text="${project.name}">Project6</span>
+        </li>
+        </ul>
+      </div>
+      <!-- con end -->
+    </div>
+    <!-- container end -->
+    <div class="chatbot">
+      <i class="fa-regular fa-comments"></i>
+    </div>
+  </body>
+</html>

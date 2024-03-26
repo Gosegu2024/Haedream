@@ -1,0 +1,227 @@
+@charset "utf-8";
+
+:root {
+  /* Color */
+  --white-color: #f3f3f3;
+  --black-color: #111;
+  --main-color: #5195f4ce;
+  --lightblue-color: #85b5f7;
+  --red-color: #ff402b;
+  --orange-color: #ff964abb;
+  --lightorange-color: #ff954a58;
+  --font-color: #444;
+  --placeholder-color: #b4b4b4;
+  --gray-color: #dfdfdf96;
+  --shadow-color: #bebebe86;
+
+  /* Size */
+  --side-padding: 20px;
+  --button-padding: 15px 20px;
+  --text-padding: 20px 10px;
+  --border-radius-size: 10px;
+
+  /* Font Size */
+  --font-title: 35px;
+  --font-large: 18px;
+  --font-medium: 16px;
+  --font-small: 12px;
+  --font-micro: 10px;
+}
+
+.wow {
+  visibility: hidden;
+}
+
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.conatainer {
+  width: 80%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.con1 {
+  width: 100%;
+  padding: var(--side-padding);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
+.logo {
+  width: 100%;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+}
+.logo img {
+  height: 100%;
+}
+.exam {
+  width: 100%;
+  background-color: #85b5f781;
+  height: 600px;
+  margin-top: 30px;
+  border-radius: var(--border-radius-size);
+}
+.Login {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+  padding-bottom: 200px;
+}
+.Login p {
+  font-size: var(--font-large);
+  color: var(--font-color);
+  font-weight: 600;
+}
+.getLogin {
+  margin-top: 20px;
+  padding: 15px 30px;
+  background-color: var(--main-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  border-radius: var(--border-radius-size);
+  box-shadow: 1px 3px 5px var(--gray-color);
+  transition: all 0.2s;
+}
+.getLogin:active {
+  position: relative;
+  top: 2px;
+}
+.con2 {
+  background-color: var(--gray-color);
+  padding: 40px 0;
+  display: flex;
+  box-sizing: border-box;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.fast {
+  width: 100%;
+  height: 300px;
+  box-sizing: border-box;
+  padding: var(--side-padding);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.miniExam {
+  width: 40%;
+  max-width: 400px;
+  height: 100%;
+  background-color: #85b5f781;
+  border-radius: var(--border-radius-size);
+}
+.fast_text {
+  width: 55%;
+  height: 100%;
+  box-sizing: border-box;
+  padding-left: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.fast_text p {
+  width: 100%;
+  margin-top: 20px;
+}
+.easy {
+  width: 100%;
+  height: 300px;
+  box-sizing: border-box;
+  padding: var(--side-padding);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.easy_text {
+  width: 55%;
+  height: 100%;
+  box-sizing: border-box;
+  padding-right: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+}
+.easy_text p {
+  margin-top: 20px;
+}
+.Join {
+  box-sizing: border-box;
+  padding: 100px 0 50px 0;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+.getJoin {
+  margin-top: 20px;
+  padding: 15px 30px;
+  background-color: var(--main-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  border-radius: var(--border-radius-size);
+  box-shadow: 1px 3px 5px var(--gray-color);
+  transition: all 0.2s;
+}
+.getJoin:active {
+  position: relative;
+  top: 2px;
+}
+
+@media (max-width: 768px) {
+  .exam {
+    width: 80%;
+    height: 300px;
+  }
+  .logo img {
+    height: 70%;
+  }
+  .fast {
+    flex-direction: column;
+    height: 500px;
+  }
+  .easy {
+    flex-direction: column;
+    height: 500px;
+  }
+  .easy .miniExam {
+    order: 1;
+  }
+  .easy .easy_text {
+    order: 2;
+  }
+  .miniExam {
+    width: 80%;
+  }
+  .fast_text {
+    width: 80%;
+    height: 70%;
+    align-items: center;
+    padding: 0 var(--side-padding);
+  }
+  .easy_text {
+    width: 80%;
+    height: 70%;
+    align-items: center;
+    padding: 0 var(--side-padding);
+  }
+}
+@media (min-width: 769px) and (max-width: 1024px) {
+  .exam {
+    width: 90%;
+    height: 400px;
+  }
+}

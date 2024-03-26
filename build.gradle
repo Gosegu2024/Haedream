@@ -32,6 +32,10 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'io.projectreactor:reactor-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf:2.5.4'
+	implementation 'org.apache.poi:poi-ooxml:5.2.2'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: '3.2.2'
+
 }
 
 tasks.named('test') {

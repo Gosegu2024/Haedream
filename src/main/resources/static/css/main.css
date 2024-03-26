@@ -1,0 +1,294 @@
+@charset "utf-8";
+
+:root {
+  /* Color */
+  --white-color: #f3f3f3;
+  --black-color: #111;
+  --main-color: #5195f4;
+  --lightblue-color: #85b5f738;
+  --red-color: #ffb4ab;
+  --orange-color: #ff964abb;
+  --lightorange-color: #ff954a58;
+  --font-color: #444;
+  --placeholder-color: #b4b4b4;
+  --gray-color: #dfdfdf96;
+  --shadow-color: #bebebe86;
+
+  /* Size */
+  --side-padding: 20px;
+  --button-padding: 15px 20px;
+  --text-padding: 20px 10px;
+  --border-radius-size: 10px;
+
+  /* Font Size */
+  --font-title: 35px;
+  --font-large: 18px;
+  --font-medium: 16px;
+  --font-small: 12px;
+  --font-micro: 10px;
+}
+
+.wow {
+  visibility: hidden;
+}
+
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.con {
+  width: 80%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+header {
+  width: 100%;
+  height: 100px;
+  display: flex;
+  box-shadow: 1px 3px 5px var(--gray-color);
+}
+
+header .con {
+  height: 100%;
+  box-sizing: border-box;
+  padding: var(--side-padding) 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.logo {
+  height: 100%;
+}
+.logo img {
+  height: 100%;
+}
+.menu {
+  display: flex;
+  height: 100%;
+  align-items: flex-end;
+}
+.menu a {
+  font-size: large;
+  font-weight: 500;
+  color: var(--font-color);
+  transition: all 0.3s;
+}
+.menu a:hover {
+  color: var(--main-color);
+}
+.menu button {
+  border: none;
+  background: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: var(--font-color);
+  transition: all 0.3s;
+}
+.menu button:hover {
+  color: var(--main-color);
+}
+.menu li {
+  margin-left: 35px;
+}
+
+.container {
+  width: 100%;
+  box-sizing: border-box;
+  padding: var(--side-padding) 0;
+}
+.container .con {
+  box-sizing: border-box;
+  padding: var(--side-padding) 0;
+}
+
+.projectAdd {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.projectAdd button {
+  border: none;
+  background-color: var(--main-color);
+  color: white;
+  padding: 15px 20px;
+  font-size: var(--font-medium);
+  border-radius: var(--border-radius-size);
+  cursor: pointer;
+  box-shadow: 1px 3px 5px var(--gray-color);
+}
+.projectAdd > button:hover {
+  background-color: var(--lightblue-color);
+  color: var(--main-color);
+}
+.delete > button:nth-child(1):hover {
+  background-color: var(--lightblue-color);
+  color: var(--main-color);
+}
+.projectAdd button:active {
+  position: relative;
+  top: 2px;
+}
+.projectAdd button i {
+  margin-left: 10px;
+}
+.delete button:nth-child(2) {
+  background-color: gray;
+}
+.delete button:nth-child(2):hover {
+  background-color: var(--gray-color);
+  color: gray;
+}
+.delete button:nth-child(3):hover {
+  background-color: var(--gray-color);
+  color: gray;
+}
+.delete button:nth-child(3) {
+  background-color: gray;
+}
+.delete button:nth-child(2) i {
+  color: var(--red-color);
+  font-size: var(--font-large);
+}
+
+.projectList {
+  width: 100%;
+  margin-top: 40px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.projectList li {
+  width: 48%;
+  box-sizing: border-box;
+  padding: 40px var(--side-padding);
+  background-color: var(--gray-color);
+  border-radius: var(--border-radius-size);
+  margin-bottom: 20px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  font-size: var(--font-large);
+  transition: 0.2s ease-in-out;
+}
+.projectList li:hover {
+  cursor: pointer;
+  background-color: #d5d5d5;
+}
+.projectList img {
+  height: 50px;
+  margin-right: 15px;
+}
+
+.projectList li input {
+  position: absolute;
+  top: 20px;
+  left: 25px;
+}
+
+.projectInfo {
+  width: 100%;
+  box-sizing: border-box;
+  padding: var(--side-padding);
+  background-color: var(--lightblue-color);
+  margin-top: 40px;
+  border-radius: var(--border-radius-size);
+}
+.projectInfo p {
+  font-size: var(--font-medium);
+  font-weight: 500;
+  color: var(--font-color);
+  margin-bottom: 10px;
+}
+.projectInfo .pw {
+  margin-top: 20px;
+}
+.projectInfo input {
+  width: 100%;
+  border: none;
+  background-color: white;
+  outline: none;
+  display: block;
+  border-radius: 4px;
+  box-sizing: border-box;
+  padding: 15px 20px;
+  margin-top: 10px;
+}
+.projectInfo textarea {
+  width: 100%;
+  border: none;
+  background-color: white;
+  outline: none;
+  display: block;
+  border-radius: 4px;
+  box-sizing: border-box;
+  padding: 15px 20px;
+  margin-top: 10px;
+  resize: none;
+}
+.make {
+  width: 100%;
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+.makeButton {
+  border: none;
+  background-color: var(--main-color);
+  color: white;
+  padding: 15px 20px;
+  font-size: var(--font-medium);
+  border-radius: var(--border-radius-size);
+  cursor: pointer;
+  box-shadow: 1px 3px 5px var(--gray-color);
+}
+.makeButton:hover {
+  background-color: var(--lightblue-color);
+  color: var(--main-color);
+}
+.makeButton:active {
+  position: relative;
+  top: 2px;
+}
+.back {
+  border: none;
+  background-color: gray;
+  color: white;
+  padding: 15px 20px;
+  font-size: var(--font-medium);
+  border-radius: var(--border-radius-size);
+  cursor: pointer;
+  box-shadow: 1px 3px 5px var(--gray-color);
+  margin-left: 10px;
+}
+.back:hover {
+  background-color: var(--gray-color);
+  color: gray;
+}
+
+@media (max-width: 768px) {
+  .projectList {
+    flex-direction: column;
+    align-items: center;
+  }
+  .projectList li {
+    width: 100%;
+  }
+}
+
+.chatbot {
+  width: 70px;
+  height: 70px;
+  border-radius: 100%;
+  box-shadow: 3px 2px 10px #9999999e;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 28px;
+  color: var(--main-color);
+  cursor: pointer;
+  position: fixed;
+  bottom: 80px;
+  right: 150px;
+}
