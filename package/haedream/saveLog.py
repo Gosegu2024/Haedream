@@ -32,7 +32,7 @@ class ModelRunner:
         
         data2 = {"js" : data}
         response = requests.post(self.server_url, params=data2)
-        if response.status_code == 200:
+        if (response.status_code == 200 or response.status_code == 201):
             print("Data successfully saved to server.")
         else:
             print("Failed to save data to server.")
