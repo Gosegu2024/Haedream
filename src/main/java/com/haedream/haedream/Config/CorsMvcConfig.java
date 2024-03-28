@@ -12,6 +12,6 @@ public class CorsMvcConfig implements WebMvcConfigurer{
         
         // 모든 Controller 경로에 요청프론트에서 오는 주소를 입력 
         corsRegistry.addMapping("/**")
-                .allowedOrigins("http://localhost:3000");
+                .allowedOrigins("http://localhost:8088");
     }
 }

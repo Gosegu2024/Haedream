@@ -33,7 +33,7 @@
             <a href="#"><img th:src="@{/img/HaeLogo.png}" alt="" /></a>
             <span>로그인</span>
           </div>
-          <form class="loginForm" th:action="@{/login}" method="GET">
+          <form class="loginForm" th:action="@{/login}" method="POST">
             <div class="id">
               <p>아이디</p>
               <input type="text" name="username"/>
@@ -42,12 +42,12 @@
               <p>비밀번호</p>
               <input type="password" name="password"/>
             </div>
+            <div class="etc">
+              <span class="wrongUser">존재하지 않는 아이디 혹은 비밀번호 입니다.</span>
+            </div>
+            <input type="submit" value="로그인">
           </form>
-          <div class="etc">
-            <span class="wrongUser">존재하지 않는 아이디 혹은 비밀번호 입니다.</span>
-            <a href="#">비밀번호 찾기</a>
-          </div>
-          <input type="submit" value="로그인">
+          <a href="#">비밀번호 찾기</a>
           <div class="popup">
             <div class="signUp">
               <div class="logo">

@@ -29,11 +29,11 @@ public class JWTUtil {
     }
 
     // Role 추출
-    //public String getRole(String token) {
+    public String getRole(String token) {
 
-    //    return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("role",
-    //            String.class);
-    //}
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("role",
+                String.class);
+    }
 
     // 토큰 만료일 확인
     public Boolean isExpired(String token) {
@@ -57,5 +57,6 @@ public class JWTUtil {
                 .signWith(secretKey)
                 // 토큰 컴팩트
                 .compact();
+               
     }
 }

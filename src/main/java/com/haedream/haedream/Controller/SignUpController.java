@@ -20,9 +20,9 @@ public class SignUpController {
     // 회원가입 처리
     @PostMapping("/signup")
     public String signupProcess(SignUpDTO signupDTO) {
-        System.out.println(signupDTO.getUsername());
-        System.out.println(signupDTO.getPassword());
-        System.out.println(signupDTO.getEmail());
+        //System.out.println(signupDTO.getUsername());
+        //System.out.println(signupDTO.getPassword());
+        //System.out.println(signupDTO.getEmail());
 
         try {
             signupService.signupProcess(signupDTO);
