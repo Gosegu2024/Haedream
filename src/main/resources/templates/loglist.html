@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="ko">
-  <head>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>해드림</title>
-    <link rel="icon" href="../img/haedream.ico" />
+    <link rel="icon" th:href="@{/img/haedream.ico}" />
     <!-- css -->
-    <link rel="stylesheet" href="../css/etc/reset.css" />
-    <link rel="stylesheet" href="../css/loglist.css" />
+    <link rel="stylesheet" th:href="@{/css/etc/reset.css}" />
+    <link rel="stylesheet" th:href="@{/css/loglist.css}" />
     <!-- fontawesome -->
     <script src="https://kit.fontawesome.com/d5377ff581.js" crossorigin="anonymous"></script>
     <!-- google font -->
@@ -15,14 +15,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet" />
     <!-- jQuery -->
-    <script
-      src="https://code.jquery.com/jquery-3.7.1.js"
-      integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
-      crossorigin="anonymous"
-    ></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <!-- js -->
-    <script src="../js/loglist.js" defer></script>
-  </head>
+    <script th:src="@{/js/loglist.js}" defer></script>
+</head>
+
   <body>
     <header>
       <div class="con">
@@ -191,4 +188,8 @@
     </div>
     <!-- container end -->
   </body>
+
 </html>
+
+
+   

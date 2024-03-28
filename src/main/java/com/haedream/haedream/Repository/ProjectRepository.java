@@ -1,9 +1,11 @@
 package com.haedream.haedream.repository;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
 
-import com.haedream.haedream.entity.projects;
+import com.haedream.haedream.model.Project;
 
-public interface ProjectRepository extends MongoRepository<projects, String> {
+@Repository
+public interface ProjectRepository extends MongoRepository<Project, String> {
 
 }

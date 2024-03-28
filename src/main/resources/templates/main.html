@@ -40,13 +40,15 @@
     <div class="container">
       <div class="con">
         <div class="projectAdd">
+          
           <button type="button">프로젝트 추가</button>
           <div class="delete">
             <button type="button">삭제<i class="fa-solid fa-trash-can"></i></button>
-            <button type="button">삭제하기<i class="fa-solid fa-xmark"></i></button>
+            <button type="submit">삭제하기<i class="fa-solid fa-xmark"></i></button>
             <button type="button">취소</button>
           </div>
         </div>
+
         <div class="projectInfo">
           <form th:action="@{/project/save}" method="post" class="projectForm">
               <div class="id">
@@ -61,41 +63,21 @@
                   <button type="submit" class="makeButton">추가하기</button>
                   <button type="button" class="back" th:onclick="'location.href=\'' + @{/} + '\''">취소</button>
               </div>
-          </form>
-      </div>
-        <ul class="projectList">
-          <li th:each="project : ${projects}">
-            <input type="checkbox" th:name="${project.id}" th:id="${project.id}" />
-            <img th:src="@{/img/folder.png}" alt="폴더그림" th:alt="${project.name}" />
-            <span th:text="${project.name}">Project1</span>
-          </li>
-          <li th:each="project : ${projects}">
-            <input type="checkbox" th:name="${project.id}" th:id="${project.id}" />
-            <img th:src="@{/img/folder.png}" alt="폴더그림" th:alt="${project.name}" />
-            <span th:text="${project.name}">Project2</span>
-          </li>
-          <li th:each="project : ${projects}">
-            <input type="checkbox" th:name="${project.id}" th:id="${project.id}" />
-            <img th:src="@{/img/folder.png}" alt="폴더그림" th:alt="${project.name}" />
-            <span th:text="${project.name}">Project3</span>
-         </li>
-         <li th:each="project : ${projects}">
-            <input type="checkbox" th:name="${project.id}" th:id="${project.id}" />
-            <img th:src="@{/img/folder.png}" alt="폴더그림" th:alt="${project.name}" />
-            <span th:text="${project.name}">Project4</span>
-         </li>
-         <li th:each="project : ${projects}">
-            <input type="checkbox" th:name="${project.id}" th:id="${project.id}" />
-            <img th:src="@{/img/folder.png}" alt="폴더그림" th:alt="${project.name}" />
-            <span th:text="${project.name}">Project5</span>
-         </li>
+              </form>
+      </div>  
+
+      <ul class="projectList">
         <li th:each="project : ${projects}">
-            <input type="checkbox" th:name="${project.id}" th:id="${project.id}" />
-            <img th:src="@{/img/folder.png}" alt="폴더그림" th:alt="${project.name}" />
-            <span th:text="${project.name}">Project6</span>
+          <input type="checkbox" th:name="projectIds" th:value="${project.id}" th:id="${project.id}" />
+          <label th:for="${project.id}">
+          <img th:src="@{/img/folder.png}" alt="폴더그림" th:alt="${project.projectName}" />
+          <span th:text="${project.projectName}">Project1</span>
+          </label>
         </li>
-        </ul>
-      </div>
+      </ul>
+      
+    </form>
+  </div>
       <!-- con end -->
     </div>
     <!-- container end -->
