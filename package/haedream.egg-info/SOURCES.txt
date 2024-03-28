@@ -1,0 +1,10 @@
+README.md
+setup.cfg
+setup.py
+haedream/__init__.py
+haedream/__version__.py
+haedream/saveLog.py
+haedream.egg-info/PKG-INFO
+haedream.egg-info/SOURCES.txt
+haedream.egg-info/dependency_links.txt
+haedream.egg-info/top_level.txt

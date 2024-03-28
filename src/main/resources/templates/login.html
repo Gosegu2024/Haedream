@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>해드림</title>
-    <link rel="icon" href="../img/haedream.ico" />
+    <link rel="icon" th:href="@{/img/haedream.ico}" />
     <!-- css -->
-    <link rel="stylesheet" href="../css/etc/reset.css" />
-    <link rel="stylesheet" href="../css/login.css" />
+    <link rel="stylesheet" th:href="@{/css/etc/reset.css}" />
+    <link rel="stylesheet" th:href="@{/css/login.css}" />
     <!-- fontawesome -->
     <script src="https://kit.fontawesome.com/d5377ff581.js" crossorigin="anonymous"></script>
     <!-- google font -->
@@ -20,59 +20,59 @@
       crossorigin="anonymous"
     ></script>
     <!-- animate.style -->
-    <link rel="stylesheet" href="../css/etc/animate.css" />
+    <link rel="stylesheet" th:href="@{/css/etc/animate.css}" />
     <!-- wow.js -->
-    <script defer src="../js/wow.min.js"></script>
-    <script src="../js/login.js" defer></script>
+    <script defer th:src="@{/js/wow.min.js}"></script>
+    <script th:src="@{/js/login.js}" defer></script>
   </head>
   <body>
     <div class="conatainer">
       <div class="loginContainer">
         <div class="left">
           <div class="logo">
-            <a href="#"><img src="../img/HaeLogo.png" alt="" /></a>
+            <a href="#"><img th:src="@{/img/HaeLogo.png}" alt="" /></a>
             <span>로그인</span>
           </div>
-          <form class="loginForm">
+          <form class="loginForm" th:action="@{/login}" method="GET">
             <div class="id">
               <p>아이디</p>
-              <input type="text" />
+              <input type="text" name="username"/>
             </div>
             <div class="pw">
               <p>비밀번호</p>
-              <input type="text" />
+              <input type="password" name="password"/>
             </div>
           </form>
           <div class="etc">
             <span class="wrongUser">존재하지 않는 아이디 혹은 비밀번호 입니다.</span>
             <a href="#">비밀번호 찾기</a>
           </div>
-          <button type="button">로그인</button>
+          <input type="submit" value="로그인">
           <div class="popup">
             <div class="signUp">
               <div class="logo">
                 <span>회원가입</span>
                 <span class="close"><i class="fa-solid fa-xmark"></i></span>
               </div>
-              <form class="loginForm">
+              <form class="loginForm" th:action="@{/signup}" method="POST">
                 <div class="id">
                   <p>아이디</p>
-                  <input type="text" />
+                  <input type="text" name="username"/>
                 </div>
                 <div class="pw">
                   <p>비밀번호</p>
-                  <input type="text" />
+                  <input type="password" name="password"/>
                 </div>
                 <div class="pw">
                   <p>비밀번호 확인</p>
-                  <input type="text" />
+                  <input type="password" name="passwordcheck"/>
                 </div>
                 <div class="pw">
                   <p>이메일 입력</p>
-                  <input type="text" />
+                  <input type="text" name="email"/>
                 </div>
+                <input type="submit" value="회원가입">
               </form>
-              <button type="button">회원가입</button>
             </div>
             <!-- signUp end -->
           </div>
