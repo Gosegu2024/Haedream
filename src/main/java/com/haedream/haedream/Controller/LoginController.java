@@ -47,6 +47,7 @@ public class LoginController {
 
             // 인증에 성공하면 인증된 사용자 정보를 가져옴
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            System.out.println(userDetails);
 
             // UserRepository를 사용하여 사용자를 조회
             UserEntity user = userRepository.findByUsername(loginDTO.getUsername());
