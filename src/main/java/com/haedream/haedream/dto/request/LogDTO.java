@@ -1,5 +1,6 @@
 package com.haedream.haedream.dto.request;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
 import com.google.gson.Gson;
@@ -20,8 +21,10 @@ public class LogDTO {
     private Map<String, Object> inputData;
     private String outputData;
     private String apiKey;
+    private LocalDateTime logDate;
+    private String id;
 
-    public static LogDTO parse(String jsonStr){
+    public static LogDTO parse(String jsonStr) {
         Gson gson = new Gson();
         LogDTO dto = gson.fromJson(jsonStr, LogDTO.class);
 
@@ -30,14 +33,16 @@ public class LogDTO {
 
     // DTO를 Entity로 변환
     public static Log ofEntity(LogDTO dto) {
-        // System.out.println("LogDTO");
-        // System.out.println(dto.getApiKey());
-        return Log.builder()
+        // System.out.println("LogDTO"); System.out.println(dto.getApiKey());
+        return Log
+                .builder()
                 .apiKey(dto.getApiKey())
                 .inputData(dto.getInputData())
                 .outputData(dto.getOutputData())
                 .projectName(dto.getProjectName())
                 .modelName(dto.getModelName())
+                .logDate(dto.getLogDate())
+                .id(dto.getId())
                 .build();
     }
 }

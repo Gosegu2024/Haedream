@@ -4,8 +4,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import com.haedream.haedream.model.Project;
@@ -26,6 +24,7 @@ public class ProjectService {
     }
 
     // 프로젝트 삭제
+    @SuppressWarnings("null") // null관련된 알람 없앰.
     public void deleteProjects(List<String> projectIds) {
         for (String projectId : projectIds) {
             projectRepository.deleteById(projectId);
