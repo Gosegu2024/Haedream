@@ -32,23 +32,23 @@ public class JWTFilter extends OncePerRequestFilter {
         String authorization = request.getHeader("Authorization");
 
         // Authorization 헤더 검증
-        if (authorization == null || !authorization.startsWith("Bearer ")) {
+        if (authorization == null || !authorization.startsWith("Bearer")) {
 
-            // System.out.println("token null");
+            System.out.println("token null");
             filterChain.doFilter(request, response);
 
             // 조건이 해당되면 메소드 종료 (필수)
             return;
         }
 
-        // System.out.println("authorization now");
+        System.out.println("authorization now");
 
         // Bearer 부분 제거 후 순수 토큰만 획득
         String token = authorization.split(" ")[1];
 
         if (jwtUtil.isExpired(token)) {
 
-            // System.out.println("token expired");
+            System.out.println("token expired");
             filterChain.doFilter(request, response);
 
             // 조건이 해당되면 메소드 종료 (필수)
@@ -57,13 +57,13 @@ public class JWTFilter extends OncePerRequestFilter {
 
         // 토큰에서 username과 role 획득
         String id = jwtUtil.getId(token);
-        // String role = jwtUtil.getRole(token);
+        String role = jwtUtil.getRole(token);
 
         // userEntity를 생성하여 값 set
         UserEntity userEntity = new UserEntity();
         userEntity.setUsername(id);
         userEntity.setPassword("temppassword");
-        // userEntity.setRole(role);
+        userEntity.setRole(role);
 
         // UserDetails에 회원 정보 객체 담기
         CustomUserDetails customUserDetails = new CustomUserDetails(userEntity);
