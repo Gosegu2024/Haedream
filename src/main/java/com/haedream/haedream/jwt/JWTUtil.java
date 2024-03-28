@@ -57,6 +57,6 @@ public class JWTUtil {
                 .signWith(secretKey)
                 // 토큰 컴팩트
                 .compact();
-               
+
     }
 }
