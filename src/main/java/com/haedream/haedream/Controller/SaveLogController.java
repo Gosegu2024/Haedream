@@ -17,6 +17,8 @@ public class SaveLogController {
         // System.out.println("controller");
         // System.out.println(js);
         ResLogDTO saveLogDTO= SaveLogService.saveData(LogDTO.parse(js));
+        System.out.println(saveLogDTO.getInputData());
+        System.out.println(saveLogDTO.getOutputData());
         System.out.println("전체 데이터: " + saveLogDTO.toString());
         
         return ResponseEntity.status(HttpStatus.CREATED).body(saveLogDTO);

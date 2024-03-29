@@ -1,7 +1,5 @@
 package com.haedream.haedream.dto.request;
 
-import java.util.Map;
-
 import com.google.gson.Gson;
 import com.haedream.haedream.entity.Log;
 
@@ -17,7 +15,7 @@ import lombok.Setter;
 public class LogDTO {
     private String modelName;
     private String projectName;
-    private Map<String, Object> inputData;
+    private String inputData;
     private String outputData;
     private String apiKey;
 

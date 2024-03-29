@@ -1,7 +1,5 @@
 package com.haedream.haedream.dto.response;
 
-import java.util.Map;
-
 import com.haedream.haedream.entity.Log;
 
 import lombok.Builder;
@@ -14,11 +12,11 @@ public class ResLogDTO {
     // API 노출 X
     private String modelName;
     private String projectName;
-    private Map<String, Object> inputData;
+    private String inputData;
     private String outputData;
 
     @Builder
-    public ResLogDTO(String modelName, String projectName, Map<String, Object> inputData, String outputData) {
+    public ResLogDTO(String modelName, String projectName, String inputData, String outputData) {
         this.modelName = modelName;
         this.projectName = projectName;
         this.inputData = inputData;
