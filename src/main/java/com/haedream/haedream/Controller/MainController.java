@@ -13,7 +13,7 @@ import com.haedream.haedream.service.ProjectService;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-public class ProjectController {
+public class MainController {
     @Autowired
     private ProjectService projectService;
 

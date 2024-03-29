@@ -147,7 +147,7 @@ header .con {
   display: none;
 }
 
-.container .con .title {
+.container .con h1 {
   font-size: var(--font-title);
   font-weight: 500;
   color: var(--font-color);
@@ -162,21 +162,19 @@ header .con {
 
 .logList li {
   width: 100%;
-  box-sizing: border-box;
-  padding: 10px 40px;
-  display: flex;
-  align-items: center;
   background-color: var(--gray-color);
   border-radius: var(--border-radius-size);
   margin-bottom: 30px;
   font-size: var(--font-large);
   transition: 0.2s ease-in-out;
-  position: relative;
-}
-.logList li:hover {
   cursor: pointer;
-  background-color: #d5d5d5;
+  position: relative;
+    box-sizing: border-box;
+  padding: 10px 40px;
+  display: flex;
+  align-items: center;
 }
+
 .logList .index {
   font-size: 25px;
   margin-right: 35px;
@@ -189,11 +187,19 @@ header .con {
 .logList .modelName {
   font-size: 20px;
 }
-.logList .del {
+.logList .evalStart {
   position: absolute;
   right: 40px;
-  font-size: 30px;
-  color: var(--red-color);
+  top: 17px;
+  font-size: 14px;
+  color: white;
+  background-color: var(--font-color);
+  padding: 12px 15px;
+  border-radius: var(--border-radius-size);
+}
+.logList .evalStart:hover {
+  background-color: white;
+  color: var(--font-color);
 }
 
 .pagination-container {
@@ -346,5 +352,21 @@ header .con {
   }
   .pagination-container {
     width: 70%;
+  }
+
+  .logList .index {
+    font-size: 20px;
+  }
+  .logList .projectName {
+    font-size: 14px;
+  }
+  .logList .modelName {
+    font-size: 16px;
+  }
+  .logList .evalStart {
+    right: 20px;
+    top: 17px;
+    font-size: 12px;
+    padding: 10px 13px;
   }
 }

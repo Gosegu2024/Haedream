@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>해드림</title>
+    <link rel="icon" th:href="@{/img/haedream.ico}" />
+    <!-- css -->
+    <link rel="stylesheet" th:href="@{/css/etc/reset.css}" />
+    <link rel="stylesheet" th:href="@{/css/evaluateResult.css}" />
+    <!-- fontawesome -->
+    <script src="https://kit.fontawesome.com/d5377ff581.js" crossorigin="anonymous"></script>
+    <!-- google font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet" />
+    <!-- jQuery -->
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.js"
+      integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+      crossorigin="anonymous"
+    ></script>
+    <!-- js -->
+    <script th:src="@{/js/evaluateResult.js}" defer></script>
+  </head>
+  <body>
+    <header>
+      <div class="con">
+        <div class="logo">
+                              <a th:href="@{/main}"><img th:src="@{/img/HaeLogo.png}" alt="해드림로고" /></a>
+        </div>
+        <ul class="menu">
+          <li><a th:href="@{/loglist}">로그</a></li>
+          <li>
+            <a href="#">평가 <i class="fa-solid fa-caret-down"></i></a>
+            <ul class="dropDown">
+              <li><a th:href="@{/evaluate}">평가하기</a></li>
+              <li><a th:href="@{/evaluateLog}">평가기록</a></li>
+            </ul>
+          </li>
+          <li><a th:href="@{/analyze}">분석</a></li>
+          <li><a th:href="@{/profile}">admin</a></li>
+          <li>
+            <button class="logout" type="button"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
+          </li>
+        </ul>
+        <div class="bar"><i class="fa-solid fa-bars"></i></div>
+      </div>
+    </header>
+    <div class="container">
+      <div class="con">
+        <h1>평가결과</h1>
+        <div class="input">
+          <h2>Input</h2>
+          <p>
+            " Lorem ipsum, dolor sit amet consectetur adipisicing elit. Numquam magnam perspiciatis, illum accusantium a deleniti. Nemo ea
+            maiores ad hic, porro illo. Tenetur iusto atque ea optio necessitatibus magni enim? "
+          </p>
+        </div>
+        <div class="filter">
+          <div class="radio">
+            <input type="radio" name="filter" id="value1" value="value1" checked />
+            <label for="value1">value1</label>
+          </div>
+          <div class="radio">
+            <input type="radio" name="filter" id="value2" value="value2" />
+            <label for="value2">value2</label>
+          </div>
+          <div class="radio">
+            <input type="radio" name="filter" id="value3" value="value3" />
+            <label for="value3">value3</label>
+          </div>
+        </div>
+        <div class="output">
+          <h2>Output</h2>
+          <p>
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Numquam magnam perspiciatis, illum accusantium a deleniti. Nemo ea
+            maiores ad hic, porro illo. Tenetur iusto atque ea optio necessitatibus magni enim?
+          </p>
+        </div>
+        <div class="all">
+          <h2>전체 피드백</h2>
+          <p>
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Numquam magnam perspiciatis, illum accusantium a deleniti. Nemo ea
+            maiores ad hic, porro illo. Tenetur iusto atque ea optio necessitatibus magni enim? Lorem ipsum,
+            <span class="highlighterO">dolor sit amet consectetur adipisicing elit.</span> Numquam magnam perspiciatis, illum accusantium a
+            deleniti. Nemo ea maiores ad hic, porro illo. Tenetur iusto atque ea optio necessitatibus magni enim? Lorem ipsum, dolor sit
+            amet consectetur adipisicing elit. Numquam magnam perspiciatis, illum accusantium a deleniti. Nemo ea maiores ad hic, porro
+            illo. Tenetur iusto atque ea optio necessitatibus magni enim? Lorem ipsum,
+            <span class="highlighterY">dolor sit amet consectetur</span> adipisicing elit. Numquam magnam perspiciatis, illum accusantium a
+            deleniti. Nemo ea maiores ad hic, porro illo. Tenetur iusto atque ea optio necessitatibus magni enim? Lorem ipsum, dolor sit
+            amet consectetur adipisicing elit. Numquam magnam perspiciatis, illum accusantium a deleniti. Nemo ea maiores ad hic, porro
+            illo. Tenetur iusto atque ea optio necessitatibus magni enim? Lorem ipsum, dolor sit amet consectetur adipisicing elit. Numquam
+            magnam perspiciatis, illum accusantium a deleniti. Nemo ea maiores ad hic, porro illo. Tenetur iusto atque ea optio
+            necessitatibus magni enim?
+          </p>
+        </div>
+      </div>
+      <!-- con end -->
+      <div class="popupBack">
+        <ul class="popup">
+          <li><span>메뉴</span><i class="fa-solid fa-xmark"></i></li>
+          <li><a th:href="@{/loglist}">로그</a></li>
+          <li>
+            <a href="#">평가 <i class="fa-solid fa-caret-down"></i></a>
+            <ul class="dropDown">
+              <li><a th:href="@{/evaluate}">평가하기</a></li>
+              <li><a th:href="@{/evaluateLog}">평가기록</a></li>
+            </ul>
+          </li>
+          <li><a th:href="@{/analyze}">분석</a></li>
+          <li><a th:href="@{/profile}">admin</a></li>
+          <li>
+            <button class="logout" type="button"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!-- container end -->
+    <div class="chatbot">
+      <i class="fa-regular fa-comments"></i>
+    </div>
+    <div class="scrollTop">
+      <i class="fa-solid fa-arrow-up"></i>
+    </div>
+  </body>
+</html>

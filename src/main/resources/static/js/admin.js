@@ -1,24 +1,3 @@
-// 페이지네이션
-let listCount = $('.logList > li').length;
-
-const count_per_page = 5;
-
-let getTotalPageCount = () => {
-  return Math.ceil(listCount / count_per_page);
-};
-
-const numberButtonWrapper = document.querySelector('.number-button-wrapper');
-
-const setPageButtons = () => {
-  numberButtonWrapper.innerHTML = '';
-
-  for (let i = 1; i <= getTotalPageCount(); i++) {
-    numberButtonWrapper.innerHTML += `<span class="number-button pageActive">${i}</span>`;
-  }
-};
-
-setPageButtons();
-
 // menu
 $('.dropDown').hide();
 $('.menu > li:nth-child(2)').mouseover(() => {
@@ -48,3 +27,24 @@ $('.popupBack').click(function () {
   $('.popupBack').hide();
   $('.popup').animate({ left: '50%' }, 500);
 });
+
+// 페이지네이션
+let listCount = $('.userList > li').length;
+
+const count_per_page = 8;
+
+let getTotalPageCount = () => {
+  return Math.ceil(listCount / count_per_page);
+};
+
+const numberButtonWrapper = document.querySelector('.number-button-wrapper');
+
+const setPageButtons = () => {
+  numberButtonWrapper.innerHTML = '';
+
+  for (let i = 1; i <= getTotalPageCount(); i++) {
+    numberButtonWrapper.innerHTML += `<span class="number-button pageActive">${i}</span>`;
+  }
+};
+
+setPageButtons();

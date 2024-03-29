@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>해드림</title>
@@ -15,32 +15,31 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet" />
     <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.js"
+      integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+      crossorigin="anonymous"
+    ></script>
     <!-- js -->
     <script th:src="@{/js/main.js}" defer></script>
-</head>
-
+  </head>
   <body>
     <header>
       <div class="con">
-          <div class="logo">
-              <a href="/"><img th:src="@{/img/HaeLogo.png}" alt="해드림로고" /></a>
-          </div>
-          <ul class="menu">
-              <li><a th:href="@{/profile}" th:text="${username}">username</a></li>
-              <li>
-                  <form th:action="@{/logout}" method="post">
-                      <button class="delete" type="submit"><i class="fa-solid fa-arrow-right-from-bracket"></i> 로그아웃</button>
-                  </form>
-              </li>
-          </ul>
+        <div class="logo">
+<a th:href="@{/main}"><img th:src="@{/img/HaeLogo.png}" alt="해드림로고" /></a>
+        </div>
+        <ul class="menu">
+          <li><a th:href="@{/profile}">username</a></li>
+          <li>
+            <button class="delete" type="button"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
+          </li>
+        </ul>
       </div>
-  </header>
-
+    </header>
     <div class="container">
       <div class="con">
         <div class="projectAdd">
-          
           <button type="button">프로젝트 추가</button>
           <div class="delete">
             <button type="button">삭제<i class="fa-solid fa-trash-can"></i></button>
@@ -48,41 +47,48 @@
             <button type="button">취소</button>
           </div>
         </div>
-
         <div class="projectInfo">
-          <form th:action="@{/project/save}" method="post" class="projectForm">
-              <div class="id">
-                  <p>프로젝트 이름</p>
-                  <input type="text" name="projectName" placeholder="프로젝트 이름을 입력해주세요." />
-              </div>
-              <div class="pw">
-                  <p>평가 기준</p>
-                  <textarea name="evaluationCriteria" cols="30" rows="10" placeholder="평가 기준을 입력해주세요."></textarea>
-              </div>
-              <div class="make">
-                  <button type="submit" class="makeButton">추가하기</button>
-                  <button type="button" class="back" th:onclick="'location.href=\'' + @{/} + '\''">취소</button>
-              </div>
-              </form>
-      </div>  
-
-      <ul class="projectList">
-        <li th:each="project : ${projects}">
-          <input type="checkbox" th:name="projectIds" th:value="${project.id}" th:id="${project.id}" />
-          <label th:for="${project.id}">
-          <img th:src="@{/img/folder.png}" alt="폴더그림" th:alt="${project.projectName}" />
-          <span th:text="${project.projectName}">Project1</span>
-          </label>
-        </li>
-      </ul>
-      
-    </form>
-  </div>
+          <form th:action="@{/project/save}" method="POST" class="projectForm">
+            <div class="id">
+              <p>프로젝트 이름</p>
+              <input type="text" placeholder="프로젝트 이름을 입력해주세요." />
+            </div>
+            <div class="pw">
+              <p>평가 기준</p>
+              <textarea
+                name="evaluationCriteria"
+                cols="30"
+                rows="20"
+                placeholder="평가 기준을 입력해주세요. ex) 평가기준 블라블라 (어케하누)"
+              ></textarea>
+            </div>
+            <div class="make">
+              <button type="button" class="makeButton">추가하기</button>
+              <button type="button" class="back" >취소</button>
+            </div>
+          </form>
+        </div>
+        <h1 class="title">프로젝트 목록</h1>
+        <ul class="projectList">
+      <!-- <li th:each="project : ${projects}">
+            <a th:href="@{/loglist}">
+              <input type="checkbox" th:name="projectIds" th:value="${project.id}" id="${project.id}" />
+              <label th:for="${project.id}">
+              <img th:src="@{/img/folder.png}" th:alt="${projcet.projectName}" />
+              <span th:text="${project.projectName}"></span>
+              </label>
+            </a>
+          </li> -->
+        </ul>
+      </div>
       <!-- con end -->
     </div>
     <!-- container end -->
     <div class="chatbot">
       <i class="fa-regular fa-comments"></i>
+    </div>    
+    <div class="scrollTop">
+      <i class="fa-solid fa-arrow-up"></i>
     </div>
 
     <script>
@@ -116,5 +122,6 @@
         });
       });
     </script>
+
   </body>
 </html>
