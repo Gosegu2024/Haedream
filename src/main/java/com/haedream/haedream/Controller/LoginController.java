@@ -32,7 +32,7 @@ public class LoginController {
     // 로그인 페이지로 이동
     @GetMapping("/login")
     public String LoginForm() {
- 
+
         return "login";
     }
 
@@ -42,8 +42,7 @@ public class LoginController {
         try {
             // Spring Security의 AuthenticationManager를 사용하여 사용자를 인증
             Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword())
-            );
+                    new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword()));
 
             // 인증에 성공하면 인증된 사용자 정보를 가져옴
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
@@ -53,7 +52,8 @@ public class LoginController {
             UserEntity user = userRepository.findByUsername(loginDTO.getUsername());
 
             // JWT 토큰 생성
-            String jwtToken = jwtUtil.createJwt(user.getUsername(), user.getRole(), 60 * 60 * 10L); // 10 hours expiration time
+            String jwtToken = jwtUtil.createJwt(user.getUsername(), user.getRole(), 60 * 60 * 10L); // 10 hours
+                                                                                                    // expiration time
 
             // 모델에 JWT 토큰 추가
             model.addAttribute("jwtToken", jwtToken);

@@ -1,5 +1,7 @@
 package com.haedream.haedream.dto.response;
 
+import java.time.LocalDateTime;
+
 import com.haedream.haedream.entity.Log;
 
 import lombok.Builder;
@@ -14,24 +16,35 @@ public class ResLogDTO {
     private String projectName;
     private String inputData;
     private String outputData;
+    private LocalDateTime logDate;
+    private String id;
 
     @Builder
-    public ResLogDTO(String modelName, String projectName, String inputData, String outputData) {
+    public ResLogDTO(
+            String modelName,
+            String projectName,
+            String inputData,
+            String outputData,
+            LocalDateTime logDate,
+            String id) {
         this.modelName = modelName;
         this.projectName = projectName;
         this.inputData = inputData;
         this.outputData = outputData;
+        this.logDate = logDate;
+        this.id = id;
     }
 
     // Entity를 DTO로 변환
     public static ResLogDTO fromEntity(Log log) {
-        // System.out.println("ResLogDTO");
-        // System.out.println(log.getModelName());
-        return ResLogDTO.builder()
+        return ResLogDTO
+                .builder()
                 .modelName(log.getModelName())
                 .projectName(log.getProjectName())
                 .inputData(log.getInputData())
                 .outputData(log.getOutputData())
+                .logDate(log.getLogDate())
+                .id(log.getId())
                 .build();
     }
 }
