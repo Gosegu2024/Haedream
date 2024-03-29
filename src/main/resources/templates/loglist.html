@@ -32,27 +32,22 @@
         <header>
             <div class="con">
                 <div class="logo">
-                    <a href="#"><img src="../img/HaeLogo.png" alt="해드림로고"/></a>
+                    <a th:href="@{/main}"><img th:src="@{/img/HaeLogo.png}" alt="해드림로고"/></a>
                 </div>
                 <ul class="menu">
-                    <li class="nowPage">
-                        <a href="#">로그</a>
-                    </li>
-                    <li>
-                        <a href="#">평가<i class="fa-solid fa-caret-down"></i>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">분석</a>
-                    </li>
-                    <li>
-                        <a href="#">username</a>
-                    </li>
-                    <li>
-                        <button class="delete" type="button">
-                            <i class="fa-solid fa-arrow-right-from-bracket"></i>
-                        </button>
-                    </li>
+          <li class="nowPage"><a th:href="@{/loglist}">로그</a></li>
+          <li>
+            <a href="#">평가 <i class="fa-solid fa-caret-down"></i></a>
+            <ul class="dropDown">
+              <li><a th:href="@{/evaluate}">평가하기</a></li>
+              <li><a th:href="@{/evaluateLog}">평가기록</a></li>
+            </ul>
+          </li>
+          <li><a th:href="@{/analyze}">분석</a></li>
+          <li><a th:href="@{/profile}">username</a></li>
+          <li>
+            <button class="logout" type="button"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
+          </li>
                 </ul>
             </div>
         </header>
@@ -126,90 +121,35 @@
                     </li>
                 </ul>
                 <div class="pagination-container">
-                    <div class="prev-button">이전</div>
-                    <div class="number-button-wrapper">
-                        <span class="number-button">1</span></div>
-                    <div class="prev-button">이후</div>
+          <div class="prev-button"><i class="fa-solid fa-angles-left"></i></div>
+          <div class="number-button-wrapper"><span class="number-button pageActive">1</span></div>
+          <div class="prev-button"><i class="fa-solid fa-angles-right"></i></div>
                 </div>
             </div>
             <!-- con end -->
+                  <div class="popupBack">
+        <ul class="popup">
+          <li><span>메뉴</span><i class="fa-solid fa-xmark"></i></li>
+          <li class="nowPage"><a th:href="@{/loglist}">로그</a></li>
+          <li>
+            <a href="#">평가 <i class="fa-solid fa-caret-down"></i></a>
+            <ul class="dropDown">
+              <li><a th:href="@{/evaluate}">평가하기</a></li>
+              <li><a th:href="@{/evaluateLog}">평가기록</a></li>
+            </ul>
+          </li>
+          <li><a th:href="@{/analyze}">분석</a></li>
+          <li><a th:href="@{/profile}">username</a></li>
+          <li>
+            <button class="logout" type="button"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
+          </li>
+        </ul>
+      </div>
         </div>
         <!-- container end -->
+            <div class="chatbot">
+      <i class="fa-regular fa-comments"></i>
+    </div>
     </body>
-
-    <script>
-        $(document).ready(function () {
-            $.ajax({
-                url: '/logListData', // 1단계에서 설정한 컨트롤러의 경로
-                type: 'GET',
-                dataType: 'json', // 반환되는 데이터 타입
-                success: function (logs) {
-                    var logListHtml = '';
-                    $.each(logs, function (index, log) {
-                        logListHtml += '<li><p class="index">' + (
-                            index + 1
-                        ) + '.</p><div class="mid"><div class="projectName">' + log.projectName + '</di' +
-                                'v><span class="modelName">' + log.modelName +
-                                '</span><span class="logDate">(' + log.logDate + ')</span></div><div class="del' +
-                                '"><i class="fa-solid fa-trash-can"></i></div></li>';
-                    });
-                    $('.logList').html(logListHtml);
-                },
-                error: function () {
-                    alert("데이터 로딩에 실패했습니다.");
-                }
-            });
-        });
-
-        $(document).ready(function () {
-            $('.del-button').on('click', function () {
-                // 삭제 버튼 내부의 data-logId 속성 값 가져옴.
-                var logId = $(this).attr('data-logId');
-                // closest:이 버튼을 포함하고 있는 최상위 요소를 찾는 메소드closest
-                var logItem = $(this).closest('li');
-
-                $.ajax({
-                    url: '/logList/' + logId,
-                    type: 'DELETE',
-                    success: function (response) {
-                        // AJAX 요청이 성공하면, UI에서도 해당 로그 항목을 삭제
-                        logItem.remove();
-
-                        // 로그 목록의 인덱스를 업데이트 
-                        $('.logList li').each(function (index) {
-                            $(this)
-                                .find('.index')
-                                .text(index + 1 + '.');
-                        });
-                    },
-                    error: function () {
-                        alert('로그 삭제 실패');
-                    }
-                });
-            });
-        });
-
-        // 버튼에 이벤트 리스너를 다시 바인딩하는 함수
-        function bindDeleteButtons() {
-            $('.del-button')
-                .off('click')
-                .on('click', function () {
-                    var logId = $(this).data('logId');
-                    $.ajax({
-                        url: '/logList/' + logId,
-                        type: 'DELETE',
-                        success: function (response) {
-                            // 생략: 성공 시 로그 목록 업데이트 로직
-                        },
-                        error: function () {
-                            alert('로그 삭제 실패');
-                        }
-                    });
-                });
-        }
-
-        // 페이지 로드 시 초기 바인딩
-        bindDeleteButtons();
-    </script>
 
 </html>

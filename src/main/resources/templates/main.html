@@ -91,37 +91,5 @@
       <i class="fa-solid fa-arrow-up"></i>
     </div>
 
-    <script>
-      $(document).ready(function(){
-        $('#deleteButton').click(function(){
-          // 선택한 프로젝트 id들을 배열에 저장하기
-          var selectedProjectIds = [];
-          $('input[name="projectIds"]:checked').each(function(){
-            selectedProjectIds.push($(this).val());
-          });
-
-          if(selectedProjectIds.length>0){
-            $.ajax({
-              url: '/project/delete',
-              type: 'POST',
-              data: {
-                projectIds: selectedProjectIds
-              },
-              traditional: true, // jQuery가 배열을 쿼리 스트링으로 올바르게 인코딩
-              success:function(response){// DB에서 삭제되면 UI에서도 제거
-                $('input[name="projectIds"]:checked').closest('li').remove();
-              },
-              error: function(){
-                alert('프로젝트 삭제 실패');
-              }
-            });
-          }
-            else{
-              alert('삭제할 프로젝트를 선택해주세요.');
-            }
-        });
-      });
-    </script>
-
   </body>
 </html>
