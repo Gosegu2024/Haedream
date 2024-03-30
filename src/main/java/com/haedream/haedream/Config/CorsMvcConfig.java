@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class CorsMvcConfig implements WebMvcConfigurer {
 
     @Override
-    public void addCorsMappings(CorsRegistry corsRegistry) {
+    public void addCorsMappings(@SuppressWarnings("null") CorsRegistry corsRegistry) {
 
         // 모든 Controller 경로에 요청프론트에서 오는 주소를 입력
         corsRegistry.addMapping("/**")

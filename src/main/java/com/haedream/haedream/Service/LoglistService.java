@@ -11,7 +11,7 @@ import com.haedream.haedream.entity.Log;
 import com.haedream.haedream.repository.LogRepository;
 
 @Service
-public class LoglistService {
+public class LoglistService { // SaveLogService를 통해 DB 저장된 로그 데이터를 삭제하고 조회하는 역할
 
     @Autowired
     private LogRepository logRepository;
@@ -33,35 +33,8 @@ public class LoglistService {
                 log.getId());
     }
 
-    // 로그 DB에 저장
-    public LogDTO saveLog(LogDTO logDTO) {
-        // DTO -> 엔티티
-        Log log = new Log();
-        log.setModelName(logDTO.getModelName());
-        log.setProjectName(logDTO.getProjectName());
-        log.setInputData(logDTO.getInputData());
-        log.setOutputData(logDTO.getOutputData());
-        log.setApiKey(logDTO.getApiKey());
-        log.setLogDate(logDTO.getLogDate());
-
-        // 엔티티 DB에 저장
-        log = logRepository.save(log);
-
-        // 엔티티 -> DTO 변환 뒤 반환하기
-        LogDTO savedLogDTO = new LogDTO();
-        savedLogDTO.setId(log.getId()); // MongoDB에서 자동으로 생성되는 고유 ID
-        savedLogDTO.setModelName(log.getModelName());
-        savedLogDTO.setProjectName(log.getProjectName());
-        savedLogDTO.setInputData(log.getInputData());
-        savedLogDTO.setOutputData(log.getOutputData());
-        savedLogDTO.setApiKey(log.getApiKey());
-        savedLogDTO.setLogDate(log.getLogDate());
-
-        return savedLogDTO;
-
-    }
-
     // 로그 삭제
+    @SuppressWarnings("null")
     public List<LogDTO> deleteLog(String logId) {
         logRepository.deleteById(logId);
         return getLogList();

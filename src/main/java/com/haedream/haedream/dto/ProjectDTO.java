@@ -1,23 +1,13 @@
-package com.haedream.haedream.model;
+package com.haedream.haedream.dto;
 
 import java.time.LocalDateTime;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
-@Document(collection = "TB_PROJECT")
-public class Project {
-    @Id
+public class ProjectDTO {
     private String id;
     private String projectName;
     private LocalDateTime createDate;
     private String username;
-    private String standard; // 평가기준
+    private String standard;
 
     public String getId() {
         return this.id;
@@ -55,7 +45,8 @@ public class Project {
         return this.standard;
     }
 
-    public void setStandard(String standard) {
+    public void setEvalStandard(String standard) {
         this.standard = standard;
     }
+
 }
