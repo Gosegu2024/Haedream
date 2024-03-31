@@ -24,6 +24,7 @@ public class JWTFilter extends OncePerRequestFilter {
                 this.jwtUtil = jwtUtil;
         }
 
+        @SuppressWarnings("null")
         @Override
         protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                         FilterChain filterChain)

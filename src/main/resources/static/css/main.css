@@ -171,6 +171,9 @@ header .con {
   position: relative;
   font-size: var(--font-large);
   transition: 0.2s ease-in-out;
+    display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .projectList li > a {
   box-sizing: border-box;
@@ -178,9 +181,9 @@ header .con {
   display: flex;
   align-items: center;
 }
+
 .projectList li:hover {
   cursor: pointer;
-  background-color: #d5d5d5;
 }
 .projectList img {
   height: 50px;
@@ -191,6 +194,57 @@ header .con {
   position: absolute;
   top: 15px;
   left: 25px;
+}
+.standardView{
+  position: relative;
+  right:20px ;
+  border: none;
+  background-color: var(--font-color);
+  color: white;
+  padding: 8px;
+  font-size: 14px;
+  border-radius: var(--border-radius-size);
+  cursor: pointer;
+}
+.standardView:hover{
+  background-color: white;
+  color: var(--font-color);
+}
+.standardPopup{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  width: 500px;
+  height: 500px;
+  background-color: white;
+  box-shadow: 3px 2px 10px #999;
+  border-radius: var(--border-radius-size);
+  box-sizing: border-box;
+  padding: var(--side-padding);
+  color: var(--font-color);
+}
+.standardPopup h2{
+  width: 100%;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.standardPopup h2 i{
+  font-size: 28px;
+  color: var(--main-color);
+  cursor: pointer;
+}
+.standardPopup p{
+  width: 100%;
+  overflow-y: scroll;
+  background-color: var(--gray-color);
+  height: 85%;
+  box-sizing: border-box;
+  padding: 10px;
 }
 
 .projectInfo {
@@ -210,7 +264,18 @@ header .con {
 .projectInfo .pw {
   margin-top: 20px;
 }
-.projectInfo input {
+.id input {
+  width: 100%;
+  border: none;
+  background-color: white;
+  outline: none;
+  display: block;
+  border-radius: 4px;
+  box-sizing: border-box;
+  padding: 15px 20px;
+  margin-top: 10px;
+}
+.pw input {
   width: 100%;
   border: none;
   background-color: white;

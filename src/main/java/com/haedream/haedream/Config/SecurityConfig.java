@@ -54,6 +54,7 @@ public class SecurityConfig {
                                 .cors((corsCustomizer -> corsCustomizer
                                                 .configurationSource(new CorsConfigurationSource() {
 
+                                                        @SuppressWarnings("null")
                                                         @Override
                                                         public CorsConfiguration getCorsConfiguration(
                                                                         HttpServletRequest request) {
