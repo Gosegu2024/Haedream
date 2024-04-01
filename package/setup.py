@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="haedream",
-    version="0.0.4",
+    version="0.0.8",
     author="GOSEGU",
     author_email="",
     description="This is a package for haedream",
