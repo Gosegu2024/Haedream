@@ -32,7 +32,7 @@ public class ProjectService {
         return projectRepository.findAll();
     }
 
-    // 프로젝트 생성
+    // 프로젝트 생성+저장
     public void projectSave(Project project) {
         project.setCreateDate(LocalDateTime.now());
         projectRepository.save(project);
