@@ -11,7 +11,7 @@ import com.haedream.haedream.repository.LogRepository;
 import com.haedream.haedream.repository.UserRepository;
 
 @Service
-public class SaveLogService { // API키의 유효성(DB에 있는지 없는지)여부 검사를 포함한 로그 저장에 특화됨
+public class SaveLogService { // API키의 유효성(DB에 있는지 없는지)여부 검사를 포함한 로그 저장용
                               // LogDTO를 Log 엔티티로 변환하고, 저장된 엔티티를 다시 ResLogDTO로 변환
     @Autowired
     private UserRepository userRepository;

@@ -5,19 +5,24 @@ import java.time.LocalDateTime;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Document(collection = "TB_PROJECT")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Project {
+
     @Id
     private String id;
     private String projectName;
+    private String standard;
     private LocalDateTime createDate;
     private String username;
-    private String standard; // 평가기준
 
     public String getId() {
         return this.id;
@@ -33,6 +38,14 @@ public class Project {
 
     public void setProjectName(String projectName) {
         this.projectName = projectName;
+    }
+
+    public String getStandard() {
+        return this.standard;
+    }
+
+    public void setStandard(String standard) {
+        this.standard = standard;
     }
 
     public LocalDateTime getCreateDate() {
@@ -51,11 +64,4 @@ public class Project {
         this.username = username;
     }
 
-    public String getStandard() {
-        return this.standard;
-    }
-
-    public void setStandard(String standard) {
-        this.standard = standard;
-    }
 }

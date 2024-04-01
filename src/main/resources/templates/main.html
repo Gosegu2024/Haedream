@@ -27,7 +27,7 @@
     <header>
       <div class="con">
         <div class="logo">
-<a th:href="@{/main}"><img th:src="@{/img/HaeLogo.png}" alt="해드림로고" /></a>
+          <a th:href="@{/main}"><img th:src="@{/img/HaeLogo.png}" alt="해드림로고" /></a>
         </div>
         <ul class="menu">
           <li><a th:href="@{/profile}">username</a></li>
@@ -48,40 +48,113 @@
           </div>
         </div>
         <div class="projectInfo">
-          <form th:action="@{/project/save}" method="POST" class="projectForm">
+          <form th:action="@{/main/projectSave}" method="POST" class="projectForm" th:object="${newProject}">
             <div class="id">
               <p>프로젝트 이름</p>
-              <input type="text" placeholder="프로젝트 이름을 입력해주세요." />
+              <input type="text" placeholder="프로젝트 이름을 입력해주세요." id="projectName" th:field="*{projectName}"/>
             </div>
             <div class="pw">
               <p>평가 기준</p>
               <textarea
-                name="evaluationCriteria"
+                name="standard"
+                th:field="*{standard}"
                 cols="30"
                 rows="20"
                 placeholder="평가 기준을 입력해주세요. ex) 평가기준 블라블라 (어케하누)"
               ></textarea>
             </div>
             <div class="make">
-              <button type="button" class="makeButton">추가하기</button>
+              <input type="submit" class="makeButton" value="추가하기">
               <button type="button" class="back" >취소</button>
             </div>
           </form>
         </div>
         <h1 class="title">프로젝트 목록</h1>
         <ul class="projectList">
-      <!-- <li th:each="project : ${projects}">
+          <li th:each="project : ${projects}">
             <a th:href="@{/loglist}">
-              <input type="checkbox" th:name="projectIds" th:value="${project.id}" id="${project.id}" />
-              <label th:for="${project.id}">
-              <img th:src="@{/img/folder.png}" th:alt="${projcet.projectName}" />
+              <input type="checkbox" th:name="${project.id}" class="checkbox" />
+              <img th:src="@{/img/folder.png}" alt="폴더 그림" />
               <span th:text="${project.projectName}"></span>
-              </label>
             </a>
-          </li> -->
+            <button type="button" class="standardView">평가기준 보기</button>
+          </li>
         </ul>
+        <div class="standardPopup">
+          <h2>평가기준 <i class="fa-solid fa-xmark"></i></h2>
+          <p>평가기준입니다.</p>
+        </div>
       </div>
       <!-- con end -->
+      <script th:inline="javascript">
+        // 프로젝트 삭제
+        $(document).ready(function(){
+          $("#deleteButton").click(function(){
+          let selectedProjectIds = [];
+          $(".checkbox:checked").each(function(){
+            selectedProjectIds.push($(this).attr('name'));
+          })
+          if(selectedProjectIds.length > 0){
+            $.ajax({
+              url: "/main/projectDelete",
+              type: "POST",
+              data: JSON.stringify(selectedProjectIds),
+              contentType: "application/json",
+              dataType: "json",
+              success: function(response){
+                selectedProjectIds.forEach(function(projectId){
+                  $('input[name="' + projectId + '"]').closest('li').remove();
+                })
+              }
+            })
+          }
+        })
+        })
+
+        // 평가기준 안쓰면 못넘어감
+        $(document).ready(function(){
+          $('.projectForm').submit(function(event){
+              let projectNameValue = $('input[name="projectName"]').val().trim();
+              let standardValue = $('textarea[name="standard"]').val().trim();
+              
+              if(projectNameValue === '') {
+                  alert('프로젝트 이름을 입력해주세요.');
+                  event.preventDefault();
+              }
+              else if(standardValue === '') {
+                  alert('평가 기준을 입력해주세요.');
+                  event.preventDefault();
+              }
+              
+          });
+        });
+
+        // 각 li의 평가기준 보여주기
+        $(".standardPopup").hide();
+
+        $(document).ready(function(){
+          $(".standardView").click(function(){
+            let projectId = $(this).closest("li").find('.checkbox').attr("name");
+            console.log(projectId);
+            $.ajax({
+              url:'/main/getStandard',
+              type:'POST',
+              data:JSON.stringify({projectId : projectId}),
+              contentType:'application/json',
+              success: function(response){
+                $(".standardPopup p").text(response);
+                $(".standardPopup").show();
+              }
+            })
+          })
+        })
+
+        // 평가기준 팝업 닫기
+        $('.standardPopup h2 i').click(function(){
+        $('.standardPopup').hide();
+    });
+
+      </script>
     </div>
     <!-- container end -->
     <div class="chatbot">
