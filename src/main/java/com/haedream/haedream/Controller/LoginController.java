@@ -1,70 +1,57 @@
 package com.haedream.haedream.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.io.IOException;
+
+
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import com.haedream.haedream.dto.LoginDTO;
-import com.haedream.haedream.entity.UserEntity;
+import org.springframework.web.bind.annotation.RequestParam;
 import com.haedream.haedream.jwt.JWTUtil;
-import com.haedream.haedream.repository.UserRepository;
+
+import ch.qos.logback.core.model.Model;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
 public class LoginController {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
+    private final JWTUtil jwtUtil;
 
-    @Autowired
-    private JWTUtil jwtUtil;
+    public LoginController(AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
+        this.authenticationManager = authenticationManager;
+        this.jwtUtil = jwtUtil;
+    }
 
-    @Autowired
-    private UserRepository userRepository;
-
-    // 로그인 페이지로 이동
     @GetMapping("/login")
-    public String LoginForm() {
-
-        return "login";
+    public String loginForm() {
+        return "login"; 
     }
 
-    // 로그인을 처리
+    @GetMapping("path")
+    public String getMethodName(Model model) {
+        return new String();
+    }
+    
+
     @PostMapping("/login")
-    public String loginProcess(@RequestBody LoginDTO loginDTO, Model model) {
-        try {
-            // Spring Security의 AuthenticationManager를 사용하여 사용자를 인증
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword()));
+    public String loginProcess(@RequestParam String username, @RequestParam String password, HttpServletResponse response) {
+            
+            // 사용자 인증
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 
-            // 인증에 성공하면 인증된 사용자 정보를 가져옴
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            System.out.println(userDetails);
-
-            // UserRepository를 사용하여 사용자를 조회
-            UserEntity user = userRepository.findByUsername(loginDTO.getUsername());
-
-            // JWT 토큰 생성
-            String jwtToken = jwtUtil.createJwt(user.getUsername(), user.getRole(), 60 * 60 * 10L); // 10 hours
-                                                                                                    // expiration time
-
-            // 모델에 JWT 토큰 추가
-            model.addAttribute("jwtToken", jwtToken);
-
-            // 로그인 성공 후 홈페이지로 리다이렉트
-            return "redirect:/";
-
-        } catch (BadCredentialsException e) {
-            // 인증에 실패하면 에러 메시지를 모델에 추가하여 다시 로그인 페이지로 이동
-            model.addAttribute("error", "Invalid username or password");
-            return "login";
+            // 로그인 성공한 경우 JWT 생성
+            String token = jwtUtil.createJwt(username, "", 60 * 60 * 1000L);
+            System.out.println(token);
+            // response.addHeader("Authorization", "Bearer " + token);
+            Cookie cookie = new Cookie("Authorization", String.format("Bearer %s", token));
+            cookie.setPath("/main");
+            cookie.setHttpOnly(true);
+            response.addCookie(cookie);
+            
+            return "redirect:/main";
         }
-    }
 }

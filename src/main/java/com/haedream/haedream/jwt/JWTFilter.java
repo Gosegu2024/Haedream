@@ -26,9 +26,7 @@ public class JWTFilter extends OncePerRequestFilter {
 
         @SuppressWarnings("null")
         @Override
-        protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
-                        FilterChain filterChain)
-                        throws ServletException, IOException {
+        protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
                 // request에서 Authorization 헤더를 찾음
                 String authorization = request.getHeader("Authorization");
@@ -36,7 +34,7 @@ public class JWTFilter extends OncePerRequestFilter {
                 // Authorization 헤더 검증
                 if (authorization == null || !authorization.startsWith("Bearer")) {
 
-                        System.out.println("token null");
+                        //System.out.println("token null");
                         filterChain.doFilter(request, response);
 
                         // 조건이 해당되면 메소드 종료 (필수)

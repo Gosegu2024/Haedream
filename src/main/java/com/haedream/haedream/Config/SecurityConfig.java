@@ -92,8 +92,10 @@ public class SecurityConfig {
 
                 http
                                 .authorizeHttpRequests((auth) -> auth
-                                                .requestMatchers("/**").permitAll()
-                                                .requestMatchers("/login", "/", "/join").permitAll()
+                                                .requestMatchers("/main").authenticated() // /main 페이지에 대한 접근은 인증된 사용자에게만 허용
+                                                .requestMatchers("/admin").hasRole("ADMIN")
+                                                .requestMatchers("/css/**", "/img/**", "/js/**").permitAll()
+                                                .requestMatchers("/", "/login", "/signup").permitAll()
                                                 .anyRequest().authenticated());
 
                 http

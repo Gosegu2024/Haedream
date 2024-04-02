@@ -35,11 +35,13 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         String id = obtainUsername(request);
         String password = obtainPassword(request);
 
-        System.out.println(id);
+        // System.out.println(id);
+        // System.out.println(password);
 
         // 스프링 시큐리티에서 username과 password를 검증하기 위해서는 token에 담음
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(id, password, null);
 
+        // System.out.println(authToken);
         // token에 담은 검증을 위한 AuthenticationManager로 전달
         return authenticationManager.authenticate(authToken);
     }
@@ -59,6 +61,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         String role = auth.getAuthority();
         String token = jwtUtil.createJwt(id, role, 60 * 60 * 10L);
+
+        // System.out.println(token);
 
         // HTTP 인증 방식 -> ex) Authorization: Bearer 인증토큰string
         response.addHeader("Authorization", "Bearer " + token);
