@@ -10,6 +10,7 @@ public class StringToLocalDateTimeConverter implements Converter<String, LocalDa
 
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
+    @SuppressWarnings("null")
     @Override
     public LocalDateTime convert(String source) {
         return LocalDateTime.parse(source, formatter);

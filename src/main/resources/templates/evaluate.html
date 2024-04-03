@@ -21,7 +21,7 @@
       crossorigin="anonymous"
     ></script>
     <!-- js -->
-    <script th:src="@{/js/loglist.js}" defer></script>
+    <script th:src="@{/js/evaluate.js}" defer></script>
   </head>
   <body>
     <header>
@@ -51,54 +51,14 @@
       <div class="con">
         <h1>평가하기</h1>
         <ul class="logList">
-          <li>
-              <p class="index">1.</p>
+          <li th:each="logList, index : ${logList}" >
+              <p class="index" th:text="${index.index + 1 + '.'}">1.</p>
               <div class="mid">
-                <div class="projectName">Test Project</div>
-                <span class="modelName">Test model</span>
-                <span class="date">(2024.03.24)</span>
+                <div class="projectName" th:text="${logList.projectName}"></div>
+                <span class="modelName" th:text="${logList.modelName}"></span>
+                <span class="date" th:text="${logList.logDate}"></span>
               </div>
-            <a th:href="@{/evaluateResult}" class="evalStart">평가하기</a>
-          </li>
-          <li>
-              <p class="index">2.</p>
-              <div class="mid">
-                <div class="projectName">Test Project</div>
-                <span class="modelName">Test model</span>
-                <span class="date">(2024.03.24)</span>
-              </div>
-                        <a th:href="@{/evaluateResult}" class="evalStart">평가하기</a>
-
-          </li>
-          <li>
-              <p class="index">3.</p>
-              <div class="mid">
-                <div class="projectName">Test Project</div>
-                <span class="modelName">Test model</span>
-                <span class="date">(2024.03.24)</span>
-              </div>
-                        <a th:href="@{/evaluateResult}" class="evalStart">평가하기</a>
-
-          </li>
-          <li>
-              <p class="index">4.</p>
-              <div class="mid">
-                <div class="projectName">Test Project</div>
-                <span class="modelName">Test model</span>
-                <span class="date">(2024.03.24)</span>
-              </div>
-                        <a th:href="@{/evaluateResult}" class="evalStart">평가하기</a>
-
-          </li>
-          <li>
-              <p class="index">5.</p>
-              <div class="mid">
-                <div class="projectName">Test Project</div>
-                <span class="modelName">Test model</span>
-                <span class="date">(2024.03.24)</span>
-              </div>
-                        <a th:href="@{/evaluateResult}" class="evalStart">평가하기</a>
-
+            <a th:href="@{/evaluateResult}" class="evalStart" th:id="${logList.id}">평가하기</a>
           </li>
         </ul>
         <div class="pagination-container">

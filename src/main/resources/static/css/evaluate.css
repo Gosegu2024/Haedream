@@ -176,6 +176,7 @@ header .con {
 }
 
 .logList .index {
+  width: 5%;
   font-size: 25px;
   margin-right: 35px;
 }

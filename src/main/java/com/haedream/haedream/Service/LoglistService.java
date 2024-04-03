@@ -1,7 +1,6 @@
 package com.haedream.haedream.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,9 +15,8 @@ public class LoglistService { // SaveLogService를 통해 DB 저장된 로그 �
     @Autowired
     private LogRepository logRepository;
 
-    public List<LogDTO> getLogList() {
-        List<Log> logs = logRepository.findAll();
-        return logs.stream().map(this::convertToLogDTO).collect(Collectors.toList());
+    public List<Log> getLogList() {
+        return logRepository.findAll();
     }
 
     // 로그엔티티 ->로그DTO
@@ -34,10 +32,10 @@ public class LoglistService { // SaveLogService를 통해 DB 저장된 로그 �
     }
 
     // 로그 삭제
-    @SuppressWarnings("null")
-    public List<LogDTO> deleteLog(String logId) {
-        logRepository.deleteById(logId);
-        return getLogList();
-    }
+    // @SuppressWarnings("null")
+    // public List<LogDTO> deleteLog(String logId) {
+    // logRepository.deleteById(logId);
+    // return getLogList();
+    // }
 
 }

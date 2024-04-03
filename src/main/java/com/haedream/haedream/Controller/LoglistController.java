@@ -18,20 +18,20 @@ public class LoglistController {
     @Autowired
     private LoglistService loglistService;
 
-    @GetMapping("/logList")
-    public String logList(Model model) {
-        return "loglist";
-    }
+    // @GetMapping("/logList")
+    // public String logList(Model model) {
+    // return "loglist";
+    // }
 
-    @GetMapping("/logListData")
-    public List<LogDTO> logListData() {
-        return loglistService.getLogList();
-    }
+    // @GetMapping("/logListData")
+    // public List<LogDTO> logListData() {
+    // return loglistService.getLogList();
+    // }
 
-    // 로그 삭제
-    @DeleteMapping("/logList/{logId}")
-    public List<LogDTO> deleteLog(@PathVariable String logId) {
-        return loglistService.deleteLog(logId);
-    }
+    // // 로그 삭제
+    // @DeleteMapping("/logList/{logId}")
+    // public List<LogDTO> deleteLog(@PathVariable String logId) {
+    // return loglistService.deleteLog(logId);
+    // }
 
 }
