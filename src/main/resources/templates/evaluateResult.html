@@ -117,11 +117,191 @@
       </div>
     </div>
     <!-- container end -->
+    <!-- chatbot start -->
     <div class="chatbot">
       <i class="fa-regular fa-comments"></i>
+      <div id="widget-root" style="display: none">
+        <button id="widget-button">
+          <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none">
+            <g clipPath="url(#clip0_2475_7651)">
+              <path
+                d="M64 32C64 14.3269 49.6731 0 32 0C14.3269 0 0 14.3269 0 32C0 49.6731 14.3269 64 32 64C49.6731 64 64 49.6731 64 32Z"
+                fill="#1FD8B6" />
+              <path
+                d="M29.3207 33.3203H27.4351C27.1236 33.3203 26.8711 33.5728 26.8711 33.8843V36.9374C26.8711 37.2489 27.1236 37.5014 27.4351 37.5014H29.3207C29.6322 37.5014 29.8848 37.2489 29.8848 36.9374V33.8843C29.8848 33.5728 29.6322 33.3203 29.3207 33.3203Z"
+                fill="white" />
+              <path
+                d="M36.0688 33.3203H34.1832C33.8717 33.3203 33.6191 33.5728 33.6191 33.8843V36.9374C33.6191 37.2489 33.8717 37.5014 34.1832 37.5014H36.0688C36.3803 37.5014 36.6328 37.2489 36.6328 36.9374V33.8843C36.6328 33.5728 36.3803 33.3203 36.0688 33.3203Z"
+                fill="white" />
+              <path
+                d="M48.1776 33.6811H46.8954C46.4199 31.3626 45.2296 29.0737 43.3407 27.1881C43.3407 27.1881 39.3006 22.5578 32.9782 22.0134C32.9618 22.0134 32.9454 22.0134 32.929 22.0101C32.7519 21.997 32.5748 21.9839 32.3945 21.9741C32.1879 21.9642 31.9813 21.9609 31.7747 21.9609C31.5681 21.9609 31.3582 21.9675 31.1549 21.9741C30.9745 21.9806 30.7975 21.9937 30.6204 22.0101C30.604 22.0101 30.5843 22.0101 30.5679 22.0134C24.2455 22.5578 20.2119 27.1881 20.2119 27.1881C18.3264 29.0737 17.1327 31.3626 16.6572 33.6811H15.3652C14.588 33.6811 13.9551 34.3107 13.9551 35.0912V38.5541C13.9551 39.3313 14.5847 39.9642 15.3652 39.9642H16.4801C16.9163 43.6534 20.0513 46.5162 23.8585 46.5162H31.9386L41.5043 51.6876C43.2521 52.8026 45.5444 51.5466 45.5444 49.4741V43.6763C46.3675 42.6302 46.9151 41.3579 47.0791 39.9675H48.1809C48.9581 39.9675 49.591 39.3378 49.591 38.5574V35.0945C49.591 34.3173 48.9614 33.6844 48.1809 33.6844L48.1776 33.6811ZM41.9667 39.4526C41.9667 40.6725 40.9796 41.6596 39.7597 41.6596H39.599V44.6535C39.599 44.9356 39.2875 45.1061 39.0514 44.952L33.9751 41.6596H23.7831C22.5632 41.6596 21.5761 40.6725 21.5761 39.4526V32.1857C21.5761 30.9658 22.5632 29.9788 23.7831 29.9788H39.7597C40.9796 29.9788 41.9667 30.9658 41.9667 32.1857V39.4526Z"
+                fill="white" />
+              <path
+                d="M27.3262 21.24C28.3198 20.9186 29.402 20.6825 30.5628 20.5809C30.5792 20.5809 30.5989 20.5809 30.6153 20.5776C30.7924 20.5645 30.9695 20.5514 31.1498 20.5415C31.3564 20.5317 31.563 20.5284 31.7696 20.5284C31.9762 20.5284 32.1861 20.535 32.3894 20.5415C32.5697 20.5481 32.7468 20.5612 32.9239 20.5776C32.9403 20.5776 32.9567 20.5776 32.9731 20.5809C34.1307 20.6793 35.2128 20.9186 36.2097 21.24C35.954 19.2823 34.4389 17.7213 32.5009 17.4033V15.448C33.2551 15.1528 33.7929 14.4215 33.7929 13.5624C33.7929 12.4441 32.8878 11.5391 31.7696 11.5391C30.6514 11.5391 29.7463 12.4441 29.7463 13.5624C29.7463 14.4215 30.2808 15.1528 31.0383 15.448V17.4033C29.1003 17.7213 27.582 19.2823 27.3295 21.24H27.3262Z"
+                fill="white" />
+            </g>
+            <defs>
+              <clipPath id="clip0_2475_7651">
+                <rect width="64" height="64" fill="white" />
+              </clipPath>
+            </defs>
+          </svg>
+        </button>
+        <button id="widget-close-button">
+          <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none">
+            <g clipPath="url(#clip0_2476_7667)">
+              <path
+                d="M64 32C64 14.3269 49.6731 0 32 0C14.3269 0 0 14.3269 0 32C0 49.6731 14.3269 64 32 64C49.6731 64 64 49.6731 64 32Z"
+                fill="#1FD8B6" />
+              <path
+                d="M20.8 46L18 43.2L29.2 32L18 20.8L20.8 18L32 29.2L43.2 18L46 20.8L34.8 32L46 43.2L43.2 46L32 34.8L20.8 46Z"
+                fill="white" />
+            </g>
+            <defs>
+              <clipPath id="clip0_2476_7667">
+                <rect width="64" height="64" fill="white" />
+              </clipPath>
+            </defs>
+          </svg>
+        </button>
+        <div id="widget-overlay">
+          <iframe id="widget-iframe" src="https://www.docenty.ai/external/chat?integrationId=cluj9rt0z0001lsrjcy66trrk"
+            allow="clipboard-write"></iframe>
+        </div>
+      </div>
     </div>
+    <!-- chatbot end -->
     <div class="scrollTop">
       <i class="fa-solid fa-arrow-up"></i>
     </div>
   </body>
+  <!-- chatbot js start -->
+  <script type="text/javascript" async defer>
+    window.addEventListener('message', function (event) {
+      const { e, params } = event.data;
+
+      if (e === 'widget-load') {
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(window.navigator.userAgent);
+
+        const widgetRoot = document.getElementById('widget-root');
+        const widgetButton = document.getElementById('widget-button');
+        const closeButton = document.getElementById('widget-close-button');
+        const widgetOverlay = document.getElementById('widget-overlay');
+        const iframe = document.getElementById('widget-iframe');
+
+        if (!widgetRoot || !widgetButton || !closeButton || !widgetOverlay || !iframe)
+          throw new Error('Failed to load widget plug-in elements');
+
+        widgetRoot.style.display = 'block';
+        widgetRoot.style.position = 'relative';
+        widgetRoot.style.zIndex = '2147483639';
+
+        widgetButton.style.display = 'flex';
+        widgetButton.style.alignItems = 'center';
+        widgetButton.style.justifyContent = 'center';
+        widgetButton.style.position = 'fixed';
+        widgetButton.style.bottom = params.bottomSpacing + 'px';
+        widgetButton.style.right = params.sideSpacing + 'px';
+        widgetButton.style.background = 'none';
+        widgetButton.style.border = 'none';
+        widgetButton.style.margin = '0';
+        widgetButton.style.padding = '0';
+        widgetButton.style.cursor = 'pointer';
+        widgetButton.style.borderRadius = '32px';
+        widgetButton.style.overflow = 'hidden';
+        widgetButton.style.boxShadow =
+          'rgba(255, 255, 255, 0.12) 0px 0px 2px 0px inset, rgba(0, 0, 0, 0.05) 0px 0px 2px 1px,rgba(0, 0, 0, 0.3) 0px 12px 60px';
+
+        closeButton.style.display = 'none';
+        closeButton.style.alignItems = 'center';
+        closeButton.style.justifyContent = 'center';
+        closeButton.style.position = 'fixed';
+        closeButton.style.bottom = params.bottomSpacing + 'px';
+        closeButton.style.right = params.sideSpacing + 'px';
+        closeButton.style.background = 'none';
+        closeButton.style.border = 'none';
+        closeButton.style.margin = '0';
+        closeButton.style.padding = '0';
+        closeButton.style.cursor = 'pointer';
+        closeButton.style.borderRadius = '32px';
+        closeButton.style.overflow = 'hidden';
+        closeButton.style.boxShadow =
+          'rgba(255, 255, 255, 0.12) 0px 0px 2px 0px inset, rgba(0, 0, 0, 0.05) 0px 0px 2px 1px,rgba(0, 0, 0, 0.3) 0px 12px 60px';
+
+        widgetOverlay.style.display = 'none';
+        widgetOverlay.style.position = 'fixed';
+        widgetOverlay.style.bottom = isMobile ? '0px' : params.bottomSpacing + 96 + 'px';
+        widgetOverlay.style.right = isMobile ? '0px' : params.sideSpacing + 'px';
+        widgetOverlay.style.width = isMobile ? '100%' : '430px';
+        widgetOverlay.style.maxHeight = isMobile ? '100dvh' : '690px';
+        widgetOverlay.style.height = isMobile ? '100dvh' : 'calc(100% - 100px)';
+        widgetOverlay.style.boxShadow =
+          'rgba(255, 255, 255, 0.12) 0px 0px 2px 0px inset, rgba(0, 0, 0, 0.05) 0px 0px 2px 1px,rgba(0, 0, 0, 0.3) 0px 12px 60px';
+        widgetOverlay.style.borderRadius = isMobile ? '0px' : '32px';
+        widgetOverlay.style.overflow = 'hidden';
+
+        iframe.style.pointerEvents = 'all';
+        iframe.style.background = 'none';
+        iframe.style.border = '0px';
+        iframe.style.float = 'none';
+        iframe.style.inset = '0px';
+        iframe.style.width = '100%';
+        iframe.style.height = '100%';
+        iframe.style.margin = '0px';
+        iframe.style.padding = '0px';
+        iframe.style.minHeight = '0px';
+      }
+
+      if (e === 'widget-close') {
+        const closeButton = document.getElementById('widget-close-button');
+        closeButton.style.display = 'none';
+
+        const widgetButton = document.getElementById('widget-button');
+        widgetButton.style.display = 'flex';
+
+        const widgetOverlay = document.getElementById('widget-overlay');
+        widgetOverlay.style.display = 'none';
+
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(window.navigator.userAgent);
+
+        if (isMobile) document.body.style.removeProperty("overflow")
+      }
+    });
+  </script>
+  <script type="text/javascript">
+    function widgetOpen(e) {
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(window.navigator.userAgent);
+
+      if (isMobile) document.body.style.overflow = "hidden";
+
+      e.currentTarget.style.display = 'none';
+      const closeButton = document.getElementById('widget-close-button');
+      closeButton.style.display = 'flex';
+
+      const widgetOverlay = document.getElementById('widget-overlay');
+      widgetOverlay.style.display = 'flex';
+
+      const iframe = document.getElementById('widget-iframe');
+
+      if (!iframe) throw new Error('Failed to load widget plug-in elements');
+
+      iframe.contentWindow.postMessage({ e: 'open-widget' }, '*');
+    }
+    function widgetClose(e) {
+      e.currentTarget.style.display = 'none';
+      const widgetButton = document.getElementById('widget-button');
+      widgetButton.style.display = 'flex';
+
+      const widgetOverlay = document.getElementById('widget-overlay');
+      widgetOverlay.style.display = 'none';
+    }
+
+    const widgetButton = document.getElementById('widget-button');
+    const closeButton = document.getElementById('widget-close-button');
+
+    if (!widgetButton || !closeButton) throw new Error('No button');
+    widgetButton.addEventListener('click', widgetOpen);
+    closeButton.addEventListener('click', widgetClose);
+  </script>
+  <!-- chatbot js end -->
 </html>
