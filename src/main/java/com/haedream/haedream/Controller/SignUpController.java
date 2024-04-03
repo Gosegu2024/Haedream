@@ -17,12 +17,8 @@ public class SignUpController {
         this.signupService = signupService;
     }
 
-    // 회원가입 처리
     @PostMapping("/signup")
     public String signupProcess(SignUpDTO signupDTO) {
-        // System.out.println(signupDTO.getUsername());
-        // System.out.println(signupDTO.getPassword());
-        // System.out.println(signupDTO.getEmail());
 
         try {
             signupService.signupProcess(signupDTO);
@@ -31,7 +27,6 @@ public class SignUpController {
 
             System.out.println("이미 사용중인 ID입니다.");
         }
-
         return "redirect:/login";
     }
 }

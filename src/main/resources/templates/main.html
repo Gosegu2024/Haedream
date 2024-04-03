@@ -23,6 +23,17 @@
     <!-- js -->
     <script th:src="@{/js/main.js}" defer></script>
   </head>
+  <script>
+    // 로그인 후 /main 페이지로 리다이렉트하는 함수
+    function redirectToMain() {
+      window.location.href = '/main';
+    }
+    // 로그인 폼 제출 시 호출되는 함수
+    function submitLoginForm() {
+      // 로그인 폼 submit
+      document.getElementById('loginForm').submit();
+    }
+  </script>
   <body>
     <header>
       <div class="con">

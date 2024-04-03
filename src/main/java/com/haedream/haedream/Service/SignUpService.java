@@ -38,7 +38,7 @@ public class SignUpService {
         data.setUsername(id);
         data.setPassword(bCryptPasswordEncoder.encode(password));
         data.setEmail(email);
-        data.setRole("User");
+        data.setRole("ROLE_USER");
         // 랜덤한 문자열 생성 및 설정(중복가능)
         String apiKey = generateRandomString(20); 
         data.setApi_key(apiKey);
