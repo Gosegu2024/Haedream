@@ -1,65 +1,64 @@
 package com.haedream.haedream.controller;
 
-import java.util.Collection;
 import java.util.List;
-
-import javax.swing.text.html.HTMLDocument.Iterator;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.stereotype.Controller;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.haedream.haedream.model.Project;
 import com.haedream.haedream.service.ProjectService;
 
-import jakarta.servlet.http.HttpSession;
 
 @Controller
+@SessionAttributes({"username", "api_key"})
 public class MainController {
 
     @Autowired
     private ProjectService projectService;
 
     @GetMapping("/main")
-    public String mainPage(Model model, HttpSession session) {
-
-        // 사용자 정보 가져오기
+    public String mainPage(Model model) {
+        // 현재 인증된 사용자 정보 가져오기
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-  
 
-        // 세션에 사용자 정보 저장
-        session.setAttribute("username", username);
-         
-        System.out.println(username);
+        List<Project> projects = projectService.findProjectsByOwner(username);
 
-        List<Project> projects = projectService.getProjects();
-        model.addAttribute("projects", projects);
-        model.addAttribute("newProject", new Project());
+            model.addAttribute("username", username);
+            model.addAttribute("projects", projects);
+            model.addAttribute("newProject", new Project());  
+
         return "main";
     }
 
     @PostMapping("/main/projectSave")
-    public String projectSave(String projectName, String standard, HttpSession session) {
-
-        // 사용자 정보 가져오기
+    public String projectSave(Model model, @RequestParam("projectName") String projectName, @RequestParam("standard") String standard) {
+      
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
+        
+        model.addAttribute("username", username);
 
-        // 세션에 사용자 정보 저장
-        session.setAttribute("username", username); 
+        if (projectName != null && standard != null) {
+            Project project = new Project();
+            project.setProjectName(projectName);
+            project.setStandard(standard);
+            project.setOwner(username);
 
-        Project project = new Project();
-        project.setProjectName(projectName);
-        project.setStandard(standard);
-        projectService.projectSave(project);
+            projectService.projectSave(project);
+
+        } else {
+            
+            System.out.println("프로젝트 이름 또는 평가 기준이 없습니다.");
+        }
+
         return "redirect:/main";
     }
 
-    
 }

@@ -27,11 +27,10 @@ public class SecurityConfig {
 
                 RoleHierarchyImpl hierarchy = new RoleHierarchyImpl();
 
-                hierarchy.setHierarchy("ROLE_C > ROLE_B\n" +
-                        "ROLE_B > ROLE_A");
+                hierarchy.setHierarchy("ROLE_ADMIN > ROLE_USER");
 
                 return hierarchy;
-}
+        }
 
         @Bean
         public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -41,15 +40,20 @@ public class SecurityConfig {
                                         .loginProcessingUrl("/loginProcess")
                                         .defaultSuccessUrl("/main") // 로그인 성공 시 이동할 기본 URL 설정
                                         .permitAll());
+                http
+                                        .logout((logout) -> logout
+                                        .logoutUrl("/logout") // 로그아웃 URL 설정
+                                        .logoutSuccessUrl("/login") // 로그아웃 성공 후 이동할 URL 설정
+                                        .permitAll());
 
                 http
                                 .authorizeHttpRequests((auth) -> auth
-                                                .requestMatchers("/", "/login", "/signup").permitAll()
-                                                .requestMatchers("/css/**","/img/**","/js/**").permitAll()
+                                        .requestMatchers("/", "/login", "/signup").permitAll()
+                                        .requestMatchers("/css/**","/img/**","/js/**").permitAll()
 
-                                                .requestMatchers("/propile/**").hasAnyRole("ADMIN", "USER")
-                                                .requestMatchers("/admin").hasAnyRole("ADMIN")
-                                                .anyRequest().authenticated());
+                                        .requestMatchers("/propile/**").hasAnyRole("ADMIN", "USER")
+                                        .requestMatchers("/admin").hasAnyRole("ADMIN")
+                                        .anyRequest().authenticated());
 
                 http
                                 .csrf((auth) -> auth.disable());

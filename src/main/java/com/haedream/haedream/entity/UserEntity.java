@@ -3,7 +3,7 @@ package com.haedream.haedream.entity;
 import lombok.Data;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document
+@Document(collection = "TB_USER")
 @Data
 public class UserEntity {
 

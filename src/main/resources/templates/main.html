@@ -43,7 +43,12 @@
         <ul class="menu">
           <li><a th:href="@{/profile}">username</a></li>
           <li>
-            <button class="delete" type="button"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
+            <!-- 팀장님 로그아웃 버튼 몬생겼어요 고쳐주세요 - 송현준  -->
+            <i class="fa-solid fa-arrow-right-from-bracket">
+              <form class="logout" th:action="@{/logout}" method="POST">
+                <input class="delete" type="submit">
+              </form>
+            </i>
           </li>
         </ul>
       </div>

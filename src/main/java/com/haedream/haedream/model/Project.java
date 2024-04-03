@@ -64,4 +64,14 @@ public class Project {
         this.username = username;
     }
 
+    private String owner;
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
 }

@@ -4,12 +4,12 @@ package com.haedream.haedream.service;
 import java.security.SecureRandom;
 import java.util.DuplicateFormatFlagsException;
 
-import org.springframework.stereotype.Service;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 import com.haedream.haedream.dto.SignUpDTO;
 import com.haedream.haedream.entity.UserEntity;
 import com.haedream.haedream.repository.UserRepository;
+
+import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Service
 public class SignUpService {
