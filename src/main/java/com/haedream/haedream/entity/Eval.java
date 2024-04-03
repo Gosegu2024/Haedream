@@ -2,6 +2,9 @@ package com.haedream.haedream.entity;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import lombok.Builder;
+
 import java.time.LocalDateTime;
 
 @Document(collection = "TB_EVALUATION")
@@ -16,6 +19,18 @@ public class Eval {
     private LocalDateTime evalLogDate;
     private String evalWhether;
     private String evalFeedback;
+
+    @Builder
+    public Eval(String id, String standard, String inputData, String outputData, String apiKey, LocalDateTime evalLogDate, String evalWhether, String evalFeedback) {
+        this.id = id;
+        this.standard = standard;
+        this.inputData = inputData;
+        this.outputData = outputData;
+        this.apiKey = apiKey;
+        this.evalLogDate = evalLogDate;
+        this.evalWhether = evalWhether;
+        this.evalFeedback = evalFeedback;
+    }
 
     public Eval() {
     }

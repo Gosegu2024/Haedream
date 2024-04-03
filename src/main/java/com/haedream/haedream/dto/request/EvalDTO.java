@@ -1,13 +1,10 @@
-package com.haedream.haedream.dto;
+package com.haedream.haedream.dto.request;
 
 import java.time.LocalDateTime;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.haedream.haedream.config.LocalDateTimeAdapter;
-import com.haedream.haedream.dto.request.LogDTO;
-import com.haedream.haedream.entity.Log;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,10 +24,10 @@ public class EvalDTO {
     private String evalFeedback; // 평가 피드백
 
     // JSON 문자열로부터 EvalDTO 객체를 파싱하는 정적 메소드
-    public static EvalDTO parse(String jsonStr) {
+    public static EvalDTO parse(String result) {
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
                 .create();
-        return gson.fromJson(jsonStr, EvalDTO.class);
+        return gson.fromJson(result, EvalDTO.class);
     }
 }
