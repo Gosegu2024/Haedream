@@ -47,79 +47,27 @@
         <div class="bar"><i class="fa-solid fa-bars"></i></div>
       </div>
     </header>
+
     <div class="container">
       <div class="con">
-        <ul class="userList">
-          <li>
-            <p class="index">1.</p>
+        <ul class="userList" th:if="${users != null}">
+          <li th:each="user, userStat : ${users}">
+            <p class="index" th:text="${userStat.index + 1} + '.'"></p>
             <div class="mid">
-              <span class="modelName">이름(user ID)</span>
-              <span class="date">가입일 (2024.03.24)</span>
+              <span th:text="${user.username}"></span>
+              <span th:text="${user.email}"></span>
             </div>
-            <div class="del"><i class="fa-solid fa-trash-can"></i></div>
-          </li>
-          <li>
-            <p class="index">1.</p>
-            <div class="mid">
-              <span class="modelName">이름(user ID)</span>
-              <span class="date">가입일 (2024.03.24)</span>
+            <!-- 사용자 삭제 기능-->
+            <div class="del">
+              <a href="javascript:void(0);" class="delete-user" th:data-username="${user.username}">
+                <i class="fa-solid fa-trash-can"></i>
+              </a>
             </div>
-            <div class="del"><i class="fa-solid fa-trash-can"></i></div>
-          </li>
-          <li>
-            <p class="index">1.</p>
-            <div class="mid">
-              <span class="modelName">이름(user ID)</span>
-              <span class="date">가입일 (2024.03.24)</span>
-            </div>
-            <div class="del"><i class="fa-solid fa-trash-can"></i></div>
-          </li>
-          <li>
-            <p class="index">1.</p>
-            <div class="mid">
-              <span class="modelName">이름(user ID)</span>
-              <span class="date">가입일 (2024.03.24)</span>
-            </div>
-            <div class="del"><i class="fa-solid fa-trash-can"></i></div>
-          </li>
-          <li>
-            <p class="index">1.</p>
-            <div class="mid">
-              <span class="modelName">이름(user ID)</span>
-              <span class="date">가입일 (2024.03.24)</span>
-            </div>
-            <div class="del"><i class="fa-solid fa-trash-can"></i></div>
-          </li>
-          <li>
-            <p class="index">1.</p>
-            <div class="mid">
-              <span class="modelName">이름(user ID)</span>
-              <span class="date">가입일 (2024.03.24)</span>
-            </div>
-            <div class="del"><i class="fa-solid fa-trash-can"></i></div>
-          </li>
-          <li>
-            <p class="index">1.</p>
-            <div class="mid">
-              <span class="modelName">이름(user ID)</span>
-              <span class="date">가입일 (2024.03.24)</span>
-            </div>
-            <div class="del"><i class="fa-solid fa-trash-can"></i></div>
-          </li>
-          <li>
-            <p class="index">1.</p>
-            <div class="mid">
-              <span class="modelName">이름(user ID)</span>
-              <span class="date">가입일 (2024.03.24)</span>
-            </div>
-            <div class="del"><i class="fa-solid fa-trash-can"></i></div>
           </li>
         </ul>
-        <div class="pagination-container">
-          <div class="prev-button"><i class="fa-solid fa-angles-left"></i></div>
-          <div class="number-button-wrapper"><span class="number-button">1</span></div>
-          <div class="prev-button"><i class="fa-solid fa-angles-right"></i></div>
-        </div>
+        
+
+          
       </div>
       <!-- con end -->
       <div class="popupBack">
@@ -142,5 +90,34 @@
       </div>
     </div>
     <!-- container end -->
+    <div class="chatbot">
+      <i class="fa-regular fa-comments"></i>
+    </div>
+
+    <!-- 사용자 삭제 -->
+    <script th:inline="javascript">
+      
+      $(document).ready(function() {
+          $('.delete-user').click(function() {
+              var username = $(this).attr('data-username');
+              if (confirm(username + ' 사용자를 삭제하시겠습니까?')) {
+                  // AJAX 요청으로 사용자 삭제
+                  $.ajax({
+                      url: '/admin/delete/' + username,
+                      type: 'POST',
+                      success: function(response) {
+                          // 삭제 성공 후 페이지 새로고침 또는 사용자 목록 업데이트
+                          window.location.reload();
+                      },
+                      error: function(error) {
+                          // 오류 처리
+                          alert('사용자 삭제에 실패했습니다.');
+                      }
+                  });
+              }
+          });
+      });
+      
+      </script>
   </body>
 </html>

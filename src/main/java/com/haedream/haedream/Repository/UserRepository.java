@@ -20,4 +20,7 @@ public interface UserRepository extends MongoRepository<UserEntity, String> {
     // 관리자만 사용가능한 전체 회원 조회기능
     @SuppressWarnings("null")
     List<UserEntity> findAll();
+
+    // 관리자만 사용자 삭제
+    void deleteByUsername(String username);
 }
