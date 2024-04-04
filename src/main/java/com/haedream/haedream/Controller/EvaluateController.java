@@ -19,8 +19,9 @@ public class EvaluateController {
   LoglistService loglistService;
 
   @GetMapping("/evaluate")
-  public String evaluate(Model model) {
-    List<Log> logList = loglistService.getLogList();
+  public String evaluate(@RequestParam("projectName") String projectName, @RequestParam("apiKey") String apiKey,
+      Model model) {
+    List<Log> logList = loglistService.getLogList(apiKey, projectName);
     model.addAttribute("logList", logList);
     return "evaluate";
   }

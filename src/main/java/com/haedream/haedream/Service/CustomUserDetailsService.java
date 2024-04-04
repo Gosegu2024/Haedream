@@ -22,8 +22,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         // 사용자 이름으로 데이터베이스에서 사용자 정보를 찾는다.
         UserEntity userData = userRepository.findByUsername(username);
 
-        System.out.println(userData);
-        
         // 사용자 정보가 존재하는 경우 UserDetails를 구현한 CustomUserDetails 객체로 변환하여 반환
         if (userData != null) {
 

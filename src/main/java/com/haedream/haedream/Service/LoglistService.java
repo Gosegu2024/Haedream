@@ -15,8 +15,8 @@ public class LoglistService { // SaveLogService를 통해 DB 저장된 로그 �
     @Autowired
     private LogRepository logRepository;
 
-    public List<Log> getLogList() {
-        return logRepository.findAll();
+    public List<Log> getLogList(String apikey, String projectName) {
+        return logRepository.findByApiKeyAndProjectName(apikey, projectName);
     }
 
     // 로그엔티티 ->로그DTO
