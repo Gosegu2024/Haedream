@@ -51,14 +51,16 @@
     <div class="container">
       <div class="con">
         <div class="profileBox">
-          <div class="title">User님</div>
+          <div class="title" th:text="${username}"></div>
           <ul class="info">
-            <li><span>ID</span><span>User</span></li>
-            <li><span>EMAIL</span><span>User@test.com</span></li>
+            <li><span>ID</span><span th:text="${username}"></span></li>
+            <li><span>EMAIL</span><span th:text="${email}">@test.com</span></li>
             <li>
               <span>API-KEY</span
-              ><span class="apikey"
-                >저를 복사해주세용<button type="button" onclick="copyClipboard()"><i class="fa-regular fa-copy"></i></button>
+              ><span class="apikey" th:text="${apiKey}">
+                <!-- th:text로 인해 button태그가 사라져서 위치 조정 필요합니다 -  -->
+                <button type="button" onclick="copyClipboard()"><i class="fa-regular fa-copy"></i>
+                </button>
               </span>
             </li>
           </ul>

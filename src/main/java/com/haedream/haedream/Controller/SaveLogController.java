@@ -19,11 +19,7 @@ public class SaveLogController {
     // 로그 db에 저장
     @PostMapping("/save_data")
     public ResponseEntity<ResLogDTO> saveData(@RequestParam String js) {
-        // System.out.println(js);
         ResLogDTO saveLogDTO = saveLogService.saveData(LogDTO.parse(js));
-        System.out.println(saveLogDTO.getInputData());
-        System.out.println(saveLogDTO.getOutputData());
-        System.out.println("전체 데이터: " + saveLogDTO.toString());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(saveLogDTO);
     }
