@@ -2,6 +2,7 @@ package com.haedream.haedream.service;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import com.haedream.haedream.dto.request.LogDTO;
 import com.haedream.haedream.entity.Log;
@@ -14,7 +15,8 @@ public class LoglistService { // SaveLogService를 통해 DB 저장된 로그 �
     private LogRepository logRepository;
 
     public List<Log> getLogList(String apikey, String projectName) {
-        return logRepository.findByApiKeyAndProjectName(apikey, projectName);
+        Sort sort = Sort.by(Sort.Direction.DESC, "logDate");
+        return logRepository.findByApiKeyAndProjectName(apikey, projectName, sort);
     }
 
     // 로그엔티티 ->로그DTO

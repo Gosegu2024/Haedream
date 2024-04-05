@@ -41,9 +41,8 @@
           <a th:href="@{/main}"><img th:src="@{/img/HaeLogo.png}" alt="해드림로고" /></a>
         </div>
         <ul class="menu">
-          <li><a th:href="@{/profile}" th:text="${username}">username</a></li>
+          <li><a th:href="@{/profile}" th:text="${username}"></a></li>
           <li>
-            <!-- 팀장님 로그아웃 버튼 몬생겼어요 고쳐주세요 - 송현준  -->
             <form id="logoutForm" th:action="@{/logout}" method="post">
               <button type="submit"><i class="fa-solid fa-arrow-right-from-bracket"> </i></button>
             </form>

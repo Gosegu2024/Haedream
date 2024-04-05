@@ -90,7 +90,7 @@ header .con {
   color: var(--main-color);
 }
 .menu li {
-  margin-left: 35px;
+  margin-left: 50px;
 }
 
 .container {
@@ -171,13 +171,15 @@ header .con {
   position: relative;
   font-size: var(--font-large);
   transition: 0.2s ease-in-out;
-    display: flex;
+  display: flex;
   justify-content: space-between;
   align-items: center;
 }
+.projectList span{
+  font-weight: 600;
+  width: 80%;
+}
 .projectList li > a {
-  width: 100%;
-  height: 100%;
   box-sizing: border-box;
   padding: 30px var(--side-padding);
   display: flex;
@@ -197,22 +199,22 @@ header .con {
   top: 15px;
   left: 25px;
 }
-.standardView{
+.standardView {
   position: relative;
-  right:20px ;
+  right: 20px;
   border: none;
   background-color: var(--font-color);
   color: white;
-  padding: 8px;
+  padding: 10px;
   font-size: 14px;
   border-radius: var(--border-radius-size);
   cursor: pointer;
 }
-.standardView:hover{
+.standardView:hover {
   background-color: white;
   color: var(--font-color);
 }
-.standardPopup{
+.standardPopup {
   position: fixed;
   top: 0;
   left: 0;
@@ -228,19 +230,19 @@ header .con {
   padding: var(--side-padding);
   color: var(--font-color);
 }
-.standardPopup h2{
+.standardPopup h2 {
   width: 100%;
   margin-bottom: 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
-.standardPopup h2 i{
+.standardPopup h2 i {
   font-size: 28px;
   color: var(--main-color);
   cursor: pointer;
 }
-.standardPopup p{
+.standardPopup p {
   width: 100%;
   overflow-y: scroll;
   background-color: var(--gray-color);
@@ -353,8 +355,8 @@ header .con {
   color: var(--main-color);
   cursor: pointer;
   position: fixed;
-  bottom: 50px;
-  right: 110px;
+  bottom: 32px;
+  right: 115px;
   z-index: 5;
 }
 

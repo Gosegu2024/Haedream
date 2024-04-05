@@ -16,6 +16,9 @@ import json
 # 환경변수 설정
 os.environ['LANGCHAIN_TRACING_V2'] = 'true'
 
+os.environ['LANGCHAIN_API_KEY'] = 'ls__8763f0bab4ed4414b79d5bd51a84a4b8'
+os.environ['OPENAI_API_KEY'] = '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'
+
 llm = ChatOpenAI(model = "gpt-4-turbo-preview")
 
 ## [함수] ####################################################################

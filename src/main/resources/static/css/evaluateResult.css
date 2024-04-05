@@ -109,7 +109,6 @@ header .con {
 }
 .menu > li:nth-child(4) {
   position: relative;
-  left: 15px;
 }
 .menu > li:nth-child(2) i {
   margin-left: 3px;
@@ -274,8 +273,8 @@ header .con {
   color: var(--main-color);
   cursor: pointer;
   position: fixed;
-  bottom: 50px;
-  right: 110px;
+  bottom: 32px;
+  right: 115px;
   z-index: 5;
 }
 

@@ -14,6 +14,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet" />
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- jQuery -->
     <script
       src="https://code.jquery.com/jquery-3.7.1.js"
@@ -30,7 +32,6 @@
           <a th:href="@{/main}"><img th:src="@{/img/HaeLogo.png}" alt="해드림로고" /></a>
         </div>
         <ul class="menu">
-          <li><a th:href="@{/loglist}">로그</a></li>
           <li>
             <a href="#">평가 <i class="fa-solid fa-caret-down"></i></a>
             <ul class="dropDown">
@@ -66,23 +67,28 @@
         </div>
         <div class="input">
           <h2>평가기준1 비교</h2>
-          <div class="view">시각자료</div>
+          <div class="view">
+            <canvas id="myChart1"></canvas>
+          </div>
         </div>
 
         <div class="output">
           <h2>평가기준2 비교</h2>
-          <div class="view">시각자료</div>
+          <div class="view">
+            <canvas id="myChart2"></canvas>
+          </div>
         </div>
         <div class="all">
           <h2>평가기준3 비교</h2>
-          <div class="view">시각자료</div>
+          <div class="view">
+            <canvas id="myChart3"></canvas>
+          </div>
         </div>
       </div>
       <!-- con end -->
       <div class="popupBack">
         <ul class="popup">
           <li><span>메뉴</span><i class="fa-solid fa-xmark"></i></li>
-          <li ><a th:href="@{/loglist}">로그</a></li>
           <li>
             <a href="#">평가 <i class="fa-solid fa-caret-down"></i></a>
             <ul class="dropDown">
@@ -157,6 +163,106 @@
     </div>
   </body>
   <!-- chatbot js start -->
+  <script async defer>
+
+    const COLORS = [
+      '#4dc9f6',
+      '#f67019',
+      '#f53794',
+      '#537bc4',
+      '#acc236',
+      '#166a8f',
+      '#00a950',
+      '#58595b',
+      '#8549ba'
+    ];
+
+
+    const ctx1 = document.getElementById('myChart1');
+
+    new Chart(ctx1, {
+    type: 'bar',
+    data: {
+      labels: ['label1','label2','label3','label4','label5','label6'],
+      datasets: [{
+        label: 'dataset 1',
+        data: [56, 19, 39, 50, 27, 32],
+        borderColor:'#4dc9f6',
+        backgroundColor:'#4dc9f673',
+      },
+      {
+        label: 'dataset 2',
+        data: [41, 99, 87, 23, 20, 31],
+        borderColor:'#f67019',
+        backgroundColor:'#f6701973',
+      }]
+    },
+    options: {
+      responsive:true,
+      pulgins : {
+        legend:{
+          position:'top',
+        },
+      },
+    }
+  });
+
+  const ctx2 = document.getElementById('myChart2');
+
+  new Chart(ctx2, {
+    type:'line',
+    data : {
+      labels : ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6'] ,
+      datasets:[{
+        label : 'Dataset',
+        data : [56, 19, 39, 50, 27, 32],
+        borderColor:'#4dc9f6',
+        backgroundColor:'#4dc9f673',
+        pointStyle:'circle',
+        pointRadius:10,
+        pointHoverRadius:5
+      }]
+    },
+    options:{
+      reponsive:true,
+      plugins:{
+        title:{
+          display:true,
+          text:'Chart Exam'
+        }
+      }
+    }
+  })
+
+  const ctx3 = document.getElementById('myChart3');
+
+  new Chart(ctx3, {
+    type:'doughnut',
+    data : {
+      labels : ['label1','label2','label3','label4','label5'],
+      datasets : [{
+        label : 'Dataset',
+        data : [56, 19, 39, 50, 27],
+        backgroundColor:['#166a8f73','#8549ba73','#58595b73','#4dc9f673','#f6701973'],
+      }]
+    },
+    options: {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: 'Chart.js Doughnut Chart'
+        }
+      }
+    }
+  })
+  
+
+  </script>
+
   <script type="text/javascript" async defer>
     window.addEventListener('message', function (event) {
       const { e, params } = event.data;

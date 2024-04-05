@@ -108,7 +108,6 @@ header .con {
 }
 .menu > li:nth-child(4) {
   position: relative;
-  left: 15px;
 }
 .menu > li:nth-child(2) i {
   margin-left: 3px;
@@ -245,7 +244,7 @@ header .con {
   background-color: white;
   margin-bottom: 20px;
 }
-.info li span:first-child {
+.info > li > span:nth-child(1) {
   width: 20%;
   height: 100%;
   background-color: var(--font-color);
@@ -256,7 +255,7 @@ header .con {
   font-size: 18px;
 }
 
-.info li span:last-child {
+.info li span:nth-child(2) {
   width: 80%;
   padding: 20px 0;
   font-weight: 700;

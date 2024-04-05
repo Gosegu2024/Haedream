@@ -1,16 +1,16 @@
 // menu
 $('.dropDown').hide();
-$('.menu > li:nth-child(2)').mouseover(() => {
+$('.menu > li:nth-child(1)').mouseover(() => {
   $('.dropDown').stop().slideDown();
 });
-$('.menu > li:nth-child(2)').mouseout(() => {
+$('.menu > li:nth-child(1)').mouseout(() => {
   $('.dropDown').stop().slideUp();
 });
 
-$('.popup > li:nth-child(3)').mouseover(() => {
+$('.popup > li:nth-child(2)').mouseover(() => {
   $('.dropDown').stop().slideDown();
 });
-$('.popup > li:nth-child(3)').mouseout(() => {
+$('.popup > li:nth-child(2)').mouseout(() => {
   $('.dropDown').stop().slideUp();
 });
 

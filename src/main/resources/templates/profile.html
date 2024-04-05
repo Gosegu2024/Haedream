@@ -31,7 +31,6 @@
           <a th:href="@{/main}"><img th:src="@{/img/HaeLogo.png}" alt="해드림로고" /></a>
         </div>
         <ul class="menu">
-          <li ><a th:href="@{/loglist}">로그</a></li>
           <li>
             <a href="#">평가 <i class="fa-solid fa-caret-down"></i></a>
             <ul class="dropDown">
@@ -57,11 +56,11 @@
             <li><span>EMAIL</span><span th:text="${email}">@test.com</span></li>
             <li>
               <span>API-KEY</span
-              ><span class="apikey" th:text="${apiKey}">
-                <!-- th:text로 인해 button태그가 사라져서 위치 조정 필요합니다 -  -->
+              ><span class="apikey" >
+                <span th:text="${apiKey}"></span>
                 <button type="button" onclick="copyClipboard()"><i class="fa-regular fa-copy"></i>
-                </button>
               </span>
+                </button>
             </li>
           </ul>
           <div class="speech-bubble">copy!</div>
@@ -71,7 +70,6 @@
       <div class="popupBack">
         <ul class="popup">
           <li><span>메뉴</span><i class="fa-solid fa-xmark"></i></li>
-          <li ><a th:href="@{/loglist}">로그</a></li>
           <li>
             <a href="#">평가 <i class="fa-solid fa-caret-down"></i></a>
             <ul class="dropDown">

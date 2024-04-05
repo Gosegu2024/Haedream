@@ -109,7 +109,6 @@ header .con {
 }
 .menu > li:nth-child(4) {
   position: relative;
-  left: 15px;
 }
 .menu > li:nth-child(2) i {
   margin-left: 3px;
@@ -244,7 +243,6 @@ header .con {
 .view{
   width: 90%;
   padding: var(--side-padding);
-  background-color: var(--lightblue-color);
   margin: 0 auto;
   border-radius: var(--border-radius-size);
 }
@@ -262,8 +260,8 @@ header .con {
   color: var(--main-color);
   cursor: pointer;
   position: fixed;
-  bottom: 50px;
-  right: 110px;
+  bottom: 32px;
+  right: 115px;
   z-index: 5;
 }
 

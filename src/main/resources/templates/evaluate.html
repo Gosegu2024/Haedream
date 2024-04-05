@@ -30,7 +30,6 @@
           <a th:href="@{/main}"><img th:src="@{/img/HaeLogo.png}"alt="해드림로고" /></a>
         </div>
         <ul class="menu">
-          <li><a th:href="@{/loglist}">로그</a></li>
           <li>
             <a href="#">평가 <i class="fa-solid fa-caret-down"></i></a>
             <ul class="dropDown">
@@ -39,7 +38,7 @@
             </ul>
           </li>
           <li><a th:href="@{/analyze}">분석</a></li>
-          <li><a th:href="@{/profile}">admin</a></li>
+          <li><a th:href="@{/profile}" th:text="${username}"></a></li>
           <li>
             <button class="logout" type="button"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
           </li>
@@ -59,7 +58,7 @@
                 <span class="date" th:text="${logList.logDate}"></span>
               </div>
               <!-- 수정중 -->
-              <a th:href="@{/evaluateResult(logId=${logList.id}, projectName=${logList.projectName})}" class="evalStart">평가하기</a>
+              <a th:href="@{/evaluateResult(logId=${logList.id}, projectName=${logList.projectName})}" class="evalStart" onclick="showLoading()">평가하기</a>
               <!-- 수정중 -->
           </li>
         </ul>
@@ -73,7 +72,6 @@
       <div class="popupBack">
         <ul class="popup">
           <li><span>메뉴</span><i class="fa-solid fa-xmark"></i></li>
-          <li><a th:href="@{/loglist}">로그</a></li>
           <li>
             <a href="#">평가 <i class="fa-solid fa-caret-down"></i></a>
             <ul class="dropDown">
@@ -143,10 +141,102 @@
       </div>
     </div>
     <!-- chatbot end -->
+    <div id="loading-overlay">
+      <div class="spinner"></div>
+    </div>
   </body>
 
   <!-- chatbot js start -->
-  <script type="text/javascript" async defer>
+  <script th:inline="javascript" async defer>
+    history.replaceState({},null,location.pathname);
+
+    function showLoading() {
+    document.getElementById("loading-overlay").style.display = "block";
+}
+
+    function hideLoading() {
+        document.getElementById("loading-overlay").style.display = "none";
+    }
+
+    // 페이지네이션
+    /*<![CDATA[*/
+    
+    /*]]>*/
+const count_per_page = 5;
+let listCount = $('.logList > li').length;
+let currentPage = 1;
+let totalPages;
+
+const numberButtonWrapper = document.querySelector('.number-button-wrapper');
+
+const getTotalPageCount = () => {
+  return Math.ceil(listCount / count_per_page);
+};
+
+const renderPageButtons = () => {
+  numberButtonWrapper.innerHTML = '';
+
+  const startPage = Math.max(1, currentPage - 2);
+  const endPage = Math.min(totalPages, startPage + count_per_page - 1);
+
+  for (let i = startPage; i <= endPage; i++) {
+    numberButtonWrapper.innerHTML += `<span class="number-button ${currentPage === i ? 'pageActive' : ''}" data-page="${i}">${i}</span>`;
+  }
+
+  if (startPage > 1) {
+    numberButtonWrapper.innerHTML = `<span class="number-button" data-page="1">1</span><span>...</span>` + numberButtonWrapper.innerHTML;
+  }
+  if (endPage < totalPages) {
+    numberButtonWrapper.innerHTML += `<span>...</span><span class="number-button" data-page="${totalPages}">${totalPages}</span>`;
+  }
+};
+
+numberButtonWrapper.addEventListener('click', (e) => {
+  if (e.target.classList.contains('number-button')) {
+    currentPage = parseInt(e.target.dataset.page);
+    renderLogs();
+    renderPageButtons();
+  }
+});
+
+const prevButton = document.querySelector('.prev-button:first-child');
+const nextButton = document.querySelector('.prev-button:last-child');
+
+prevButton.addEventListener('click', () => {
+  if (currentPage > 1) {
+    currentPage--;
+    renderLogs();
+    renderPageButtons();
+  }
+});
+
+nextButton.addEventListener('click', () => {
+  if (currentPage < totalPages) {
+    currentPage++;
+    renderLogs();
+    renderPageButtons();
+  }
+});
+
+const renderLogs = () => {
+  let startIdx = (currentPage - 1) * count_per_page;
+  let endIdx = Math.min(startIdx + count_per_page, listCount);
+
+  $(".logList > li").hide();
+  $(".logList > li").slice(startIdx, endIdx).show();
+};
+
+const initializePagination = () => {
+  totalPages = getTotalPageCount();
+  renderPageButtons();
+  renderLogs();
+};
+
+initializePagination();
+
+//  챗봇
+
+
     window.addEventListener('message', function (event) {
       const { e, params } = event.data;
 
