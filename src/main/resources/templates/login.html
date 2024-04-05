@@ -41,19 +41,18 @@
             <div class="pw">
               <p>비밀번호</p>
               <input type="password" name="password" />
-            </div>
-            <a href="#">비밀번호 찾기</a>
-            <div class="etc">
               <span class="wrongUser">존재하지 않는 아이디 혹은 비밀번호 입니다.</span>
             </div>
             <input class="btn" type="submit" value="로그인">
           </form>
+
           <div class="popup">
             <div class="signUp">
               <div class="logo">
                 <span>회원가입</span>
                 <span class="close"><i class="fa-solid fa-xmark"></i></span>
               </div>
+              
               <form class="loginForm" th:action="@{/signup}" method="POST">
                 <div class="id">
                   <p>아이디</p>
@@ -65,7 +64,7 @@
                 </div>
                 <div class="pw">
                   <p>비밀번호 확인</p>
-                  <input type="password" name="passwordcheck"/>
+                  <input type="password" name="confirmPassword"/>
                 </div>
                 <div class="pw">
                   <p>이메일 입력</p>
@@ -86,5 +85,17 @@
       <!-- loginContainer end -->
     </div>
     <!-- container end -->
-  </body>
+    <div th:if="${errorMessage != null}" th:text="${errorMessage}" id="error-message" style="display: none;"></div>
+      <script th:inline="javascript">
+    /*<![CDATA[*/
+    var errorMessage = document.getElementById('error-message').textContent;
+    if(errorMessage !== '') {
+        alert(errorMessage);
+    }
+    /*]]>*/
+      </script>
+
+    </body>
+
+    
 </html>

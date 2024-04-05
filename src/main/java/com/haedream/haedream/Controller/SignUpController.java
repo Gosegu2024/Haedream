@@ -2,11 +2,10 @@ package com.haedream.haedream.controller;
 
 import com.haedream.haedream.dto.SignUpDTO;
 import com.haedream.haedream.service.SignUpService;
-
-import java.util.DuplicateFormatFlagsException;
-
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class SignUpController {
@@ -18,14 +17,12 @@ public class SignUpController {
     }
 
     @PostMapping("/signup")
-    public String signupProcess(SignUpDTO signupDTO) {
-
+    public String signupProcess(SignUpDTO signupDTO, RedirectAttributes redirectAttributes) {
         try {
             signupService.signupProcess(signupDTO);
-
-        } catch (DuplicateFormatFlagsException e) {
-
-            System.out.println("이미 사용중인 ID입니다.");
+        } catch (IllegalStateException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return "redirect:/login";
         }
         return "redirect:/login";
     }

@@ -11,6 +11,8 @@ public interface UserRepository extends MongoRepository<UserEntity, String> {
 
     Boolean existsByUsername(String username);
 
+    Boolean existsByEmail(String email);
+
     UserEntity findByUsername(String username);
 
     // MongoDB의 'api_key' 필드를 사용해 UserEntity를 조회하는 쿼리 메소드, 변수명 일치하지 않아 @query사용
@@ -23,4 +25,7 @@ public interface UserRepository extends MongoRepository<UserEntity, String> {
 
     // 관리자만 사용자 삭제
     void deleteByUsername(String username);
+
+    UserEntity findByEmail(String email);
+
 }

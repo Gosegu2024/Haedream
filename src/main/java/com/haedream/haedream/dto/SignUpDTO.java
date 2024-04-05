@@ -5,14 +5,15 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class SignUpDTO {
 
-    private String username; // username을 id의 변수로 사용
+public class SignUpDTO {
+    private String username;
     private String password;
+    private String confirmPassword;
     private String email;
 
     public String getUsername() {
-        return this.username;
+        return username;
     }
 
     public void setUsername(String username) {
@@ -20,19 +21,26 @@ public class SignUpDTO {
     }
 
     public String getPassword() {
-        return this.password;
+        return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
     }
 
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
+
     public String getEmail() {
-        return this.email;
+        return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
     }
-
 }
