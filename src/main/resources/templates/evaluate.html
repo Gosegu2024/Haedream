@@ -58,7 +58,9 @@
                 <span class="modelName" th:text="${logList.modelName}"></span>
                 <span class="date" th:text="${logList.logDate}"></span>
               </div>
-            <a th:href="@{/evaluateResult}" class="evalStart" th:id="${logList.id}">평가하기</a>
+              <!-- 수정중 -->
+              <a th:href="@{/evaluateResult(logId=${logList.id}, projectName=${logList.projectName})}" class="evalStart">평가하기</a>
+              <!-- 수정중 -->
           </li>
         </ul>
         <div class="pagination-container">
@@ -142,6 +144,7 @@
     </div>
     <!-- chatbot end -->
   </body>
+
   <!-- chatbot js start -->
   <script type="text/javascript" async defer>
     window.addEventListener('message', function (event) {

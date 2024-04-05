@@ -52,10 +52,7 @@
         <h1>평가결과</h1>
         <div class="input">
           <h2>Input</h2>
-          <p>
-            " Lorem ipsum, dolor sit amet consectetur adipisicing elit. Numquam magnam perspiciatis, illum accusantium a deleniti. Nemo ea
-            maiores ad hic, porro illo. Tenetur iusto atque ea optio necessitatibus magni enim? "
-          </p>
+          <p th:text="${inputdata}"></p>
         </div>
         <div class="filter">
           <div class="radio">
@@ -72,14 +69,12 @@
           </div>
         </div>
         <div class="output">
-          <h2>Output</h2>
-          <p>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Numquam magnam perspiciatis, illum accusantium a deleniti. Nemo ea
-            maiores ad hic, porro illo. Tenetur iusto atque ea optio necessitatibus magni enim?
-          </p>
+          <h2>평가기준 피드백</h2>
+          <p th:text="${responseList[1]}"></p>
         </div>
         <div class="all">
           <h2>전체 피드백</h2>
+          <p th:text="${responseList[0]}"></p>
           <p>
             Lorem ipsum, dolor sit amet consectetur adipisicing elit. Numquam magnam perspiciatis, illum accusantium a deleniti. Nemo ea
             maiores ad hic, porro illo. Tenetur iusto atque ea optio necessitatibus magni enim? Lorem ipsum,
@@ -174,6 +169,12 @@
       <i class="fa-solid fa-arrow-up"></i>
     </div>
   </body>
+
+  <!-- url 노출 방지 -->
+  <script type="text/javascript" async defer>
+    history.replaceState({},null,location.pathname);
+  </script>
+
   <!-- chatbot js start -->
   <script type="text/javascript" async defer>
     window.addEventListener('message', function (event) {

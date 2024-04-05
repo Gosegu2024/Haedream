@@ -17,12 +17,12 @@ public class EvalService {
         // EvalDTO로부터 Eval 엔티티를 생성
         Eval eval = Eval.builder()
                         .standard(evalDTO.getStandard())
-                        .apiKey(evalDTO.getApiKey())
+                        // .apiKey(evalDTO.getApiKey())
                         .evalFeedback(evalDTO.getEvalFeedback())
-                        .evalLogDate(evalDTO.getEvalLogDate())
-                        .evalWhether(evalDTO.getEvalWhether())
-                        .inputData(evalDTO.getLog().getInputData())
-                        .outputData(evalDTO.getLog().getOutputData())
+                        // .evalLogDate(evalDTO.getEvalLogDate())
+                        // .evalWhether(evalDTO.getEvalWhether())
+                        // .inputData(evalDTO.getLog().getInputData())
+                        // .outputData(evalDTO.getLog().getOutputData())
                         .build();
 
         // MongoDB에 저장

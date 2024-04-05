@@ -1,10 +1,8 @@
 package com.haedream.haedream.service;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.haedream.haedream.dto.request.LogDTO;
 import com.haedream.haedream.entity.Log;
 import com.haedream.haedream.repository.LogRepository;
@@ -37,5 +35,5 @@ public class LoglistService { // SaveLogService를 통해 DB 저장된 로그 �
     // logRepository.deleteById(logId);
     // return getLogList();
     // }
-
+    
 }
