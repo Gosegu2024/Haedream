@@ -1,3 +1,4 @@
+package com.haedream.haedream.config;
 // package com.haedream.haedream.config;
 
 // import org.springframework.context.annotation.Bean;

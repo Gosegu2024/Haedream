@@ -43,9 +43,13 @@
         <ul class="menu">
           <li><a th:href="@{/profile}" th:text="${username}"></a></li>
           <li>
-            <form id="logoutForm" th:action="@{/logout}" method="post">
-              <button type="submit"><i class="fa-solid fa-arrow-right-from-bracket"> </i></button>
+            
+            <a th:href="@{/logout}" th:onclick="|event.preventDefault(); document.getElementById('logoutForm').submit();|">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            </a>
+            <form id="logoutForm" th:action="@{/logout}" method="post" style="display: none;">
             </form>
+
           </li>
         </ul>
       </div>

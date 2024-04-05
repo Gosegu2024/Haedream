@@ -41,7 +41,11 @@
           <li><a th:href="@{/analyze}">분석</a></li>
           <li class="nowPage"><a th:href="@{/profile}">admin</a></li>
           <li>
-            <button class="logout" type="button"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
+            <a th:href="@{/logout}" th:onclick="|event.preventDefault(); document.getElementById('logoutForm').submit();|">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            </a>
+            <form id="logoutForm" th:action="@{/logout}" method="post" style="display: none;">
+            </form>
           </li>
         </ul>
         <div class="bar"><i class="fa-solid fa-bars"></i></div>
@@ -80,7 +84,11 @@
           <li><a th:href="@{/analyze}">분석</a></li>
           <li class="nowPage"><a th:href="@{/profile}">admin</a></li>
           <li>
-            <button class="logout" type="button"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
+            <a th:href="@{/logout}" th:onclick="|event.preventDefault(); document.getElementById('logoutForm').submit();|">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            </a>
+            <form id="logoutForm" th:action="@{/logout}" method="post" style="display: none;">
+            </form>
           </li>
         </ul>
       </div>
