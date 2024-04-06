@@ -41,7 +41,7 @@
           <a th:href="@{/main}"><img th:src="@{/img/HaeLogo.png}" alt="해드림로고" /></a>
         </div>
         <ul class="menu">
-          <li><a th:href="@{/profile}" th:text="${username}"></a></li>
+          <li><a th:href="@{/profile}" th:text="${username}">username</a></li>
           <li>
             
             <a th:href="@{/logout}" th:onclick="|event.preventDefault(); document.getElementById('logoutForm').submit();|">
@@ -89,11 +89,11 @@
         <h1 class="title">프로젝트 목록</h1>
         <ul class="projectList">
           <li th:each="project : ${projects}">
-            <a th:href="@{/evaluate(projectName=${project.projectName} , apiKey=${apiKey})}">
+            <a th:href="@{|/evaluate?projectName=${project.projectName}&amp;apiKey=${apiKey}|}">
               <input type="checkbox" th:name="${project.id}" class="checkbox" />
               <img th:src="@{/img/folder.png}" alt="폴더 그림" />
               <span th:text="${project.projectName}"></span>
-            </a>
+          </a>
             <button type="button" class="standardView">평가기준 보기</button>
           </li>
         </ul>
@@ -104,6 +104,17 @@
       </div>
       <!-- con end -->
       <script th:inline="javascript">
+
+//         // 프로젝트가 클릭되면 해당 링크의 속성에서 이름을 읽어옴.
+//         document.addEventListener('DOMContentLoaded', function() {
+//     document.addEventListener('click', function(e) {
+//         if (e.target.closest('.project-link')) {
+//             var projectName = e.target.closest('.project-link').getAttribute('data-project-name');
+//             sessionStorage.setItem('selectedProjectName', projectName);
+//         }
+//     });
+// });
+
         // 프로젝트 삭제
         $(document).ready(function () {
           $('#deleteButton').click(function () {

@@ -29,6 +29,7 @@
         <div class="logo">
           <a th:href="@{/main}"><img th:src="@{/img/HaeLogo.png}"alt="해드림로고" /></a>
         </div>
+        
         <ul class="menu">
           <li>
             <a href="#">평가 <i class="fa-solid fa-caret-down"></i></a>
@@ -38,7 +39,7 @@
             </ul>
           </li>
           <li><a th:href="@{/analyze}">분석</a></li>
-          <li><a th:href="@{/profile}" th:text="${username}"></a></li>
+          <li><a th:href="@{/profile}" th:text="${username}">username</a></li>
           <li>
             <a th:href="@{/logout}" th:onclick="|event.preventDefault(); document.getElementById('logoutForm').submit();|">
                 <i class="fa-solid fa-arrow-right-from-bracket"></i>
@@ -46,7 +47,8 @@
             <form id="logoutForm" th:action="@{/logout}" method="post" style="display: none;">
             </form>
           </li>
-        </ul>
+      </ul>
+      
         <div class="bar"><i class="fa-solid fa-bars"></i></div>
       </div>
     </header>
@@ -84,7 +86,7 @@
             </ul>
           </li>
           <li><a th:href="@{/analyze}">분석</a></li>
-          <li><a th:href="@{/profile}">admin</a></li>
+          <li><a th:href="@{/profile}" th:text="${username}">username</a></li>
           <li>
             <a th:href="@{/logout}" th:onclick="|event.preventDefault(); document.getElementById('logoutForm').submit();|">
                 <i class="fa-solid fa-arrow-right-from-bracket"></i>

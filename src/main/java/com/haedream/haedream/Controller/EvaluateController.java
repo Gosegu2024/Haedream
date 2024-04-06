@@ -57,7 +57,10 @@ public class EvaluateController {
   }
 
   @GetMapping("/evaluateLog")
-  public String evaluateLog() {
+  public String evaluateLog(Model model) {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    String username = authentication.getName();
+    model.addAttribute("username", username);
     return "evaluateLog";
   }
 
