@@ -39,6 +39,12 @@ public class SignUpService {
             throw new IllegalStateException("이미 사용중인 이메일입니다.");
         }
 
+        // 비밀번호 입력 확인
+        if ((signupDTO.getPassword() == null || signupDTO.getPassword().trim().isEmpty()) &&
+                (signupDTO.getConfirmPassword() == null || signupDTO.getConfirmPassword().trim().isEmpty())) {
+            throw new IllegalStateException("비밀번호를 입력해주세요.");
+        }
+
         // 비밀번호 확인
         if (!signupDTO.getPassword().equals(signupDTO.getConfirmPassword())) {
             throw new IllegalStateException("비밀번호가 일치하지 않습니다.");
