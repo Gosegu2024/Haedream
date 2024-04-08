@@ -6,6 +6,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -57,7 +59,7 @@ public class EvaluateController {
   @GetMapping("/evaluate")
   public String evaluate(@RequestParam(value = "projectName", required = false) String projectName,
       HttpSession session, Model model) {
-    
+
     String username = (String) session.getAttribute("username");
     UserEntity user = userRepository.findByUsername(username);
     String apiKey = user.getApi_key();
@@ -101,14 +103,19 @@ public class EvaluateController {
 
   @GetMapping("/evaluateLog")
   public String evaluateLog(@RequestParam("projectName") String projectName, Model model) {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    String username = authentication.getName();
     model.addAttribute("projectName", projectName);
+    model.addAttribute("username", username);
+
     return "evaluateLog";
   }
 
   // 평가 실행
   @GetMapping("/evaluateResult")
-  public String evaluateResult(@RequestParam("logId") String logId, @RequestParam("projectName") String projectName, Model model,
-     HttpSession session) {
+  public String evaluateResult(@RequestParam("logId") String logId, @RequestParam("projectName") String projectName,
+      Model model,
+      HttpSession session) {
     session.setAttribute("logId", logId);
 
     String[] result = getLog(session);
@@ -128,7 +135,7 @@ public class EvaluateController {
     String projectName = (String) session.getAttribute("projectName");
 
     Log log_info = logRepository.findById(logId).get();
-    
+
     String inputdata = log_info.getInputData();
     String outputdata = log_info.getOutputData();
     String standard = projectRepository.findByProjectNameAndOwner(projectName, username).get(0).getStandard();
@@ -143,7 +150,8 @@ public class EvaluateController {
 
   // 평가 모델 실행
   @PostMapping("/sendValues")
-  public ResponseEntity<?> sendValues(@RequestParam("outputdata") String outputdata, @RequestParam("inputdata") String inputdata,
+  public ResponseEntity<?> sendValues(@RequestParam("outputdata") String outputdata,
+      @RequestParam("inputdata") String inputdata,
       @RequestParam("standard") String standard, Model model, HttpSession session) {
     System.out.println("평가시작");
     String url = "http://localhost:8008/evaluate";
