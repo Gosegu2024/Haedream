@@ -19,9 +19,19 @@ public class SignUpService {
     }
 
     public void signupProcess(SignUpDTO signupDTO) {
+        // 사용자 이름 입력 확인
+        if (signupDTO.getUsername() == null || signupDTO.getUsername().trim().isEmpty()) {
+            throw new IllegalStateException("아이디를 입력해주세요.");
+        }
+
         // 아이디 중복 체크
         if (userRepository.existsByUsername(signupDTO.getUsername())) {
             throw new IllegalStateException("이미 사용중인 아이디입니다.");
+        }
+
+        // 이메일 입력 확인
+        if (signupDTO.getEmail() == null || signupDTO.getEmail().trim().isEmpty()) {
+            throw new IllegalStateException("이메일을 입력해주세요.");
         }
 
         // 이메일 중복 체크
