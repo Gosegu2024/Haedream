@@ -41,7 +41,7 @@
           <a th:href="@{/main}"><img th:src="@{/img/HaeLogo.png}" alt="해드림로고" /></a>
         </div>
         <ul class="menu">
-          <li><a th:href="@{/profile}" th:text="${username}">username</a></li>
+          <li><a th:href="@{/profile}" th:text="${session.username}">username</a></li>
           <li>
             
             <a th:href="@{/logout}" th:onclick="|event.preventDefault(); document.getElementById('logoutForm').submit();|">

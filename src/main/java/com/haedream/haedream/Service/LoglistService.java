@@ -4,7 +4,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import com.haedream.haedream.dto.request.LogDTO;
 import com.haedream.haedream.entity.Log;
 import com.haedream.haedream.repository.LogRepository;
 
@@ -18,25 +17,6 @@ public class LoglistService { // SaveLogService를 통해 DB 저장된 로그 �
         Sort sort = Sort.by(Sort.Direction.DESC, "logDate");
         return logRepository.findByApiKeyAndProjectName(apikey, projectName, sort);
     }
-
-    // 로그엔티티 ->로그DTO
-    private LogDTO convertToLogDTO(Log log) {
-        return new LogDTO(
-                log.getModelName(),
-                log.getProjectName(),
-                log.getInputData(),
-                log.getOutputData(),
-                log.getApiKey(),
-                log.getLogDate(),
-                log.getId());
-    }
-
-    // 로그 삭제
-    // @SuppressWarnings("null")
-    // public List<LogDTO> deleteLog(String logId) {
-    // logRepository.deleteById(logId);
-    // return getLogList();
-    // }
 
     // 로그 삭제
     public void deleteLogsByApiKeyAndProjectNameAndId(String apiKey, String projectName, String id) {       

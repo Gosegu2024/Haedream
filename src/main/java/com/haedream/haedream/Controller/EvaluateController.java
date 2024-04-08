@@ -6,8 +6,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -57,20 +55,11 @@ public class EvaluateController {
   private UserRepository userRepository;
 
   @GetMapping("/evaluate")
-  public String evaluate(@RequestParam(value = "projectName", required = false) String projectName,
-      HttpSession session, Model model) {
-
+  public String evaluate(@RequestParam("projectName") String projectName, HttpSession session, Model model) {
+    session.setAttribute("projectName", projectName);
     String username = (String) session.getAttribute("username");
     UserEntity user = userRepository.findByUsername(username);
     String apiKey = user.getApi_key();
-
-    if (projectName == null) {
-      projectName = (String) session.getAttribute("projectName");
-    } else {
-      session.setAttribute("projectName", projectName);
-    }
-
-    session.setAttribute("username", username);
 
     // logListService 호출
     List<Log> logList = loglistService.getLogList(apiKey, projectName);
@@ -102,18 +91,13 @@ public class EvaluateController {
   }
 
   @GetMapping("/evaluateLog")
-  public String evaluateLog(@RequestParam("projectName") String projectName, Model model) {
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    String username = authentication.getName();
-    model.addAttribute("projectName", projectName);
-    model.addAttribute("username", username);
-
+  public String evaluateLog() {
     return "evaluateLog";
   }
 
   // 평가 실행
   @GetMapping("/evaluateResult")
-  public String evaluateResult(@RequestParam("logId") String logId, @RequestParam("projectName") String projectName, Model model, HttpSession session) {
+  public String evaluateResult(@RequestParam("logId") String logId, Model model, HttpSession session) {
     
     // 평가여부 업데이트
     Log log = logRepository.findById(logId).get();
@@ -214,8 +198,7 @@ public class EvaluateController {
     String projectName = saveEvalDTO.getProjectName();
     session.setAttribute("projectName", projectName);
 
-    // return ResponseEntity.status(HttpStatus.CREATED).body(saveEvalDTO);
-    return null;
+    return ResponseEntity.status(HttpStatus.CREATED).body(saveEvalDTO);
   }
 
 }

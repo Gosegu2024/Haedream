@@ -8,7 +8,6 @@ import java.util.Arrays;
 @Configuration
 public class MongoConfig {
 
-    @SuppressWarnings("null")
     @Bean
     public MongoCustomConversions mongoCustomConversions() {
         return new MongoCustomConversions(Arrays.asList(

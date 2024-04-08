@@ -34,7 +34,6 @@ public class ProjectService {
     }
 
     // 프로젝트 삭제
-    @SuppressWarnings("null")
     public void deleteProjects(List<String> projectIds) {
         projectIds.forEach(projectId -> {
             projectRepository.deleteById(projectId);
@@ -42,7 +41,6 @@ public class ProjectService {
     }
 
     // 프로젝트 조회
-    @SuppressWarnings("null")
     public String getStandard(String projectId) {
         Optional<Project> projectOptional = projectRepository.findById(projectId);
         Project project = projectOptional.get();
