@@ -36,6 +36,7 @@ public class SaveLogService { // API키와 프로젝트명의 유효성(DB에 �
                     .outputData(dto.getOutputData())
                     .apiKey(dto.getApiKey())
                     .logDate(dto.getLogDate())
+                    .isItEval("N")
                     .build();
             // Log 엔티티를 db에저장
             log = logRepository.save(log);
@@ -48,6 +49,7 @@ public class SaveLogService { // API키와 프로젝트명의 유효성(DB에 �
                     .outputData(log.getOutputData())
                     .logDate(log.getLogDate())
                     .id(log.getId())
+                    .isItEval(log.getIsItEval())
                     .build();
 
         } else {

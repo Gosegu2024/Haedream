@@ -38,7 +38,6 @@ public class LogDTO {
 
     // DTO를 Entity로 변환
     public static Log ofEntity(LogDTO dto) {
-        // System.out.println("LogDTO"); System.out.println(dto.getApiKey());
         return Log
                 .builder()
                 .apiKey(dto.getApiKey())
@@ -48,6 +47,7 @@ public class LogDTO {
                 .modelName(dto.getModelName())
                 .logDate(dto.getLogDate())
                 .id(dto.getId())
+                .isItEval("N")
                 .build();
     }
 }

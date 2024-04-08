@@ -18,6 +18,7 @@ public class ResLogDTO {
     private String outputData;
     private LocalDateTime logDate;
     private String id;
+    private String isItEval;
 
     @Builder
     public ResLogDTO(
@@ -26,13 +27,15 @@ public class ResLogDTO {
             String inputData,
             String outputData,
             LocalDateTime logDate,
-            String id) {
+            String id,
+            String isItEval) {
         this.modelName = modelName;
         this.projectName = projectName;
         this.inputData = inputData;
         this.outputData = outputData;
         this.logDate = logDate;
         this.id = id;
+        this.isItEval = isItEval;
     }
 
     // Entity를 DTO로 변환
@@ -45,6 +48,7 @@ public class ResLogDTO {
                 .outputData(log.getOutputData())
                 .logDate(log.getLogDate())
                 .id(log.getId())
+                .isItEval(log.getIsItEval())
                 .build();
     }
 }
