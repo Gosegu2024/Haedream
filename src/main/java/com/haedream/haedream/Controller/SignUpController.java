@@ -3,7 +3,6 @@ package com.haedream.haedream.controller;
 import com.haedream.haedream.dto.SignUpDTO;
 import com.haedream.haedream.service.SignUpService;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 

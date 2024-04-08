@@ -37,5 +37,11 @@ public class LoglistService { // SaveLogService를 통해 DB 저장된 로그 �
     // logRepository.deleteById(logId);
     // return getLogList();
     // }
+
+    // 로그 삭제
+    public void deleteLogsByApiKeyAndProjectNameAndId(String apiKey, String projectName, String id) {       
     
+        logRepository.deleteByApiKeyAndProjectNameAndId(apiKey, projectName, id);
+}
+
 }

@@ -16,8 +16,8 @@ public class EvalService {
 
         // EvalDTO로부터 Eval 엔티티를 생성
         Eval eval = Eval.builder()
-                        .outputData(evalDTO.getInputData())
-                        .inputData(evalDTO.getOutputData())
+                        .inputData(evalDTO.getInputData())
+                        .outputData(evalDTO.getOutputData())
                         .username(evalDTO.getUsername())
                         .logId(evalDTO.getLogId())
                         .projectName(evalDTO.getProjectName())
@@ -40,6 +40,12 @@ public class EvalService {
                         .evalPrivacy(evalDTO.getEvalPrivacy())
                         .HighLightPrivacy(evalDTO.getHighLightPrivacy())
                         .evalFeedback(evalDTO.getEvalFeedback())
+                        .freqCnt(evalDTO.getFreqCnt())
+                        .tokenCnt(evalDTO.getTokenCnt())
+                        .letterCnt(evalDTO.getLetterCnt())
+                        .byteCnt(evalDTO.getByteCnt())
+                        .eng_list(evalDTO.getEng_list())
+                        .chi_list(evalDTO.getChi_list())
                         .build();
 
         // MongoDB에 저장

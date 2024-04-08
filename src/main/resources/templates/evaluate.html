@@ -29,16 +29,17 @@
         <div class="logo">
           <a th:href="@{/main}"><img th:src="@{/img/HaeLogo.png}"alt="해드림로고" /></a>
         </div>
+        
         <ul class="menu">
           <li>
             <a href="#">평가 <i class="fa-solid fa-caret-down"></i></a>
             <ul class="dropDown">
-              <li  class="nowPage"><a th:href="@{/evaluate}">평가하기</a></li>
-              <li><a th:href="@{/evaluateLog}">평가기록</a></li>
+              <li  class="nowPage"><a th:href="@{/evaluate(projectName=${projectName})}">평가하기</a></li>
+              <li><a th:href="@{/evaluateLog(projectName=${projectName})}">평가기록</a></li>
             </ul>
           </li>
-          <li><a th:href="@{/analyze}">분석</a></li>
-          <li><a th:href="@{/profile}" th:text="${username}"></a></li>
+          <li><a th:href="@{/analyze(projectName=${projectName})}">분석</a></li>
+          <li><a th:href="@{/profile}" th:text="${username}">username</a></li>
           <li>
             <a th:href="@{/logout}" th:onclick="|event.preventDefault(); document.getElementById('logoutForm').submit();|">
                 <i class="fa-solid fa-arrow-right-from-bracket"></i>
@@ -46,7 +47,8 @@
             <form id="logoutForm" th:action="@{/logout}" method="post" style="display: none;">
             </form>
           </li>
-        </ul>
+      </ul>
+      
         <div class="bar"><i class="fa-solid fa-bars"></i></div>
       </div>
     </header>
@@ -64,6 +66,14 @@
               <!-- 수정중 -->
               <a th:href="@{/evaluateResult(logId=${logList.id}, projectName=${logList.projectName})}" class="evalStart" onclick="showLoading()">평가하기</a>
               <!-- 수정중 -->
+
+              <!-- 삭제 -->
+            <div class="delete" th:data-project-name="${logList.projectName}" th:data-api-key="${logList.apiKey}" th:data-log-id="${logList.id}">
+                <button class="delete-evaluate">
+                    <i class="fa-solid fa-trash-can"></i>
+                </button>
+            </div>
+
           </li>
         </ul>
         <div class="pagination-container">
@@ -84,7 +94,7 @@
             </ul>
           </li>
           <li><a th:href="@{/analyze}">분석</a></li>
-          <li><a th:href="@{/profile}">admin</a></li>
+          <li><a th:href="@{/profile}" th:text="${username}">username</a></li>
           <li>
             <a th:href="@{/logout}" th:onclick="|event.preventDefault(); document.getElementById('logoutForm').submit();|">
                 <i class="fa-solid fa-arrow-right-from-bracket"></i>
@@ -153,7 +163,6 @@
       <div class="spinner"></div>
     </div>
   </body>
-
   <!-- chatbot js start -->
   <script th:inline="javascript" async defer>
     history.replaceState({},null,location.pathname);
@@ -243,8 +252,6 @@ const initializePagination = () => {
 initializePagination();
 
 //  챗봇
-
-
     window.addEventListener('message', function (event) {
       const { e, params } = event.data;
 
@@ -372,4 +379,60 @@ initializePagination();
     closeButton.addEventListener('click', widgetClose);
   </script>
   <!-- chatbot js end -->
+  
+  <!-- LogDelete js start -->
+<script th:inline="javascript">
+    $(document).ready(function() {
+        function updatePaginationAfterDelete() {
+            let currentItemCount = $('.logList > li').length;
+
+            if (currentItemCount === 0 && currentPage !== 1) {
+                currentPage--;
+                totalPages = getTotalPageCount();
+                renderPageButtons();
+                renderLogs();
+            }else {
+
+                renderLogs();
+            }
+        }
+
+        $('.delete-evaluate').click(function() {
+            var deleteButton = $(this);
+            var projectName = deleteButton.closest('.delete').attr('data-project-name');
+            var apiKey = deleteButton.closest('.delete').attr('data-api-key');
+            var logId = deleteButton.closest('.delete').attr('data-log-id');
+
+            $.ajax({
+                url: '/evaluate/delete',
+                type: 'POST',
+                data: JSON.stringify({ apiKey: apiKey, projectName: projectName, id: logId }),
+                contentType: 'application/json',
+                dataType: 'json',
+                success: function(response) {
+                    deleteButton.closest('li').remove();
+                    updateLogNumbers();
+                    updatePaginationAfterDelete();
+                },
+                error: function(xhr, status, error) {
+                }
+            });
+        });
+        function updateLogNumbers() {
+            $('.logList > li').each(function(index) {
+                var newIndex = index + 1;
+                $(this).find('.index').text(newIndex + '.');
+            });
+        }
+
+        $('#refreshButton').click(function() {
+            var deleteButton = $('.delete-evaluate');
+            var projectName = deleteButton.closest('.delete').attr('data-project-name');
+
+            window.location.href = '/evaluate?projectName=' + projectName;
+        });
+    });
+</script>
+  <!-- LogDelete js end -->
+
 </html>

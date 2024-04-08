@@ -40,7 +40,7 @@
             </ul>
           </li>
           <li  class="nowPage"><a th:href="@{/analyze}">분석</a></li>
-          <li><a th:href="@{/profile}">admin</a></li>
+          <li><a th:href="@{/profile}" th:text="${username}">username</a></li>
           <li>
             <a th:href="@{/logout}" th:onclick="|event.preventDefault(); document.getElementById('logoutForm').submit();|">
                 <i class="fa-solid fa-arrow-right-from-bracket"></i>
@@ -101,7 +101,7 @@
             </ul>
           </li>
           <li class="nowPage"><a th:href="@{/analyze}">분석</a></li>
-          <li a th:href="@{/profile}">admin</a></li>
+          <li><a th:href="@{/profile}" th:text="${username}">username</a></li>
           <li>
             <a th:href="@{/logout}" th:onclick="|event.preventDefault(); document.getElementById('logoutForm').submit();|">
                 <i class="fa-solid fa-arrow-right-from-bracket"></i>

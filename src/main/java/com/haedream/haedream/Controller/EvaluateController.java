@@ -6,12 +6,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -21,14 +20,18 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.haedream.haedream.dto.request.EvalDTO;
 import com.haedream.haedream.entity.Eval;
 import com.haedream.haedream.entity.Log;
+import com.haedream.haedream.entity.UserEntity;
 import com.haedream.haedream.repository.LogRepository;
 import com.haedream.haedream.repository.ProjectRepository;
+import com.haedream.haedream.repository.UserRepository;
 import com.haedream.haedream.service.EvalService;
 import com.haedream.haedream.service.LoglistService;
 
 import jakarta.servlet.http.HttpSession;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class EvaluateController {
@@ -48,21 +51,57 @@ public class EvaluateController {
   @Autowired
   private EvalService evalService;
 
+  @Autowired
+  private UserRepository userRepository;
+
   @GetMapping("/evaluate")
-  public String evaluate(@RequestParam("projectName") String projectName, @RequestParam("apiKey") String apiKey,
-      Model model, HttpSession session) {
+  public String evaluate(@RequestParam(value = "projectName", required = false) String projectName,
+      HttpSession session, Model model) {
+    
+    String username = (String) session.getAttribute("username");
+    UserEntity user = userRepository.findByUsername(username);
+    String apiKey = user.getApi_key();
+
+    if (projectName == null) {
+      projectName = (String) session.getAttribute("projectName");
+    } else {
+      session.setAttribute("projectName", projectName);
+    }
+
+    session.setAttribute("username", username);
+
+    // logListService 호출
     List<Log> logList = loglistService.getLogList(apiKey, projectName);
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    String username = authentication.getName();
-    model.addAttribute("username", username);
+
+    // 모델에 값 추가
     model.addAttribute("logList", logList);
 
-    session.setAttribute("projectName", projectName);
     return "evaluate";
   }
 
+  // 평가 삭제
+  @PostMapping("/evaluate/delete")
+  public ResponseEntity<Map<String, String>> evaluatedelete(@RequestBody Map<String, String> requestMap) {
+    Map<String, String> response = new HashMap<>();
+    try {
+
+      String apiKey = requestMap.get("apiKey");
+      String projectName = requestMap.get("projectName");
+      String id = requestMap.get("id");
+
+      loglistService.deleteLogsByApiKeyAndProjectNameAndId(apiKey, projectName, id);
+
+      response.put("message", "Log deleted successfully");
+      return ResponseEntity.ok().body(response);
+    } catch (Exception e) {
+      response.put("error", "Failed to delete log: " + e.getMessage());
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+    }
+  }
+
   @GetMapping("/evaluateLog")
-  public String evaluateLog() {
+  public String evaluateLog(@RequestParam("projectName") String projectName, Model model) {
+    model.addAttribute("projectName", projectName);
     return "evaluateLog";
   }
 
@@ -155,30 +194,7 @@ public class EvaluateController {
   @PostMapping("/save_eval")
   public ResponseEntity<Eval> saveEval(@RequestParam String evalresult, HttpSession session) {
 
-    // System.out.println(evalresult);
-
     Eval saveEvalDTO = evalService.saveEval(EvalDTO.parse(evalresult));
-
-    System.out.println("내용 확인");
-    System.out.println("1 "+saveEvalDTO.getEvalSummary()+"\n\n");
-    System.out.println("2 "+saveEvalDTO.getEvalTerminology()+"\n\n"); 
-    System.out.println("3 "+saveEvalDTO.getEvalHallucination()+"\n\n");
-    System.out.println("4 "+saveEvalDTO.getEvalReadability()+"\n\n");
-    System.out.println("5 "+saveEvalDTO.getEvalReadabilityScore()+"\n\n");
-    System.out.println("6 "+saveEvalDTO.getEvalPurpose()+"\n\n");
-    System.out.println("7 "+saveEvalDTO.getEvalPurposeScore()+"\n\n");
-    System.out.println("8 "+saveEvalDTO.getEvalProblem()+"\n\n");
-    System.out.println("9 "+saveEvalDTO.getEvalProblemScore()+"\n\n");
-    System.out.println("10 "+saveEvalDTO.getEvalCreative()+"\n\n");
-    System.out.println("11 "+saveEvalDTO.getEvalCreativeScore()+"\n\n");
-    System.out.println("12 "+saveEvalDTO.getEvalContradiction()+"\n\n");
-    System.out.println("13 "+saveEvalDTO.getEvalContradictionScore()+"\n\n"); //
-    System.out.println("14 "+saveEvalDTO.getHighLightContradiction()+"\n\n"); //
-    System.out.println("15 "+saveEvalDTO.getEvalStandard()+"\n\n"); //
-    System.out.println("16 "+saveEvalDTO.getEvalPrivacy()+"\n\n"); //
-    System.out.println("17 "+saveEvalDTO.getHighLightPrivacy()+"\n\n"); //
-    System.out.println("18 "+saveEvalDTO.getEvalFeedback()+"\n\n"); //
-
 
     String username = saveEvalDTO.getUsername();
     session.setAttribute("username", username);

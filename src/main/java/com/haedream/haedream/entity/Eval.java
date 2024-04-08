@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@Document(collection = "TEST_EVALUATION")
+@Document(collection = "TB_EVALUATION")
 public class Eval {
 
     @Id
@@ -40,9 +40,15 @@ public class Eval {
     private String evalPrivacy;
     private String HighLightPrivacy;
     private String evalFeedback;
+    private String freqCnt;
+    private int tokenCnt;
+    private int letterCnt;
+    private int byteCnt;
+    private String eng_list;
+    private String chi_list;
 
     @Builder
-    public Eval(String id, String inputData, String outputData, String username, String logId, String projectName, LocalDateTime evalLogDate, String evalSummary, String evalTerminology, String evalHallucination, String evalReadability, String evalReadabilityScore, String evalPurpose, String evalPurposeScore, String evalProblem, String evalProblemScore, String evalCreative, String evalCreativeScore, String evalContradiction, String evalContradictionScore, String HighLightContradiction, String evalStandard, String evalPrivacy, String HighLightPrivacy, String evalFeedback) {
+    public Eval(String id, String inputData, String outputData, String username, String logId, String projectName, LocalDateTime evalLogDate, String evalSummary, String evalTerminology, String evalHallucination, String evalReadability, String evalReadabilityScore, String evalPurpose, String evalPurposeScore, String evalProblem, String evalProblemScore, String evalCreative, String evalCreativeScore, String evalContradiction, String evalContradictionScore, String HighLightContradiction, String evalStandard, String evalPrivacy, String HighLightPrivacy, String evalFeedback, String freqCnt, int tokenCnt, int letterCnt, int byteCnt, String eng_list, String chi_list) {
         this.id = id;
         this.inputData = inputData;
         this.outputData = outputData;
@@ -68,6 +74,12 @@ public class Eval {
         this.evalPrivacy = evalPrivacy;
         this.HighLightPrivacy = HighLightPrivacy;
         this.evalFeedback = evalFeedback;
+        this.freqCnt = freqCnt;
+        this.tokenCnt = tokenCnt;
+        this.letterCnt = letterCnt;
+        this.byteCnt = byteCnt;
+        this.eng_list = eng_list;
+        this.chi_list = chi_list;
     }
 
     public Eval() {

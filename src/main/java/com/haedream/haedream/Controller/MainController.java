@@ -35,7 +35,6 @@ public class MainController {
         String apiKey = user.getApi_key();
 
         session.setAttribute("username", username);
-        session.setAttribute("apiKey", apiKey);
 
         List<Project> projects = projectService.findProjectsByOwner(username);
 

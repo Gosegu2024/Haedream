@@ -16,8 +16,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class EvalDTO {
-    // private String id; // MongoDB에서 자동으로 생성될 식별자
-    // private String standard; // 사용자가 입력한 평가 기준
     private String inputData;
     private String outputData;
     private String logId;
@@ -42,6 +40,12 @@ public class EvalDTO {
     private String evalPrivacy;
     private String HighLightPrivacy;
     private String evalFeedback;
+    private String freqCnt;
+    private int tokenCnt;
+    private int letterCnt;
+    private int byteCnt;
+    private String eng_list;
+    private String chi_list;
 
     // JSON 문자열로부터 EvalDTO 객체를 파싱하는 정적 메소드
     public static EvalDTO parse(String result) {
