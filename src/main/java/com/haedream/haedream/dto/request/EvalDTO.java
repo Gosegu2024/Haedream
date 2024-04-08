@@ -54,6 +54,9 @@ public class EvalDTO {
                 .create();
 
         EvalDTO dto = gson.fromJson(result, EvalDTO.class);
+        if (dto.getEvalLogDate() == null) {
+            dto.setEvalLogDate(LocalDateTime.now());
+        }
 
         return dto;
     }

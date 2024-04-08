@@ -107,14 +107,20 @@ public class EvaluateController {
 
   // 평가 실행
   @GetMapping("/evaluateResult")
-  public String evaluateResult(@RequestParam("logId") String logId, @RequestParam("projectName") String projectName, Model model,
-     HttpSession session) {
+  public String evaluateResult(@RequestParam("logId") String logId, @RequestParam("projectName") String projectName, Model model, HttpSession session) {
+    
+    // 평가여부 업데이트
+    Log log = logRepository.findById(logId).get();
+    log.setIsItEval("Y");
+    logRepository.save(log);
+
     session.setAttribute("logId", logId);
 
     String[] result = getLog(session);
     String outputdata = result[0];
     String standard = result[1];
     String inputdata = result[2];
+    model.addAttribute("inputdata", inputdata);
 
     sendValues(outputdata, inputdata, standard, model, session);
 

@@ -24,6 +24,7 @@ public class Log {
     private String outputData;
     private String apiKey;
     private LocalDateTime logDate;
+    private String isItEval;
 
     @Builder
     public Log(
@@ -33,7 +34,8 @@ public class Log {
             String outputData,
             String apiKey,
             LocalDateTime logDate,
-            String id) {
+            String id,
+            String isItEval) {
         this.modelName = modelName;
         this.projectName = projectName;
         this.inputData = inputData;
@@ -41,6 +43,7 @@ public class Log {
         this.apiKey = apiKey;
         this.logDate = logDate;
         this.id = id;
+        this.isItEval = isItEval;
     }
 
     /**
