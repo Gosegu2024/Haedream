@@ -28,6 +28,4 @@ public interface UserRepository extends MongoRepository<UserEntity, String> {
 
     UserEntity findByEmail(String email);
 
-    Optional<UserEntity> findByProjectname(String projectName);
-
 }

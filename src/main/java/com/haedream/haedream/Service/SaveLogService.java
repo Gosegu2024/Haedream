@@ -9,6 +9,7 @@ import com.haedream.haedream.entity.Log;
 import com.haedream.haedream.entity.UserEntity;
 import com.haedream.haedream.model.Project;
 import com.haedream.haedream.repository.LogRepository;
+import com.haedream.haedream.repository.ProjectRepository;
 import com.haedream.haedream.repository.UserRepository;
 
 @Service
@@ -18,12 +19,15 @@ public class SaveLogService { // API키와 프로젝트명의 유효성(DB에 �
     private UserRepository userRepository;
     @Autowired
     private LogRepository logRepository;
+    @Autowired
+    private ProjectRepository projectRepository;
 
     @SuppressWarnings("null")
     public ResLogDTO saveData(LogDTO dto) {
         // apiKey, projectName 유효성검사
         Optional<UserEntity> userEntity = userRepository.findByApiKey(dto.getApiKey());
-        Optional<Project> projectEntity = userRepository.findByProjectname(dto.getProjectName());
+        Optional<Project> projectEntity = projectRepository.findByprojectName(dto.getProjectName());
+
         if (userEntity.isPresent() && projectEntity.isPresent()) {
             // 두개 모두 유효한 경우 : LogDTO -> Log 엔티티 변환
             Log log = Log.builder()

@@ -16,5 +16,8 @@ public interface ProjectRepository extends MongoRepository<Project, String> {
 
     List<Project> findByProjectName(String projectName);
 
-    Optional<Project> findByProjectname(String projectName);
+    Optional<Project> findByprojectName(String projectName);
+
+    List<Project> findByProjectNameAndOwner(String projectName, String owner);
+
 }

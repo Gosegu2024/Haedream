@@ -46,21 +46,22 @@ public class EvaluateController {
   private EvalService evalService;
 
   @GetMapping("/evaluate")
-  public String evaluate(@RequestParam("projectName") String projectName, @RequestParam("apiKey") String apiKey,
+  public String evaluate(@RequestParam(value = "projectName", required = false) String projectName,
+      @RequestParam(value = "apiKey", required = false) String apiKey,
       Model model) {
     List<Log> logList = loglistService.getLogList(apiKey, projectName);
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     String username = authentication.getName();
     model.addAttribute("username", username);
     model.addAttribute("logList", logList);
+    model.addAttribute("projectName", projectName);
+    model.addAttribute("apiKey", apiKey);
     return "evaluate";
   }
 
   @GetMapping("/evaluateLog")
-  public String evaluateLog(Model model) {
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    String username = authentication.getName();
-    model.addAttribute("username", username);
+  public String evaluateLog(@RequestParam("projectName") String projectName, Model model) {
+    model.addAttribute("projectName", projectName);
     return "evaluateLog";
   }
 
