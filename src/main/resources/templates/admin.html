@@ -27,10 +27,10 @@
     <header>
       <div class="con">
         <div class="logo">
-          <a th:href="@{/main}"><img th:src="@{/img/HaeLogo.png}" alt="해드림로고" /></a>
+          <a th:href="@{/admin}"><img th:src="@{/img/HaeLogo.png}" alt="해드림로고" /></a>
         </div>
         <ul class="menu">
-          <li ><a th:href="@{/loglist}">로그</a></li>
+          <!-- <li ><a th:href="@{/loglist}">로그</a></li>
           <li>
             <a href="#">평가 <i class="fa-solid fa-caret-down"></i></a>
             <ul class="dropDown">
@@ -38,8 +38,8 @@
               <li><a th:href="@{/evaluateLog}">평가기록</a></li>
             </ul>
           </li>
-          <li><a th:href="@{/analyze}">분석</a></li>
-          <li class="nowPage"><a th:href="@{/profile}">admin</a></li>
+          <li><a th:href="@{/analyze}">분석</a></li> -->
+          <li class="nowPage">관리자</li>
           <li>
             <a th:href="@{/logout}" th:onclick="|event.preventDefault(); document.getElementById('logoutForm').submit();|">
                 <i class="fa-solid fa-arrow-right-from-bracket"></i>
@@ -56,37 +56,29 @@
       <div class="con">
         <ul class="userList" th:if="${users != null}">
           <li th:each="user, userStat : ${users}">
-            <p class="index" th:text="${userStat.index + 1} + '.'"></p>
-            <div class="mid">
-              <span th:text="${user.username}"></span>
-              <span th:text="${user.email}"></span>
-            </div>
-            <!-- 사용자 삭제 기능-->
-            <div class="del">
-              <a href="javascript:void(0);" class="delete-user" th:data-username="${user.username}">
-                <i class="fa-solid fa-trash-can"></i>
-              </a>
-            </div>
+              <p class="index" th:text="${userStat.index + 1} + '.'"></p>
+              <div class="mid">
+                  <span th:text="${user.username}"></span>
+                  <span th:text="${user.email}"></span>
+              </div>
+              <div class="del">
+                  <a href="javascript:void(0);" class="delete-user" th:data-username="${user.username}">
+                      <i class="fa-solid fa-trash-can"></i>
+                  </a>
+              </div>
           </li>
         </ul>
-        
-
-          
+        <div class="pagination-container">
+          <div class="prev-button"><i class="fa-solid fa-angles-left"></i></div>
+          <div class="number-button-wrapper"></div>
+          <div class="next-button"><i class="fa-solid fa-angles-right"></i></div>
+      </div>
       </div>
       <!-- con end -->
       <div class="popupBack">
         <ul class="popup">
           <li><span>메뉴</span><i class="fa-solid fa-xmark"></i></li>
-          <li class="nowPage"><a th:href="@{/loglist}">로그</a></li>
-          <li>
-            <a href="#">평가 <i class="fa-solid fa-caret-down"></i></a>
-            <ul class="dropDown">
-              <li><a th:href="@{/evaluate}">평가하기</a></li>
-              <li><a th:href="@{/evaluateLog}">평가기록</a></li>
-            </ul>
-          </li>
-          <li><a th:href="@{/analyze}">분석</a></li>
-          <li class="nowPage"><a th:href="@{/profile}">admin</a></li>
+          <li class="nowPage">관리자</li>
           <li>
             <a th:href="@{/logout}" th:onclick="|event.preventDefault(); document.getElementById('logoutForm').submit();|">
                 <i class="fa-solid fa-arrow-right-from-bracket"></i>
@@ -125,6 +117,65 @@
               }
           });
       });
+
+      // 페이지네이션
+      document.addEventListener('DOMContentLoaded', function() {
+    const users = document.querySelectorAll('.userList li');
+    const usersPerPage = 8; // 페이지당 들어갈 유저수
+    let currentPage = 1;
+    const totalPages = Math.ceil(users.length / usersPerPage);
+
+    function showUsersForPage(page) {
+        const start = (page - 1) * usersPerPage;
+        const end = start + usersPerPage;
+        users.forEach((user, index) => {
+            user.style.display = index >= start && index < end ? '' : 'none';
+        });
+    }
+
+    function setupPagination() {
+        const paginationWrapper = document.querySelector('.number-button-wrapper');
+        paginationWrapper.innerHTML = '';
+        for (let i = 1; i <= totalPages; i++) {
+            const pageButton = document.createElement('span');
+            pageButton.innerText = i;
+            pageButton.className = 'number-button' + (i === currentPage ? ' pageActive' : '');
+            pageButton.addEventListener('click', function() {
+                currentPage = i;
+                showUsersForPage(currentPage);
+                document.querySelectorAll('.number-button').forEach(btn => btn.classList.remove('pageActive'));
+                this.classList.add('pageActive');
+            });
+            paginationWrapper.appendChild(pageButton);
+        }
+    }
+
+    document.querySelector('.prev-button').addEventListener('click', () => {
+        if (currentPage > 1) {
+            currentPage--;
+            showUsersForPage(currentPage);
+            updateActivePage();
+        }
+    });
+
+    document.querySelector('.next-button').addEventListener('click', () => {
+        if (currentPage < totalPages) {
+            currentPage++;
+            showUsersForPage(currentPage);
+            updateActivePage();
+        }
+    });
+
+    function updateActivePage() {
+        document.querySelectorAll('.number-button').forEach(button => {
+            const pageNum = parseInt(button.innerText);
+            button.classList.toggle('pageActive', pageNum === currentPage);
+        });
+    }
+
+    showUsersForPage(currentPage);
+    setupPagination();
+});
       
       </script>
   </body>
