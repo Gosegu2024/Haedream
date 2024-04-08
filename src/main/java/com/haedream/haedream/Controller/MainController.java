@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.haedream.haedream.entity.UserEntity;
@@ -16,8 +15,9 @@ import com.haedream.haedream.model.Project;
 import com.haedream.haedream.repository.UserRepository;
 import com.haedream.haedream.service.ProjectService;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
-@SessionAttributes({ "username", "api_key" })
 public class MainController {
 
     @Autowired
@@ -27,12 +27,15 @@ public class MainController {
     private UserRepository userRepository;
 
     @GetMapping("/main")
-    public String mainPage(Model model) {
+    public String mainPage(Model model, HttpSession session) {
         // 현재 인증된 사용자 정보 가져오기
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         UserEntity user = userRepository.findByUsername(username);
         String apiKey = user.getApi_key();
+
+        session.setAttribute("username", username);
+        session.setAttribute("apiKey", apiKey);
 
         List<Project> projects = projectService.findProjectsByOwner(username);
 

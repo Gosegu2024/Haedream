@@ -12,17 +12,34 @@ public class EvalService {
     @Autowired
     private EvalRepository evalRepository;
 
-    @SuppressWarnings("null")
     public Eval saveEval(EvalDTO evalDTO) { // 평가결과 저장
+
         // EvalDTO로부터 Eval 엔티티를 생성
         Eval eval = Eval.builder()
-                        .standard(evalDTO.getStandard())
-                        // .apiKey(evalDTO.getApiKey())
+                        .outputData(evalDTO.getInputData())
+                        .inputData(evalDTO.getOutputData())
+                        .username(evalDTO.getUsername())
+                        .logId(evalDTO.getLogId())
+                        .projectName(evalDTO.getProjectName())
+                        .evalLogDate(evalDTO.getEvalLogDate())
+                        .evalSummary(evalDTO.getEvalSummary())
+                        .evalTerminology(evalDTO.getEvalTerminology())
+                        .evalHallucination(evalDTO.getEvalHallucination())
+                        .evalReadability(evalDTO.getEvalReadability())
+                        .evalReadabilityScore(evalDTO.getEvalReadabilityScore())
+                        .evalPurpose(evalDTO.getEvalPurpose())
+                        .evalPurposeScore(evalDTO.getEvalPurposeScore())
+                        .evalProblem(evalDTO.getEvalProblem())
+                        .evalProblemScore(evalDTO.getEvalProblemScore())
+                        .evalCreative(evalDTO.getEvalCreative())
+                        .evalCreativeScore(evalDTO.getEvalCreativeScore())
+                        .evalContradiction(evalDTO.getEvalContradiction())
+                        .evalContradictionScore(evalDTO.getEvalContradictionScore())
+                        .HighLightContradiction(evalDTO.getHighLightContradiction())
+                        .evalStandard(evalDTO.getEvalStandard())
+                        .evalPrivacy(evalDTO.getEvalPrivacy())
+                        .HighLightPrivacy(evalDTO.getHighLightPrivacy())
                         .evalFeedback(evalDTO.getEvalFeedback())
-                        // .evalLogDate(evalDTO.getEvalLogDate())
-                        // .evalWhether(evalDTO.getEvalWhether())
-                        // .inputData(evalDTO.getLog().getInputData())
-                        // .outputData(evalDTO.getLog().getOutputData())
                         .build();
 
         // MongoDB에 저장

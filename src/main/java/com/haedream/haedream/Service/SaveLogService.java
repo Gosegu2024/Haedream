@@ -18,7 +18,6 @@ public class SaveLogService { // API키의 유효성(DB에 있는지 없는지)�
     @Autowired
     private LogRepository logRepository;
 
-    @SuppressWarnings("null")
     public ResLogDTO saveData(LogDTO dto) {
         // apiKey 유효성검사
         Optional<UserEntity> userEntity = userRepository.findByApiKey(dto.getApiKey());
