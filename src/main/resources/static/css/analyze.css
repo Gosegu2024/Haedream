@@ -240,6 +240,10 @@ header .con {
   color: var(--main-color);
 }
 
+.all .view {
+  width: 60%;
+}
+
 .view{
   width: 90%;
   padding: var(--side-padding);

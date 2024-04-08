@@ -194,7 +194,7 @@ header .con {
 }
 .logList .evalStart {
   position: absolute;
-  right: 40px;
+  right: 80px;
   top: 17px;
   font-size: 14px;
   color: white;
@@ -205,6 +205,21 @@ header .con {
 .logList .evalStart:hover {
   background-color: white;
   color: var(--font-color);
+}
+
+.delete{
+  position: absolute;
+  right: 30px;
+}
+
+.delete .delete-evaluate{
+  border: none;
+  font-size: 26px;
+  cursor: pointer;
+}
+
+.delete .delete-evaluate:hover{
+  color: var(--red-color);
 }
 
 .pagination-container {
@@ -289,8 +304,8 @@ header .con {
 
 .spinner {
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 45%;
+    left: 48%;
     transform: translate(-50%, -50%);
     border: 5px solid #f3f3f3;
     border-top: 5px solid #3498db;
@@ -298,6 +313,12 @@ header .con {
     width: 50px;
     height: 50px;
     animation: spin 1s linear infinite;
+}
+
+.loading-text{
+  position: absolute;
+  top: 52%;
+  left: 47.7%;
 }
 
 @keyframes spin {
@@ -381,9 +402,18 @@ header .con {
     font-size: 16px;
   }
   .logList .evalStart {
-    right: 20px;
-    top: 17px;
+    right: 70px;
+    top: 30px;
     font-size: 12px;
     padding: 10px 13px;
+  }
+  .logList .date{
+    margin-left: 0;
+    margin-top: 10px;
+  }
+  .mid{
+    display: flex;
+    flex-direction: column;
+    width: 200px;
   }
 }
