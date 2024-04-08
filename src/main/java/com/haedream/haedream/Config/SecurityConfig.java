@@ -60,10 +60,10 @@ public class SecurityConfig {
                 http
                                 .csrf((auth) -> auth.disable());
 
-                http
-                                .sessionManagement((auth) -> auth
-                                                .maximumSessions(1) // 최대 허용 가능 세션 수
-                                                .maxSessionsPreventsLogin(true)); // 동시 로그인 차단
+                // http
+                //                 .sessionManagement((auth) -> auth
+                //                                 .maximumSessions(10) // 최대 허용 가능 세션 수
+                //                                 .maxSessionsPreventsLogin(false)); // 동시 로그인 차단
 
                 return http.build();
         }

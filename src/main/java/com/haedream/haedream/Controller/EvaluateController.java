@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -25,7 +26,12 @@ import com.haedream.haedream.repository.LogRepository;
 import com.haedream.haedream.repository.ProjectRepository;
 import com.haedream.haedream.service.EvalService;
 import com.haedream.haedream.service.LoglistService;
+
+import jakarta.servlet.http.HttpSession;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class EvaluateController {
@@ -46,14 +52,54 @@ public class EvaluateController {
   private EvalService evalService;
 
   @GetMapping("/evaluate")
-  public String evaluate(@RequestParam("projectName") String projectName, @RequestParam("apiKey") String apiKey,
-      Model model) {
-    List<Log> logList = loglistService.getLogList(apiKey, projectName);
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    String username = authentication.getName();
-    model.addAttribute("username", username);
+  public String evaluate(@RequestParam(value = "projectName", required = false) String projectName, @RequestParam(value = "apiKey", required = false) String apiKey, HttpSession session,
+                        Model model) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        if (projectName == null || apiKey == null) {
+            projectName = (String) session.getAttribute("projectName");
+            apiKey = (String) session.getAttribute("apiKey");
+        } else {
+            session.setAttribute("projectName", projectName);
+            session.setAttribute("apiKey", apiKey);
+        }
+
+        session.setAttribute("username", username);
+
+    String sessionUserName = (String) session.getAttribute("username");
+    String sessionApiKey = (String) session.getAttribute("apiKey");
+    String sessionProjectName = (String) session.getAttribute("projectName");
+
+    // logListService 호출
+    List<Log> logList = loglistService.getLogList(sessionApiKey, sessionProjectName);
+
+    // 모델에 값 추가
+    model.addAttribute("username", sessionUserName);
     model.addAttribute("logList", logList);
+
     return "evaluate";
+  }
+
+  // 평가 삭제
+  @PostMapping("/evaluate/delete")
+  public ResponseEntity<Map<String, String>> evaluatedelete(@RequestBody Map<String, String> requestMap) {
+      Map<String, String> response = new HashMap<>();
+      try {
+
+          String apiKey = requestMap.get("apiKey");
+          String projectName = requestMap.get("projectName");
+          String id = requestMap.get("id");
+ 
+          loglistService.deleteLogsByApiKeyAndProjectNameAndId(apiKey, projectName, id);
+            
+          response.put("message", "Log deleted successfully");
+          return ResponseEntity.ok().body(response);
+      } catch (Exception e) {
+          response.put("error", "Failed to delete log: " + e.getMessage());
+          return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+      }
   }
 
   @GetMapping("/evaluateLog")
