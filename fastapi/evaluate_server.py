@@ -21,7 +21,8 @@ import tiktoken
 
 # 환경변수 설정
 os.environ["LANGCHAIN_TRACING_V2"] = "true"
-
+os.environ["LANGCHAIN_API_KEY"] = ""
+os.environ["OPENAI_API_KEY"] = ""
 
 llm = ChatOpenAI(model="gpt-4-turbo-preview")
 # llm = ChatOpenAI(model="gpt-3.5-turbo-0125")
