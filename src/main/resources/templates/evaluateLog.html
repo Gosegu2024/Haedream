@@ -21,7 +21,7 @@
       crossorigin="anonymous"
     ></script>
     <!-- js -->
-    <script th:src="@{/js/loglist.js}" defer></script>
+    <script th:src="@{/js/evaluate.js}" defer></script>
   </head>
   <body>
     <header>
@@ -33,8 +33,8 @@
           <li>
             <a href="#">평가 <i class="fa-solid fa-caret-down"></i></a>
             <ul class="dropDown">
-              <li  ><a th:href="@{/evaluate}">평가하기</a></li>
-              <li class="nowPage"><a th:href="@{/evaluateLog}">평가기록</a></li>
+              <li class="nowPage"><a th:href="@{/evaluate}">평가하기</a></li>
+              <li><a th:href="@{/evaluateLog}">평가기록</a></li>
             </ul>
           </li>
           <li><a th:href="@{/analyze}">분석</a></li>
@@ -58,20 +58,16 @@
           <li th:each="evalList, index : ${evalList}" >
               <p class="index" th:text="${index.index + 1 + '.'}">1.</p>
               <div class="mid">
-                <div class="projectName" th:text="${evalList.projectName}"></div>
+                <div class="projectName" th:if="${evalList != null}" th:text="${evalList.projectName}"></div>
                 <span class="modelName" th:text="${evalList.username}"></span>
                 <span class="date" th:text="${evalList.evalLogDate}"></span>
               </div>
-              
               <a th:href="@{/evaluateResultCheck(logId=${evalList.logId})}" class="evalStart" onclick="showLoading()">보기</a>
-
-              <!-- 삭제 -->
-              <!-- <div class="delete" th:data-log-id="${evalList.id}">
-                <button class="delete-evaluateLog">
+              <div class="delete" th:data-log-id="${evalList.id}">
+                <button class="delete-evaluate">
                   <i class="fa-solid fa-trash-can"></i>
                 </button>
-              </div> -->
-
+              </div> 
           </li>
         <div class="pagination-container">
           <div class="prev-button"><i class="fa-solid fa-angles-left"></i></div>
@@ -157,8 +153,93 @@
     </div>
     <!-- chatbot end -->
   </body>
-  <!-- chatbot js start -->
-  <script type="text/javascript" async defer>
+<!-- chatbot js start -->
+  <script th:inline="javascript" async defer>
+    history.replaceState({},null,location.pathname);
+
+    function showLoading() {
+    document.getElementById("loading-overlay").style.display = "block";
+}
+
+    function hideLoading() {
+        document.getElementById("loading-overlay").style.display = "none";
+    }
+
+    // 페이지네이션
+    /*<![CDATA[*//*]]>*/
+const count_per_page = 5;
+let listCount = $('.logList > li').length;
+let currentPage = 1;
+let totalPages;
+
+const numberButtonWrapper = document.querySelector('.number-button-wrapper');
+
+const getTotalPageCount = () => {
+  return Math.ceil(listCount / count_per_page);
+};
+
+const renderPageButtons = () => {
+  numberButtonWrapper.innerHTML = '';
+
+  const startPage = Math.max(1, currentPage - 2);
+  const endPage = Math.min(totalPages, startPage + count_per_page - 1);
+
+  for (let i = startPage; i <= endPage; i++) {
+    numberButtonWrapper.innerHTML += `<span class="number-button ${currentPage === i ? 'pageActive' : ''}" data-page="${i}">${i}</span>`;
+  }
+
+  if (startPage > 1) {
+    numberButtonWrapper.innerHTML = `<span class="number-button" data-page="1">1</span><span>...</span>` + numberButtonWrapper.innerHTML;
+  }
+  if (endPage < totalPages) {
+    numberButtonWrapper.innerHTML += `<span>...</span><span class="number-button" data-page="${totalPages}">${totalPages}</span>`;
+  }
+};
+
+numberButtonWrapper.addEventListener('click', (e) => {
+  if (e.target.classList.contains('number-button')) {
+    currentPage = parseInt(e.target.dataset.page);
+    renderLogs();
+    renderPageButtons();
+  }
+});
+
+const prevButton = document.querySelector('.prev-button:first-child');
+const nextButton = document.querySelector('.prev-button:last-child');
+
+prevButton.addEventListener('click', () => {
+  if (currentPage > 1) {
+    currentPage--;
+    renderLogs();
+    renderPageButtons();
+  }
+});
+
+nextButton.addEventListener('click', () => {
+  if (currentPage < totalPages) {
+    currentPage++;
+    renderLogs();
+    renderPageButtons();
+  }
+});
+
+const renderLogs = () => {
+  let startIdx = (currentPage - 1) * count_per_page;
+  let endIdx = Math.min(startIdx + count_per_page, listCount);
+
+  $(".logList > li").hide();
+  $(".logList > li").slice(startIdx, endIdx).show();
+};
+
+const initializePagination = () => {
+  totalPages = getTotalPageCount();
+  renderPageButtons();
+  renderLogs();
+};
+
+initializePagination();
+
+//  챗봇
     window.addEventListener('message', function (event) {
       const { e, params } = event.data;
 
@@ -287,64 +368,54 @@
   </script>
   <!-- chatbot js end -->
 
-  <!-- LogDelete js start -->
+  <!-- logDelete js start -->
   <script th:inline="javascript">
-      $(document).ready(function() {
-          function updatePaginationAfterDelete() {
-              let currentItemCount = $('.logList > li').length;
+    $(document).ready(function() {
+        function updatePaginationAfterDelete() {
+            let currentItemCount = $('.logList > li').length;
 
-              if (currentItemCount === 0 && currentPage !== 1) {
-                  currentPage--;
-                  totalPages = getTotalPageCount();
-                  renderPageButtons();
-                  renderLogs();
-              }else {
+            if (currentItemCount === 0 && currentPage !== 1) {
+                currentPage--;
+                totalPages = getTotalPageCount();
+                renderPageButtons();
+                renderLogs();
+            } else {
+                renderLogs();
+            }
+        }
+        $('.delete-evaluate').click(function() {
+            var deleteButton = $(this);
+            var logId = deleteButton.closest('.delete').attr('data-log-id');
 
-                  renderLogs();
-              }
-          }
+            $.ajax({
+                url: '/evaluateLog/delete',
+                type: 'POST',
+                data: JSON.stringify({ Id: logId }),
+                contentType: 'application/json',
+                dataType: 'json',
+                success: function(response) {
+                    deleteButton.closest('li').remove();
+                    updateLogNumbers();
+                    updatePaginationAfterDelete();
+                },
+                error: function(xhr, status, error) {
+                }
+            });
+        });
+        function updateLogNumbers() {
+            $('.logList > li').each(function(index) {
+                var newIndex = index + 1;
+                $(this).find('.index').text(newIndex + '.');
+            });
+        }        
+        $('#refreshButton').click(function() {
+            var deleteButton = $('.delete-evaluate');
+            var logId = deleteButton.closest('.delete').attr('data-log-id');
 
-          $('.delete-evaluateLog').click(function() {
-              var deleteButton = $(this);
-              var projectName = deleteButton.closest('.delete').attr('data-project-name');
-              var apiKey = deleteButton.closest('.delete').attr('data-api-key');
-              var logId = deleteButton.closest('.delete').attr('data-log-id');
-
-            console.log(projectName)
-            console.log(apiKey)
-            console.log(logId)
-            
-
-              $.ajax({
-                  url: '/evaluateLog/delete',
-                  type: 'POST',
-                  data: JSON.stringify({ apiKey: apiKey, projectName: projectName, id: logId }),
-                  contentType: 'application/json',
-                  dataType: 'json',
-                  success: function(response) {
-                      deleteButton.closest('li').remove();
-                      updateLogNumbers();
-                      updatePaginationAfterDelete();
-                  },
-                  error: function(xhr, status, error) {
-                  }
-              });
-          });
-          function updateLogNumbers() {
-              $('.logList > li').each(function(index) {
-                  var newIndex = index + 1;
-                  $(this).find('.index').text(newIndex + '.');
-              });
-          }
-
-          $('#refreshButton').click(function() {
-              var deleteButton = $('.delete-evaluateLog');
-              var projectName = deleteButton.closest('.delete').attr('data-project-name');
-
-              window.location.href = '/evaluateLog?projectName=' + projectName;
-          });
-      });
+            window.location.href = '/evaluateLog?logId=' + logId;
+        });
+    });;
   </script>
-  <!-- LogDelete js end -->
+  <!-- logDelete js end -->
 
 </html>
