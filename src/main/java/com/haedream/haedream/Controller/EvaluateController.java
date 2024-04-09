@@ -35,7 +35,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 @Controller
 public class EvaluateController {
 
@@ -56,7 +55,7 @@ public class EvaluateController {
 
   @Autowired
   private UserRepository userRepository;
-  
+
   @Autowired
   private EvalRepository evalRepository;
 
@@ -65,8 +64,8 @@ public class EvaluateController {
     session.setAttribute("projectName", projectName);
     return "redirect:/evaluate";
   }
-  
-  // 평가하기 가져오기 
+
+  // 평가하기 가져오기
   @GetMapping("/evaluate")
   public String evaluate(HttpSession session, Model model) {
     String projectName = (String) session.getAttribute("projectName");
@@ -104,8 +103,8 @@ public class EvaluateController {
   }
 
   // 평가기록 가져오기
-@GetMapping("/evaluateLog")
-public String evaluateLog(HttpSession session, Model model) {
+  @GetMapping("/evaluateLog")
+  public String evaluateLog(HttpSession session, Model model) {
     String username = (String) session.getAttribute("username");
     UserEntity user = userRepository.findByUsername(username);
     String apiKey = user.getApi_key();
@@ -116,11 +115,11 @@ public String evaluateLog(HttpSession session, Model model) {
 
     List<Eval> evalList = new ArrayList<>();
     for (Log log : logList) {
-        String logId = log.getId();
-        System.out.println(logId);
-        Eval eval = evalRepository.findOneByLogId(logId);
-        evalList.add(eval);
-        }
+      String logId = log.getId();
+      System.out.println(logId);
+      Eval eval = evalRepository.findOneByLogId(logId);
+      evalList.add(eval);
+    }
 
     System.out.println(evalList.toString());
 
@@ -128,31 +127,32 @@ public String evaluateLog(HttpSession session, Model model) {
     model.addAttribute("evalList", evalList);
 
     return "evaluateLog";
-}
+  }
 
+  // 평가기록 삭제
+  @PostMapping("/evaluateLog/delete")
+  public ResponseEntity<Map<String, String>> evaluateLogdelete(@RequestBody Map<String, String> requestMap) {
+    Map<String, String> response = new HashMap<>();
+    try {
+      String logId = requestMap.get("id");
 
-    // 평가기록 삭제 
-    @PostMapping("/evaluateLog/delete")
-    public ResponseEntity<Map<String, String>> evaluateLogdelete(@RequestBody Map<String, String> requestMap) {
-        Map<String, String> response = new HashMap<>();
-        try {
-            String logId = requestMap.get("id");
+      // logId를 사용하여 평가 기록 삭제
+      // 여기에 해당 기능을 수행하는 서비스 호출 코드를 추가해야 합니다.
 
-            // logId를 사용하여 평가 기록 삭제
-            // 여기에 해당 기능을 수행하는 서비스 호출 코드를 추가해야 합니다.
-
-            response.put("message", "Log deleted successfully");
-            return ResponseEntity.ok().body(response);
-        } catch (Exception e) {
-            response.put("error", "Failed to delete log: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-        }
+      response.put("message", "Log deleted successfully");
+      return ResponseEntity.ok().body(response);
+    } catch (Exception e) {
+      response.put("error", "Failed to delete log: " + e.getMessage());
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
+  }
 
   // 평가 실행
   @GetMapping("/evaluateResult")
-  public String evaluateResult(@RequestParam("logId") String logId, Model model, HttpSession session) {
-    
+  public String evaluateResult(@RequestParam("logId") String logId,
+      Model model,
+      HttpSession session) {
+
     // 평가여부 업데이트
     Log log = logRepository.findById(logId).get();
     log.setIsItEval("Y");
@@ -167,7 +167,6 @@ public String evaluateLog(HttpSession session, Model model) {
     model.addAttribute("inputdata", inputdata);
 
     sendValues(outputdata, inputdata, standard, model, session);
-
     return "evaluateResult";
   }
 
@@ -176,7 +175,6 @@ public String evaluateLog(HttpSession session, Model model) {
     String logId = (String) session.getAttribute("logId");
     String username = (String) session.getAttribute("username");
     String projectName = (String) session.getAttribute("projectName");
-
     Log log_info = logRepository.findById(logId).get();
 
     String inputdata = log_info.getInputData();
@@ -228,6 +226,8 @@ public String evaluateLog(HttpSession session, Model model) {
         // JSON 배열을 읽기 위해 ObjectMapper를 사용하여 리스트로 변환
         List<Object> responseList = objectMapper.readValue(response, new TypeReference<List<Object>>() {
         });
+        model.addAttribute("inputdata", inputdata);
+        model.addAttribute("outputdata", outputdata);
         model.addAttribute("responseList", responseList);
       } catch (JsonProcessingException e) {
         System.err.println("Failed to parse response from server: " + e.getMessage());
@@ -252,7 +252,8 @@ public String evaluateLog(HttpSession session, Model model) {
     String projectName = saveEvalDTO.getProjectName();
     session.setAttribute("projectName", projectName);
 
-    return ResponseEntity.status(HttpStatus.CREATED).body(saveEvalDTO);
+    // return ResponseEntity.status(HttpStatus.CREATED).body(saveEvalDTO);
+    return null;
   }
 
 }

@@ -54,57 +54,83 @@
       <div class="con">
         <h1>평가결과</h1>
         <div class="input">
-          <h2>Input</h2>
+          <h2>질의 내용</h2>
           <p th:text="${inputdata}"></p>
         </div>
         <div class="filter">
           <div class="radio">
             <input type="radio" name="filter" id="value1" value="value1" checked />
-            <label for="value1">value1</label>
+            <label for="value1">영단어•한자</label>
           </div>
           <div class="radio">
             <input type="radio" name="filter" id="value2" value="value2" />
-            <label for="value2">value2</label>
+            <label for="value2">개인정보유출</label>
           </div>
           <div class="radio">
             <input type="radio" name="filter" id="value3" value="value3" />
-            <label for="value3">value3</label>
+            <label for="value3">모순점</label>
           </div>
         </div>
+        <div class="input">
+          <h2>질의 결과</h2>
+          <p id="outputdata"></p>
+        </div>
         <div class="output">
-          <h2>평가기준 피드백</h2>
-          <p th:text="${responseList[0][checkStandard]}"></p>
+          <h2>평가 및 분석</h2>
+          <h3>전체 요약</h3>
+          <p class="resultSection" th:text="${responseList[0][checkSummary]}"></p><br>
+          <h3>관련된 전문 용어 5가지</h3>
+          <p class="resultSection" th:text="${responseList[0][checkTerminology]}"></p><br>
+          <h3>불확실한 정보</h3>
+          <p class="resultSection" th:text="${responseList[0][checkHallucination]}"></p><br>
+          <h3>가독성 향상 방법 <span th:text="${responseList[0][checkReadabilityScore]} + '점'"></span></h3>
+          <p class="resultSection" th:text="${responseList[0][checkReadability]}"></p><br>
+          <h3>목적성 <span th:text="${responseList[0][checkPurposeScore]} + '점'"></span></h3>
+          <p class="resultSection" th:text="${responseList[0][checkPurpose]}"></p><br>
+          <h3>문제해결 <span th:text="${responseList[0][checkProblemScore]} + '점'"></span></h3>
+          <p class="resultSection" th:text="${responseList[0][checkProblem]}"></p><br>
+          <h3>창의성 <span th:text="${responseList[0][checkCreativeScore]} + '점'"></span></h3>
+          <p class="resultSection" th:text="${responseList[0][checkCreative]}"></p><br>
+          <h3>모순점 <span th:text="${responseList[0][checkContradictionScore]} + '점'"></span></h3>
+          <p class="resultSection" th:text="${responseList[0][checkContradiction]}"></p><br>
+          <h3>평가기준 평가</h3>
+          <p class="resultSection" th:text="${responseList[0][checkStandard]}"></p><br>
+          <!-- <h2>모순점</h2>
+          <p th:text="${responseList[0][HighLightContradiction]}"></p><br> 
+          <h2>개인정보유출</h2> 
+          <p th:text="${responseList[0][HighLightPrivacy]}"></p><br> -->
         </div>
         <div class="all">
+
           <h2>전체 피드백</h2>
-          <p th:text="${responseList[0][feedback]}"></p>
-          <br>
-          
-          <p>빈도수</p>
+          <p class="resultSection" th:text="${responseList[0][feedback]}"></p>
+        </div>
+
+          <!-- <h2>빈도수</h2>
           <p th:text="${responseList[1]}"></p>
           <br>
 
-          <p>토큰수</p>
+          <h2>토큰수</h2>
           <p th:text="${responseList[2]}"></p>
           <br>
 
-          <p>글자수</p>
+          <h2>글자수</h2>
           <p th:text="${responseList[3]}"></p>
           <br>
 
-          <p>byte</p>
+          <h2>byte</h2>
           <p th:text="${responseList[4]}"></p>
           <br>
 
-          <p>영어리스트</p>
+          <h2>영어리스트</h2>
           <p th:text="${responseList[5]}"></p>
           <br>
 
-          <p>한자리스트</p>
+          <h2>한자리스트</h2>
           <p th:text="${responseList[6]}"></p>
-          <br>
+          <br> -->
 
-          <p>
+          <!-- <p>
             Lorem ipsum, dolor sit amet consectetur adipisicing elit. Numquam magnam perspiciatis, illum accusantium a deleniti. Nemo ea
             maiores ad hic, porro illo. Tenetur iusto atque ea optio necessitatibus magni enim? Lorem ipsum,
             <span class="highlighterO">dolor sit amet consectetur adipisicing elit.</span> Numquam magnam perspiciatis, illum accusantium a
@@ -117,8 +143,7 @@
             illo. Tenetur iusto atque ea optio necessitatibus magni enim? Lorem ipsum, dolor sit amet consectetur adipisicing elit. Numquam
             magnam perspiciatis, illum accusantium a deleniti. Nemo ea maiores ad hic, porro illo. Tenetur iusto atque ea optio
             necessitatibus magni enim?
-          </p>
-        </div>
+          </p> -->
       </div>
       <!-- con end -->
       <div class="popupBack">
@@ -201,6 +226,57 @@
       <i class="fa-solid fa-arrow-up"></i>
     </div>
   </body>
+
+<script th:inline="javascript" defer async>
+    /*<![CDATA[*/
+
+    let HighLightContradiction = /*[[${responseList[0].HighLightContradiction}]]*/ null;
+    let HighLightPrivacy = /*[[${responseList[0].HighLightPrivacy}]]*/ null;
+    let eng = /*[[${responseList[5]}]]*/ null;
+    let han = /*[[${responseList[6]}]]*/ null;
+    let output = /*[[${outputdata}]]*/ null;
+
+    console.log(HighLightContradiction);
+    console.log(HighLightPrivacy);
+    console.log(eng.length);
+    console.log(output);
+
+    function highlightValues(output, eng, han) {
+  for (let i = 0; i < 100; i++) {
+    output = output.replaceAll(eng[i], '<span class="highlighterY">' + eng[i] + '</span>');
+  }
+  for (let i = 0; i < han.length; i++) {
+    output = output.replaceAll(han[i], '<span class="highlighterY">' + han[i] + '</span>');
+  }
+      return output;
+    }
+
+    document.getElementById("outputdata").innerHTML = highlightValues(output, eng, han);
+
+    document.addEventListener('DOMContentLoaded',function(){
+      const filterRadios = document.querySelectorAll('input[name="filter"]');
+      let currentFilter = '';
+
+      filterRadios.forEach(function(radio){
+        radio.addEventListener('change',function(){
+          const selectedFilter = document.querySelector('input[name="filter"]:checked').value;
+          
+          if (selectedFilter !== currentFilter){
+            if(selectedFilter === 'value1'){
+              document.getElementById("outputdata").innerHTML = highlightValues(output, eng, han);
+            } else if (selectedFilter === 'value2') {
+          document.getElementById("outputdata").innerHTML = output.replaceAll(HighLightPrivacy, '<span class="highlighterO">' + HighLightPrivacy + '</span>');
+        } else if (selectedFilter === 'value3') {
+          document.getElementById("outputdata").innerHTML = output.replaceAll(HighLightContradiction, '<span class="highlighterG">' + HighLightContradiction + '</span>');
+        }
+        currentFilter = selectedFilter;
+          }
+        })
+      })
+    })
+
+    /*]]>*/
+</script>
 
   <!-- url 노출 방지 -->
   <script type="text/javascript" async defer>

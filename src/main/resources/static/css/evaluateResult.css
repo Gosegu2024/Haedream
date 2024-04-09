@@ -217,6 +217,20 @@ header .con {
   color: var(--main-color);
 }
 
+.output h3{
+  color: var(--font-color);
+}
+.output h3 span{
+  color: var(--orange-color);
+  font-size: 16px;
+  margin-left: 5px;
+}
+
+.resultSection{
+  padding: 10px 0 20px 0;
+  border-bottom: 2px solid var(--gray-color);
+}
+
 .highlighterY {
   background: linear-gradient(#ffea0091 0 100%);
   background-position: 0 calc(100% - 2px);
@@ -229,6 +243,15 @@ header .con {
 
 .highlighterO {
   background: linear-gradient(#ff8c1191 0 100%);
+  background-position: 0 calc(100% - 2px);
+  background-size: 100% 14px;
+  background-repeat: no-repeat;
+  animation-name: highlighter;
+  animation-duration: 1s;
+  animation-iteration-count: 1;
+}
+.highlighterG {
+  background: linear-gradient(#70ff2891 0 100%);
   background-position: 0 calc(100% - 2px);
   background-size: 100% 14px;
   background-repeat: no-repeat;

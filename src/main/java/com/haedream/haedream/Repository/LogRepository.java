@@ -15,6 +15,7 @@ public interface LogRepository extends MongoRepository<Log, String> {
 
   List<Log> deleteByApiKeyAndProjectNameAndId(String apiKey, String projectName, String id);
 
+  @SuppressWarnings("null")
   Optional<Log> findById(String id);
 
   List<Log> findByApiKeyAndProjectNameAndIsItEval(String apiKey, String projectName, String IsItEval);
