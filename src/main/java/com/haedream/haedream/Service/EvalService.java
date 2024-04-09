@@ -57,6 +57,12 @@ public class EvalService {
     public void deleteEvalsByLogId(String LogId) {       
     
         evalRepository.deleteEvalsByLogId(LogId);
+    }
+
+    // 로그 아이디로 eval 조회
+    public Eval getEvalByLogIdAndUsernameAndProjectName(String logid, String username, String projectName) {
+        Eval eval = evalRepository.findOneByLogIdAndUsernameAndProjectName(logid, username, projectName);
+        return eval;
     }    
 
 }

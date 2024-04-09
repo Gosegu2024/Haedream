@@ -7,7 +7,7 @@
     <link rel="icon" th:href="@{/img/haedream.ico}" />
     <!-- css -->
     <link rel="stylesheet" th:href="@{/css/etc/reset.css}" />
-    <link rel="stylesheet" th:href="@{/css/evaluate.css}" />
+    <link rel="stylesheet" th:href="@{/css/evaluateResult.css}" />
     <!-- fontawesome -->
     <script src="https://kit.fontawesome.com/d5377ff581.js" crossorigin="anonymous"></script>
     <!-- google font -->
@@ -21,25 +21,24 @@
       crossorigin="anonymous"
     ></script>
     <!-- js -->
-    <script th:src="@{/js/loglist.js}" defer></script>
+    <script th:src="@{/js/evaluateResult.js}" defer></script>
   </head>
   <body>
     <header>
       <div class="con">
         <div class="logo">
-                    <a th:href="@{/main}"><img th:src="@{/img/HaeLogo.png}"alt="해드림로고" /></a>
+            <a th:href="@{/main}"><img th:src="@{/img/HaeLogo.png}" alt="해드림로고" /></a>
         </div>
         <ul class="menu">
           <li>
             <a href="#">평가 <i class="fa-solid fa-caret-down"></i></a>
             <ul class="dropDown">
-              <li  ><a th:href="@{/evaluate}">평가하기</a></li>
-              <li class="nowPage"><a th:href="@{/evaluateLog}">평가기록</a></li>
+              <li><a th:href="@{/evaluate}">평가하기</a></li>
+              <li><a th:href="@{/evaluateLog}">평가기록</a></li>
             </ul>
           </li>
           <li><a th:href="@{/analyze}">분석</a></li>
           <li><a th:href="@{/profile}" th:text="${session.username}">username</a></li>
-          
           <li>
             <a th:href="@{/logout}" th:onclick="|event.preventDefault(); document.getElementById('logoutForm').submit();|">
                 <i class="fa-solid fa-arrow-right-from-bracket"></i>
@@ -53,31 +52,98 @@
     </header>
     <div class="container">
       <div class="con">
-        <h1>평가기록</h1>
-        <ul class="logList">
-          <li th:each="evalList, index : ${evalList}" >
-              <p class="index" th:text="${index.index + 1 + '.'}">1.</p>
-              <div class="mid">
-                <div class="projectName" th:text="${evalList.projectName}"></div>
-                <span class="modelName" th:text="${evalList.username}"></span>
-                <span class="date" th:text="${evalList.evalLogDate}"></span>
-              </div>
-              
-              <a th:href="@{/evaluateResultCheck(logId=${evalList.logId})}" class="evalStart" onclick="showLoading()">보기</a>
-
-              <!-- 삭제 -->
-              <!-- <div class="delete" th:data-log-id="${evalList.id}">
-                <button class="delete-evaluateLog">
-                  <i class="fa-solid fa-trash-can"></i>
-                </button>
-              </div> -->
-
-          </li>
-        <div class="pagination-container">
-          <div class="prev-button"><i class="fa-solid fa-angles-left"></i></div>
-          <div class="number-button-wrapper"><span class="number-button pageActive">1</span></div>
-          <div class="prev-button"><i class="fa-solid fa-angles-right"></i></div>
+        <h1>평가결과</h1>
+        <div class="input">
+          <h2>질의 내용</h2>
+          <p th:text="${evalDTO.inputData}"></p>
         </div>
+        <div class="filter">
+          <div class="radio">
+            <input type="radio" name="filter" id="value1" value="value1" checked />
+            <label for="value1">영단어•한자</label>
+          </div>
+          <div class="radio">
+            <input type="radio" name="filter" id="value2" value="value2" />
+            <label for="value2">개인정보유출</label>
+          </div>
+          <div class="radio">
+            <input type="radio" name="filter" id="value3" value="value3" />
+            <label for="value3">모순점</label>
+          </div>
+        </div>
+        <div class="input">
+          <h2>질의 결과</h2>
+          <p id="outputdata"></p>
+        </div>
+        <div class="output">
+          <h2>평가 및 분석</h2>
+          <h3>전체 요약</h3>
+          <p class="resultSection" th:text="${evalDTO.evalSummary}"></p><br>
+          <h3>관련된 전문 용어 5가지</h3>
+          <p class="resultSection" th:text="${evalDTO.evalTerminology}"></p><br>
+          <h3>불확실한 정보</h3>
+          <p class="resultSection" th:text="${evalDTO.evalHallucination}"></p><br>
+          <h3>가독성 향상 방법 <span th:text="${evalDTO.evalReadabilityScore} + '점'"></span></h3>
+          <p class="resultSection" th:text="${evalDTO.evalReadability}"></p><br>
+          <h3>목적성 <span th:text="${evalDTO.evalPurposeScore} + '점'"></span></h3>
+          <p class="resultSection" th:text="${evalDTO.evalPurpose}"></p><br>
+          <h3>문제해결 <span th:text="${evalDTO.evalProblemScore} + '점'"></span></h3>
+          <p class="resultSection" th:text="${evalDTO.evalProblem}"></p><br>
+          <h3>창의성 <span th:text="${evalDTO.evalCreativeScore} + '점'"></span></h3>
+          <p class="resultSection" th:text="${evalDTO.evalCreative}"></p><br>
+          <h3>모순점 <span th:text="${evalDTO.evalContradictionScore} + '점'"></span></h3>
+          <p class="resultSection" th:text="${evalDTO.evalContradiction}"></p><br>
+          <h3>평가기준 평가</h3>
+          <p class="resultSection" th:text="${evalDTO.evalStandard}"></p><br>
+          <!-- <h2>모순점</h2>
+          <p th:text="${evalDTO.HighLightContradiction}"></p><br> 
+          <h2>개인정보유출</h2> 
+          <p th:text="${evalDTO.HighLightPrivacy}"></p><br> -->
+        </div>
+        <div class="all">
+
+          <h2>전체 피드백</h2>
+          <p class="resultSection" th:text="${evalDTO.evalFeedback}"></p>
+        </div>
+
+          <!-- <h2>빈도수</h2>
+          <p th:text="${responseList[1]}"></p>
+          <br>
+
+          <h2>토큰수</h2>
+          <p th:text="${responseList[2]}"></p>
+          <br>
+
+          <h2>글자수</h2>
+          <p th:text="${responseList[3]}"></p>
+          <br>
+
+          <h2>byte</h2>
+          <p th:text="${responseList[4]}"></p>
+          <br>
+
+          <h2>영어리스트</h2>
+          <p th:text="${responseList[5]}"></p>
+          <br>
+
+          <h2>한자리스트</h2>
+          <p th:text="${responseList[6]}"></p>
+          <br> -->
+
+          <!-- <p>
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Numquam magnam perspiciatis, illum accusantium a deleniti. Nemo ea
+            maiores ad hic, porro illo. Tenetur iusto atque ea optio necessitatibus magni enim? Lorem ipsum,
+            <span class="highlighterO">dolor sit amet consectetur adipisicing elit.</span> Numquam magnam perspiciatis, illum accusantium a
+            deleniti. Nemo ea maiores ad hic, porro illo. Tenetur iusto atque ea optio necessitatibus magni enim? Lorem ipsum, dolor sit
+            amet consectetur adipisicing elit. Numquam magnam perspiciatis, illum accusantium a deleniti. Nemo ea maiores ad hic, porro
+            illo. Tenetur iusto atque ea optio necessitatibus magni enim? Lorem ipsum,
+            <span class="highlighterY">dolor sit amet consectetur</span> adipisicing elit. Numquam magnam perspiciatis, illum accusantium a
+            deleniti. Nemo ea maiores ad hic, porro illo. Tenetur iusto atque ea optio necessitatibus magni enim? Lorem ipsum, dolor sit
+            amet consectetur adipisicing elit. Numquam magnam perspiciatis, illum accusantium a deleniti. Nemo ea maiores ad hic, porro
+            illo. Tenetur iusto atque ea optio necessitatibus magni enim? Lorem ipsum, dolor sit amet consectetur adipisicing elit. Numquam
+            magnam perspiciatis, illum accusantium a deleniti. Nemo ea maiores ad hic, porro illo. Tenetur iusto atque ea optio
+            necessitatibus magni enim?
+          </p> -->
       </div>
       <!-- con end -->
       <div class="popupBack">
@@ -156,7 +222,67 @@
       </div>
     </div>
     <!-- chatbot end -->
+    <div class="scrollTop">
+      <i class="fa-solid fa-arrow-up"></i>
+    </div>
   </body>
+
+<script th:inline="javascript" defer async>
+    /*<![CDATA[*/
+
+    let HighLightContradiction = /*[[${responseList[0].HighLightContradiction}]]*/ null;
+    let HighLightPrivacy = /*[[${responseList[0].HighLightPrivacy}]]*/ null;
+    let eng = /*[[${responseList[5]}]]*/ null;
+    let han = /*[[${responseList[6]}]]*/ null;
+    let output = /*[[${outputdata}]]*/ null;
+
+    console.log(HighLightContradiction);
+    console.log(HighLightPrivacy);
+    console.log(eng.length);
+    console.log(output);
+
+    function highlightValues(output, eng, han) {
+  for (let i = 0; i < 100; i++) {
+    output = output.replaceAll(eng[i], '<span class="highlighterY">' + eng[i] + '</span>');
+  }
+  for (let i = 0; i < han.length; i++) {
+    output = output.replaceAll(han[i], '<span class="highlighterY">' + han[i] + '</span>');
+  }
+      return output;
+    }
+
+    document.getElementById("outputdata").innerHTML = highlightValues(output, eng, han);
+
+    document.addEventListener('DOMContentLoaded',function(){
+      const filterRadios = document.querySelectorAll('input[name="filter"]');
+      let currentFilter = '';
+
+      filterRadios.forEach(function(radio){
+        radio.addEventListener('change',function(){
+          const selectedFilter = document.querySelector('input[name="filter"]:checked').value;
+          
+          if (selectedFilter !== currentFilter){
+            if(selectedFilter === 'value1'){
+              document.getElementById("outputdata").innerHTML = highlightValues(output, eng, han);
+            } else if (selectedFilter === 'value2') {
+          document.getElementById("outputdata").innerHTML = output.replaceAll(HighLightPrivacy, '<span class="highlighterO">' + HighLightPrivacy + '</span>');
+        } else if (selectedFilter === 'value3') {
+          document.getElementById("outputdata").innerHTML = output.replaceAll(HighLightContradiction, '<span class="highlighterG">' + HighLightContradiction + '</span>');
+        }
+        currentFilter = selectedFilter;
+          }
+        })
+      })
+    })
+
+    /*]]>*/
+</script>
+
+  <!-- url 노출 방지 -->
+  <script type="text/javascript" async defer>
+    history.replaceState({},null,location.pathname);
+  </script>
+
   <!-- chatbot js start -->
   <script type="text/javascript" async defer>
     window.addEventListener('message', function (event) {
@@ -286,65 +412,4 @@
     closeButton.addEventListener('click', widgetClose);
   </script>
   <!-- chatbot js end -->
-
-  <!-- LogDelete js start -->
-  <script th:inline="javascript">
-      $(document).ready(function() {
-          function updatePaginationAfterDelete() {
-              let currentItemCount = $('.logList > li').length;
-
-              if (currentItemCount === 0 && currentPage !== 1) {
-                  currentPage--;
-                  totalPages = getTotalPageCount();
-                  renderPageButtons();
-                  renderLogs();
-              }else {
-
-                  renderLogs();
-              }
-          }
-
-          $('.delete-evaluateLog').click(function() {
-              var deleteButton = $(this);
-              var projectName = deleteButton.closest('.delete').attr('data-project-name');
-              var apiKey = deleteButton.closest('.delete').attr('data-api-key');
-              var logId = deleteButton.closest('.delete').attr('data-log-id');
-
-            console.log(projectName)
-            console.log(apiKey)
-            console.log(logId)
-            
-
-              $.ajax({
-                  url: '/evaluateLog/delete',
-                  type: 'POST',
-                  data: JSON.stringify({ apiKey: apiKey, projectName: projectName, id: logId }),
-                  contentType: 'application/json',
-                  dataType: 'json',
-                  success: function(response) {
-                      deleteButton.closest('li').remove();
-                      updateLogNumbers();
-                      updatePaginationAfterDelete();
-                  },
-                  error: function(xhr, status, error) {
-                  }
-              });
-          });
-          function updateLogNumbers() {
-              $('.logList > li').each(function(index) {
-                  var newIndex = index + 1;
-                  $(this).find('.index').text(newIndex + '.');
-              });
-          }
-
-          $('#refreshButton').click(function() {
-              var deleteButton = $('.delete-evaluateLog');
-              var projectName = deleteButton.closest('.delete').attr('data-project-name');
-
-              window.location.href = '/evaluateLog?projectName=' + projectName;
-          });
-      });
-  </script>
-  <!-- LogDelete js end -->
-
 </html>

@@ -18,6 +18,8 @@ public interface EvalRepository extends MongoRepository<Eval, String> {
 
   Eval findOneByLogId(String logId);
 
+  Eval findOneByLogIdAndUsernameAndProjectName(String logId, String username, String projectName);
+
   Eval findOneById(String evalId);
 }
 

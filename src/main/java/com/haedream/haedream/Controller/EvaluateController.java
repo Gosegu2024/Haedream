@@ -116,17 +116,27 @@ public class EvaluateController {
     List<Eval> evalList = new ArrayList<>();
     for (Log log : logList) {
       String logId = log.getId();
-      System.out.println(logId);
       Eval eval = evalRepository.findOneByLogId(logId);
       evalList.add(eval);
     }
-
-    System.out.println(evalList.toString());
 
     // 모델에 값 추가
     model.addAttribute("evalList", evalList);
 
     return "evaluateLog";
+  }
+
+  // 평가 결과 다시보기
+  @GetMapping("/evaluateResultCheck")
+  public String evaluateResultCheck(@RequestParam("logId") String logid, HttpSession session, Model model){
+    String username = (String) session.getAttribute("username");
+    String projectName = (String) session.getAttribute("projectName");
+
+    Eval evalDTO = evalService.getEvalByLogIdAndUsernameAndProjectName(logid, username, projectName);
+
+    model.addAttribute("evalDTO", evalDTO);
+
+    return "evaluateResultCheck";
   }
 
   // 평가기록 삭제
@@ -152,11 +162,6 @@ public class EvaluateController {
   public String evaluateResult(@RequestParam("logId") String logId,
       Model model,
       HttpSession session) {
-
-    // 평가여부 업데이트
-    Log log = logRepository.findById(logId).get();
-    log.setIsItEval("Y");
-    logRepository.save(log);
 
     session.setAttribute("logId", logId);
 
@@ -246,6 +251,12 @@ public class EvaluateController {
   public ResponseEntity<Eval> saveEval(@RequestParam String evalresult, HttpSession session) {
 
     Eval saveEvalDTO = evalService.saveEval(EvalDTO.parse(evalresult));
+
+    String logId = saveEvalDTO.getLogId();
+    // 평가여부 업데이트
+    Log log = logRepository.findById(logId).get();
+    log.setIsItEval("Y");
+    logRepository.save(log);
 
     String username = saveEvalDTO.getUsername();
     session.setAttribute("username", username);
