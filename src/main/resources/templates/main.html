@@ -89,7 +89,7 @@
         <h1 class="title">프로젝트 목록</h1>
         <ul class="projectList">
           <li th:each="project : ${projects}">
-            <a th:href="@{|/evaluate?projectName=${project.projectName}&amp;apiKey=${apiKey}|}">
+            <a th:href="@{|/evaluateSelect?projectName=${project.projectName}&amp;apiKey=${apiKey}|}">
               <input type="checkbox" th:name="${project.id}" class="checkbox" />
               <img th:src="@{/img/folder.png}" alt="폴더 그림" />
               <span th:text="${project.projectName}"></span>

@@ -54,9 +54,16 @@ public class EvaluateController {
   @Autowired
   private UserRepository userRepository;
 
-  @GetMapping("/evaluate")
-  public String evaluate(@RequestParam("projectName") String projectName, HttpSession session, Model model) {
+  @GetMapping("/evaluateSelect")
+  public String evaluatsSelect(@RequestParam("projectName") String projectName, HttpSession session) {
     session.setAttribute("projectName", projectName);
+    return "redirect:/evaluate";
+  }
+  
+  @GetMapping("/evaluate")
+  public String evaluate(HttpSession session, Model model) {
+    String projectName = (String) session.getAttribute("projectName");
+    System.out.println(projectName);
     String username = (String) session.getAttribute("username");
     UserEntity user = userRepository.findByUsername(username);
     String apiKey = user.getApi_key();
