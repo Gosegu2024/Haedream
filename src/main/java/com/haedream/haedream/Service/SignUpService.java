@@ -40,7 +40,7 @@ public class SignUpService {
         }
 
         // 비밀번호 입력 확인
-        if ((signupDTO.getPassword() == null || signupDTO.getPassword().trim().isEmpty()) &&
+        if ((signupDTO.getPassword() == null || signupDTO.getPassword().trim().isEmpty()) ||
                 (signupDTO.getConfirmPassword() == null || signupDTO.getConfirmPassword().trim().isEmpty())) {
             throw new IllegalStateException("비밀번호를 입력해주세요.");
         }

@@ -55,52 +55,24 @@
       <div class="con">
         <h1>평가기록</h1>
         <ul class="logList">
-          <li>
-              <p class="index">1.</p>
+          <li th:each="evalList, index : ${evalList}" >
+              <p class="index" th:text="${index.index + 1 + '.'}">1.</p>
               <div class="mid">
-                <div class="projectName">Test Project</div>
-                <span class="modelName">Test model</span>
-                <span class="date">(2024.03.24)</span>
+                <div class="projectName" th:text="${evalList.projectName}"></div>
+                <span class="modelName" th:text="${evalList.username}"></span>
+                <span class="date" th:text="${evalList.evalLogDate}"></span>
               </div>
-            <a th:href="@{/evaluateResult}" class="evalStart">보기</a>
+              
+              <a th:href="@{/evaluateResult(logId=${evalList.logId})}" class="evalStart" onclick="showLoading()">보기</a>
+
+              <!-- 삭제 -->
+              <!-- <div class="delete" th:data-log-id="${evalList.id}">
+                <button class="delete-evaluateLog">
+                  <i class="fa-solid fa-trash-can"></i>
+                </button>
+              </div> -->
+
           </li>
-          <li>
-              <p class="index">2.</p>
-              <div class="mid">
-                <div class="projectName">Test Project</div>
-                <span class="modelName">Test model</span>
-                <span class="date">(2024.03.24)</span>
-              </div>
-            <a th:href="@{/evaluateResult}" class="evalStart">보기</a>
-          </li>
-          <li>
-              <p class="index">3.</p>
-              <div class="mid">
-                <div class="projectName">Test Project</div>
-                <span class="modelName">Test model</span>
-                <span class="date">(2024.03.24)</span>
-              </div>
-            <a th:href="@{/evaluateResult}" class="evalStart">보기</a>
-          </li>
-          <li>
-              <p class="index">4.</p>
-              <div class="mid">
-                <div class="projectName">Test Project</div>
-                <span class="modelName">Test model</span>
-                <span class="date">(2024.03.24)</span>
-              </div>
-            <a th:href="@{/evaluateResult}" class="evalStart">보기</a>
-          </li>
-          <li>
-              <p class="index">5.</p>
-              <div class="mid">
-                <div class="projectName">Test Project</div>
-                <span class="modelName">Test model</span>
-                <span class="date">(2024.03.24)</span>
-              </div>
-            <a th:href="@{/evaluateResult}" class="evalStart">보기</a>
-          </li>
-        </ul>
         <div class="pagination-container">
           <div class="prev-button"><i class="fa-solid fa-angles-left"></i></div>
           <div class="number-button-wrapper"><span class="number-button pageActive">1</span></div>
@@ -314,4 +286,65 @@
     closeButton.addEventListener('click', widgetClose);
   </script>
   <!-- chatbot js end -->
+
+  <!-- LogDelete js start -->
+  <script th:inline="javascript">
+      $(document).ready(function() {
+          function updatePaginationAfterDelete() {
+              let currentItemCount = $('.logList > li').length;
+
+              if (currentItemCount === 0 && currentPage !== 1) {
+                  currentPage--;
+                  totalPages = getTotalPageCount();
+                  renderPageButtons();
+                  renderLogs();
+              }else {
+
+                  renderLogs();
+              }
+          }
+
+          $('.delete-evaluateLog').click(function() {
+              var deleteButton = $(this);
+              var projectName = deleteButton.closest('.delete').attr('data-project-name');
+              var apiKey = deleteButton.closest('.delete').attr('data-api-key');
+              var logId = deleteButton.closest('.delete').attr('data-log-id');
+
+            console.log(projectName)
+            console.log(apiKey)
+            console.log(logId)
+            
+
+              $.ajax({
+                  url: '/evaluateLog/delete',
+                  type: 'POST',
+                  data: JSON.stringify({ apiKey: apiKey, projectName: projectName, id: logId }),
+                  contentType: 'application/json',
+                  dataType: 'json',
+                  success: function(response) {
+                      deleteButton.closest('li').remove();
+                      updateLogNumbers();
+                      updatePaginationAfterDelete();
+                  },
+                  error: function(xhr, status, error) {
+                  }
+              });
+          });
+          function updateLogNumbers() {
+              $('.logList > li').each(function(index) {
+                  var newIndex = index + 1;
+                  $(this).find('.index').text(newIndex + '.');
+              });
+          }
+
+          $('#refreshButton').click(function() {
+              var deleteButton = $('.delete-evaluateLog');
+              var projectName = deleteButton.closest('.delete').attr('data-project-name');
+
+              window.location.href = '/evaluateLog?projectName=' + projectName;
+          });
+      });
+  </script>
+  <!-- LogDelete js end -->
+
 </html>

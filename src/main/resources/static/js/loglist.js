@@ -67,9 +67,7 @@ $('.popupBack').click(function () {
                     });
                     $('.logList').html(logListHtml);
                 },
-                error: function () {
-                    alert("데이터 로딩에 실패했습니다.");
-                }
+                
             });
         });
 

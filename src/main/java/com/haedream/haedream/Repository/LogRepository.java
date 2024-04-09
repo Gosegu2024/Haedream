@@ -11,10 +11,12 @@ import com.haedream.haedream.entity.Log;
 
 @Repository
 public interface LogRepository extends MongoRepository<Log, String> {
-  List<Log> findByApiKeyAndProjectName(String apiKey, String projectName, Sort sort);
+  List<Log> findByApiKeyAndProjectNameAndIsItEval(String apiKey, String projectName, String isItEval, Sort sort);
 
   List<Log> deleteByApiKeyAndProjectNameAndId(String apiKey, String projectName, String id);
 
   Optional<Log> findById(String id);
-  
+
+  List<Log> findByApiKeyAndProjectNameAndIsItEval(String apiKey, String projectName, String IsItEval);
+
 }

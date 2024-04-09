@@ -15,13 +15,13 @@ public class LoglistService { // SaveLogService를 통해 DB 저장된 로그 �
 
     public List<Log> getLogList(String apikey, String projectName) {
         Sort sort = Sort.by(Sort.Direction.DESC, "logDate");
-        return logRepository.findByApiKeyAndProjectName(apikey, projectName, sort);
+        return logRepository.findByApiKeyAndProjectNameAndIsItEval(apikey, projectName, "N", sort);
     }
 
     // 로그 삭제
     public void deleteLogsByApiKeyAndProjectNameAndId(String apiKey, String projectName, String id) {       
     
         logRepository.deleteByApiKeyAndProjectNameAndId(apiKey, projectName, id);
-}
+    }
 
 }
