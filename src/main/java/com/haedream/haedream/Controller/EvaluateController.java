@@ -110,53 +110,45 @@ public class EvaluateController {
     String apiKey = user.getApi_key();
     String projectName = (String) session.getAttribute("projectName");
 
-    // Log에서 apikey, projectName, isItEval 값이 주어진 조건에 맞는 logId를 가져옵니다.
     List<Log> logList = logRepository.findByApiKeyAndProjectNameAndIsItEval(apiKey, projectName, "Y");
 
     List<Eval> evalList = new ArrayList<>();
     for (Log log : logList) {
-      String logId = log.getId();
-      System.out.println(logId);
-      Eval eval = evalRepository.findOneByLogId(logId);
-      evalList.add(eval);
-    }
-
-    System.out.println(evalList.toString());
-
-    // 모델에 값 추가
+        String logId = log.getId();
+        Eval eval = evalRepository.findOneByLogId(logId);
+        evalList.add(eval);
+        }
     model.addAttribute("evalList", evalList);
 
     return "evaluateLog";
   }
 
-  // 평가기록 삭제
+  // 평가기록 삭제 
   @PostMapping("/evaluateLog/delete")
-  public ResponseEntity<Map<String, String>> evaluateLogdelete(@RequestBody Map<String, String> requestMap) {
-    Map<String, String> response = new HashMap<>();
-    try {
-      String logId = requestMap.get("id");
+  public ResponseEntity<Map<String, String>> evaluateLogDelete(@RequestBody Map<String, String> requestMap) {
+      Map<String, String> response = new HashMap<>();
+      try {
+        String logId = requestMap.get("Id");
 
-      // logId를 사용하여 평가 기록 삭제
-      // 여기에 해당 기능을 수행하는 서비스 호출 코드를 추가해야 합니다.
+        evalRepository.deleteByLogId(logId);
 
-      response.put("message", "Log deleted successfully");
-      return ResponseEntity.ok().body(response);
+        Log log = logRepository.findById(logId).orElse(null);
+
+        if (log != null) {
+            log.setIsItEval("N");
+            logRepository.save(log);
+        }
+        response.put("message", "Evaluation deleted successfully");
+        return ResponseEntity.ok().body(response);
     } catch (Exception e) {
-      response.put("error", "Failed to delete log: " + e.getMessage());
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        response.put("error", "Failed to delete evaluation: " + e.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
   }
 
   // 평가 실행
   @GetMapping("/evaluateResult")
-  public String evaluateResult(@RequestParam("logId") String logId,
-      Model model,
-      HttpSession session) {
-
-    // 평가여부 업데이트
-    Log log = logRepository.findById(logId).get();
-    log.setIsItEval("Y");
-    logRepository.save(log);
+  public String evaluateResult(@RequestParam("logId") String logId, Model model, HttpSession session) {
 
     session.setAttribute("logId", logId);
 
@@ -247,13 +239,20 @@ public class EvaluateController {
 
     Eval saveEvalDTO = evalService.saveEval(EvalDTO.parse(evalresult));
 
+    String logId = saveEvalDTO.getLogId();
+    // 평가여부 업데이트
+    Log log = logRepository.findById(logId).get();
+    log.setIsItEval("Y");
+    logRepository.save(log);
+
     String username = saveEvalDTO.getUsername();
     session.setAttribute("username", username);
     String projectName = saveEvalDTO.getProjectName();
     session.setAttribute("projectName", projectName);
 
-    // return ResponseEntity.status(HttpStatus.CREATED).body(saveEvalDTO);
-    return null;
+    //return ResponseEntity.status(HttpStatus.CREATED).body(saveEvalDTO);
+
+    return null; 
   }
 
 }
