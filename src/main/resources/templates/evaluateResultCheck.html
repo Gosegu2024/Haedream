@@ -235,7 +235,7 @@
     let eng = /*[[${eng_list}]]*/ null;
     let output = /*[[${outputdata}]]*/ null;
 
-    function highlightValues(output, eng, han) {
+    function highlightValues(output, eng) {
       output = output.replace(/^\['|'\]$/g, '');
       let highlightedOutput = output.replace(/</g, '&lt;').replace(/>/g, '&gt;');
       
@@ -249,7 +249,7 @@
     }
 
 
-    document.getElementById("outputdata").innerHTML = highlightValues(output, eng, han);
+    document.getElementById("outputdata").innerHTML = highlightValues(output, eng);
 
     document.addEventListener('DOMContentLoaded',function(){
       const filterRadios = document.querySelectorAll('input[name="filter"]');
@@ -261,7 +261,7 @@
           
           if (selectedFilter !== currentFilter) {
                 if (selectedFilter === 'value1') {
-                    document.getElementById("outputdata").innerHTML = highlightValues(output, eng, han);
+                    document.getElementById("outputdata").innerHTML = highlightValues(output, eng);
                 } else if (selectedFilter === 'value2') {
                     document.getElementById("outputdata").innerHTML = output.replaceAll(HighLightPrivacy, '<span class="highlighterO">' + HighLightPrivacy + '</span>');
                 } else if (selectedFilter === 'value3') {
