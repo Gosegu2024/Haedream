@@ -24,6 +24,10 @@
     ></script>
     <!-- js -->
     <script th:src="@{/js/evaluateResult.js}" defer></script>
+    <!-- wordCloud js/css-->
+    <script src="https://golangkorea.github.io/js/jqcloud/jqcloud.min.js"></script>
+    <link rel="stylesheet" href="https://golangkorea.github.io/js/jqcloud/jqcloud.min.css">
+  
   </head>
   <body>
     <header>
@@ -80,23 +84,28 @@
         <div class="output">
           <h2>평가 및 분석</h2>
           <h3>전체 요약</h3>
-          <p class="resultSection" th:text="${evalDTO.evalSummary}"></p><br>
+          <div id="feedbackDiv1"></div><br><hr>
           <h3>관련된 전문 용어 5가지</h3>
-          <p class="resultSection" th:text="${evalDTO.evalTerminology}"></p><br>
+          <div id="feedbackDiv2"></div><br><hr>
           <h3>불확실한 정보</h3>
-          <p class="resultSection" th:text="${evalDTO.evalHallucination}"></p><br>
+          <div id="feedbackDiv3"></div><br><hr>
           <h3>가독성 향상 방법 <span th:text="${evalDTO.evalReadabilityScore} + '점'"></span></h3>
-          <p class="resultSection" th:text="${evalDTO.evalReadability}"></p><br>
+          <div id="feedbackDiv4"></div><br><hr>
           <h3>목적성 <span th:text="${evalDTO.evalPurposeScore} + '점'"></span></h3>
-          <p class="resultSection" th:text="${evalDTO.evalPurpose}"></p><br>
+          <div id="feedbackDiv5"></div><br><hr>
           <h3>문제해결 <span th:text="${evalDTO.evalProblemScore} + '점'"></span></h3>
-          <p class="resultSection" th:text="${evalDTO.evalProblem}"></p><br>
+          <div id="feedbackDiv6"></div><br><hr>
           <h3>창의성 <span th:text="${evalDTO.evalCreativeScore} + '점'"></span></h3>
-          <p class="resultSection" th:text="${evalDTO.evalCreative}"></p><br>
+          <div id="feedbackDiv7"></div><br><hr>
           <h3>모순점 <span th:text="${evalDTO.evalContradictionScore} + '점'"></span></h3>
-          <p class="resultSection" th:text="${evalDTO.evalContradiction}"></p><br>
+          <div id="feedbackDiv8"></div><br><hr>
           <h3>평가기준 평가</h3>
-          <p class="resultSection" th:text="${evalDTO.evalStandard}"></p><br>
+          <div id="feedbackDiv9"></div><br>
+          <!-- <h2>모순점</h2>
+          <p th:text="${evalDTO.HighLightContradiction}"></p><br> 
+          <h2>개인정보유출</h2> 
+          <p th:text="${evalDTO.HighLightPrivacy}"></p><br> -->
+          <div class="word">
             <div class="word1">
               <h2>많이 나온 단어 비교</h2>
               <div class="view">
@@ -105,18 +114,15 @@
             </div>
             <div class="word2">
               <h2>단어 워드클라우드</h2>
-              
+              <input type="hidden" id="wordFreq" th:value="${freqCntList}" />
+              <div class="wordCLoud" style="width: 80%; height: 400px;"></div>
             </div>
-          
-          <!-- <h2>모순점</h2>
-          <p th:text="${evalDTO.HighLightContradiction}"></p><br> 
-          <h2>개인정보유출</h2> 
-          <p th:text="${evalDTO.HighLightPrivacy}"></p><br> -->
+          </div>
         </div>
         <div class="all">
 
           <h2>전체 피드백</h2>
-          <p class="resultSection" th:text="${evalDTO.evalFeedback}"></p>
+          <div id="feedbackDiv"></div>
         </div>
 
           <!-- <h2>빈도수</h2>
@@ -365,6 +371,47 @@
         })
       })
 
+        // 피드백 이쁘게 넣기
+        var feedbackValue = /*[[${evalDTO.evalSummary}]]*/ '';
+        let feedbackHtml1 = "<p>" + feedbackValue + "</p>";
+        $("#feedbackDiv1").append(feedbackHtml1);
+
+        var feedbackValue = /*[[${evalDTO.evalTerminology}]]*/ '';
+        let feedbackHtml2 = "<p>" + feedbackValue + "</p>";
+        $("#feedbackDiv2").append(feedbackHtml2);
+
+        var feedbackValue = /*[[${evalDTO.evalHallucination}]]*/ '';
+        let feedbackHtml3 = "<p>" + feedbackValue + "</p>";
+        $("#feedbackDiv3").append(feedbackHtml3);
+
+        var feedbackValue = /*[[${evalDTO.evalReadability}]]*/ '';
+        let feedbackHtml4 = "<p>" + feedbackValue + "</p>";
+        $("#feedbackDiv4").append(feedbackHtml4);
+
+        var feedbackValue = /*[[${evalDTO.evalPurpose}]]*/ '';
+        let feedbackHtml5 = "<p>" + feedbackValue + "</p>";
+        $("#feedbackDiv5").append(feedbackHtml5);
+
+        var feedbackValue = /*[[${evalDTO.evalProblem}]]*/ '';
+        let feedbackHtml6 = "<p>" + feedbackValue + "</p>";
+        $("#feedbackDiv6").append(feedbackHtml6);
+
+        var feedbackValue = /*[[${evalDTO.evalCreative}]]*/ '';
+        let feedbackHtml7 = "<p>" + feedbackValue + "</p>";
+        $("#feedbackDiv7").append(feedbackHtml7);
+
+        var feedbackValue = /*[[${evalDTO.evalContradiction}]]*/ '';
+        let feedbackHtml8 = "<p>" + feedbackValue + "</p>";
+        $("#feedbackDiv8").append(feedbackHtml8);
+
+        var feedbackValue = /*[[${evalDTO.evalStandard}]]*/ '';
+        let feedbackHtml9 = "<p>" + feedbackValue + "</p>";
+        $("#feedbackDiv9").append(feedbackHtml9);
+
+        var feedbackValue = /*[[${evalDTO.evalFeedback}]]*/ '';
+        let feedbackHtml = "<p>" + feedbackValue + "</p>";
+        $("#feedbackDiv").append(feedbackHtml);
+        
     /*]]>*/
 </script>
 
@@ -372,6 +419,38 @@
   <script type="text/javascript" async defer>
     history.replaceState({},null,location.pathname);
   </script>
+
+  <!-- wordCLoud start -->
+<script type="text/javascript">
+  var words = [];
+  var wordFreqArr = [];
+
+  var wordFreqStr = document.getElementById('wordFreq').value;
+  var delbrackets = wordFreqStr.slice(1, -1).replace(/,\s?\[/g, ',').replace('[', '');
+  var splitted = delbrackets.split('],');
+
+  wordFreqArr.push(splitted[0].split(', '));
+  for (var i = 1; i < splitted.length; i++) {
+      wordFreqArr.push(splitted[i].trim().split(', ').map(function(item) {
+          return item;
+      }));
+  }
+  
+  for(var i=0; i<wordFreqArr.length; i++){
+      words.push({ text: wordFreqArr[i][0], weight: wordFreqArr[i][1]})
+  };
+
+  $(document).ready(function(){
+    $(".wordCLoud").jQCloud(words, {
+      autoResize: true,
+      fontSize: {
+        from: 0.25,
+        to: 0.05
+      }
+    });
+  });
+</script>
+<!-- wordCLoud end -->
 
   <!-- chatbot js start -->
   <script type="text/javascript" async defer>
