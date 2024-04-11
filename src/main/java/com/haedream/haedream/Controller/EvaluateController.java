@@ -127,7 +127,7 @@ public class EvaluateController {
 
   // 평가 결과 다시보기
   @GetMapping("/evaluateResultCheck")
-  public String evaluateResultCheck(@RequestParam("logId") String logid, HttpSession session, Model model){
+  public String evaluateResultCheck(@RequestParam("logId") String logid, HttpSession session, Model model) {
     String username = (String) session.getAttribute("username");
     String projectName = (String) session.getAttribute("projectName");
 
@@ -141,29 +141,31 @@ public class EvaluateController {
   // 평가기록 삭제
   @PostMapping("/evaluateLog/delete")
   public ResponseEntity<Map<String, String>> evaluateLogDelete(@RequestBody Map<String, String> requestMap) {
-      Map<String, String> response = new HashMap<>();
-      try {
-        String logId = requestMap.get("Id");
+    Map<String, String> response = new HashMap<>();
+    try {
+      String logId = requestMap.get("Id");
 
-        evalRepository.deleteByLogId(logId);
+      evalRepository.deleteByLogId(logId);
 
-        Log log = logRepository.findById(logId).orElse(null);
+      Log log = logRepository.findById(logId).orElse(null);
 
-        if (log != null) {
-            log.setIsItEval("N");
-            logRepository.save(log);
-        }
-        response.put("message", "Evaluation deleted successfully");
-        return ResponseEntity.ok().body(response);
+      if (log != null) {
+        log.setIsItEval("N");
+        logRepository.save(log);
+      }
+      response.put("message", "Evaluation deleted successfully");
+      return ResponseEntity.ok().body(response);
     } catch (Exception e) {
-        response.put("error", "Failed to delete evaluation: " + e.getMessage());
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+      response.put("error", "Failed to delete evaluation: " + e.getMessage());
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
   }
 
   // 평가 실행
   @GetMapping("/evaluateResult")
-  public String evaluateResult(@RequestParam("logId") String logId, Model model, HttpSession session) {
+  public String evaluateResult(@RequestParam("logId") String logId,
+      Model model,
+      HttpSession session) {
 
     session.setAttribute("logId", logId);
 
@@ -265,9 +267,9 @@ public class EvaluateController {
     String projectName = saveEvalDTO.getProjectName();
     session.setAttribute("projectName", projectName);
 
-    //return ResponseEntity.status(HttpStatus.CREATED).body(saveEvalDTO);
+    // return ResponseEntity.status(HttpStatus.CREATED).body(saveEvalDTO);
 
-    return null; 
+    return null;
   }
 
 }
