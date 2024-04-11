@@ -132,8 +132,15 @@ public class EvaluateController {
     String projectName = (String) session.getAttribute("projectName");
 
     Eval evalDTO = evalService.getEvalByLogIdAndUsernameAndProjectName(logid, username, projectName);
+    String outputdata = evalDTO.getOutputData();
+    String eng_list = evalDTO.getEng_list();
 
+    // 문자열에서 필요한 부분만 추출하여 처리
+    String[] engList = eng_list.replaceAll("\\[|\\]|'", "").split(",\\s*");
+    
     model.addAttribute("evalDTO", evalDTO);
+    model.addAttribute("outputdata", outputdata);
+    model.addAttribute("eng_list", engList);
 
     return "evaluateResultCheck";
   }

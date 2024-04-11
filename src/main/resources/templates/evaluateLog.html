@@ -63,7 +63,7 @@
                 <span class="date" th:text="${evalList.evalLogDate}"></span>
               </div>
               <a th:href="@{/evaluateResultCheck(logId=${evalList.logId})}" class="evalStart" onclick="showLoading()">보기</a>
-              <div class="delete" th:data-log-id="${evalList.id}">
+              <div class="delete" th:data-log-id="${evalList.logId}">
                 <button class="delete-evaluate">
                   <i class="fa-solid fa-trash-can"></i>
                 </button>
