@@ -17,6 +17,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.haedream.haedream.dto.ListDTO;
 import com.haedream.haedream.dto.request.EvalDTO;
 import com.haedream.haedream.entity.Eval;
 import com.haedream.haedream.entity.Log;
@@ -30,7 +31,6 @@ import com.haedream.haedream.service.LoglistService;
 
 import jakarta.servlet.http.HttpSession;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,6 +65,18 @@ public class EvaluateController {
     return "redirect:/evaluate";
   }
 
+  @GetMapping("/goEvaluateResult")
+  public String goEvaluateResult(@RequestParam("logId") String logId, HttpSession session){
+    session.setAttribute("logId", logId);
+    return "redirect:/evaluateResult";
+  }
+
+  @GetMapping("/goEvaluateResultCheck")
+  public String goEvaluateResultCheck(@RequestParam("logId") String logId, HttpSession session){
+    session.setAttribute("logId", logId);
+    return "redirect:/evaluateResultCheck";
+  }
+
   // 평가하기 가져오기
   @GetMapping("/evaluate")
   public String evaluate(HttpSession session, Model model) {
@@ -87,7 +99,6 @@ public class EvaluateController {
   public ResponseEntity<Map<String, String>> evaluatedelete(@RequestBody Map<String, String> requestMap) {
     Map<String, String> response = new HashMap<>();
     try {
-
       String apiKey = requestMap.get("apiKey");
       String projectName = requestMap.get("projectName");
       String id = requestMap.get("id");
@@ -110,37 +121,37 @@ public class EvaluateController {
     String apiKey = user.getApi_key();
     String projectName = (String) session.getAttribute("projectName");
 
-    List<Log> logList = logRepository.findByApiKeyAndProjectNameAndIsItEval(apiKey, projectName, "Y");
+    List<Log> logList = loglistService.getLogListEvaluated(apiKey, projectName);
+    List<Eval> evalList = evalService.getEvalList(logList);
 
-    List<Eval> evalList = new ArrayList<>();
-    for (Log log : logList) {
-      String logId = log.getId();
-      Eval eval = evalRepository.findOneByLogId(logId);
-      evalList.add(eval);
-    }
-
+    List<ListDTO> listDTOList = evalService.getListDTOList(evalList, logList);
+    
     // 모델에 값 추가
-    model.addAttribute("evalList", evalList);
+    model.addAttribute("dtoList", listDTOList);
 
     return "evaluateLog";
   }
 
   // 평가 결과 다시보기
   @GetMapping("/evaluateResultCheck")
-  public String evaluateResultCheck(@RequestParam("logId") String logid, HttpSession session, Model model) {
+  public String evaluateResultCheck(HttpSession session, Model model) {
     String username = (String) session.getAttribute("username");
     String projectName = (String) session.getAttribute("projectName");
+    String logId = (String) session.getAttribute("logId");
 
-    Eval evalDTO = evalService.getEvalByLogIdAndUsernameAndProjectName(logid, username, projectName);
+    Eval evalDTO = evalService.getEvalByLogIdAndUsernameAndProjectName(logId, username, projectName);
     String outputdata = evalDTO.getOutputData();
     String eng_list = evalDTO.getEng_list();
+    String freqCnt = evalDTO.getFreqCnt();
 
-    // 문자열에서 필요한 부분만 추출하여 처리
-    String[] engList = eng_list.replaceAll("\\[|\\]|'", "").split(",\\s*");
-    
+    // 데이터 타입 변환
+    String[] engList = evalService.eng_list(eng_list);
+    List<String[]> freqCntList = evalService.freqCnt(freqCnt);
+
     model.addAttribute("evalDTO", evalDTO);
     model.addAttribute("outputdata", outputdata);
     model.addAttribute("eng_list", engList);
+    model.addAttribute("freqCnt", freqCntList);
 
     return "evaluateResultCheck";
   }
@@ -154,12 +165,8 @@ public class EvaluateController {
 
       evalRepository.deleteByLogId(logId);
 
-      Log log = logRepository.findById(logId).orElse(null);
+      loglistService.updateIsItEvalN(logId);
 
-      if (log != null) {
-        log.setIsItEval("N");
-        logRepository.save(log);
-      }
       response.put("message", "Evaluation deleted successfully");
       return ResponseEntity.ok().body(response);
     } catch (Exception e) {
@@ -170,12 +177,7 @@ public class EvaluateController {
 
   // 평가 실행
   @GetMapping("/evaluateResult")
-  public String evaluateResult(@RequestParam("logId") String logId,
-      Model model,
-      HttpSession session) {
-
-    session.setAttribute("logId", logId);
-
+  public String evaluateResult(Model model, HttpSession session) {
     String[] result = getLog(session);
     String outputdata = result[0];
     String standard = result[1];
@@ -264,10 +266,7 @@ public class EvaluateController {
     Eval saveEvalDTO = evalService.saveEval(EvalDTO.parse(evalresult));
 
     String logId = saveEvalDTO.getLogId();
-    // 평가여부 업데이트
-    Log log = logRepository.findById(logId).get();
-    log.setIsItEval("Y");
-    logRepository.save(log);
+    loglistService.updateIsItEvalY(logId);
 
     String username = saveEvalDTO.getUsername();
     session.setAttribute("username", username);
@@ -275,7 +274,6 @@ public class EvaluateController {
     session.setAttribute("projectName", projectName);
 
     // return ResponseEntity.status(HttpStatus.CREATED).body(saveEvalDTO);
-
     return null;
   }
 

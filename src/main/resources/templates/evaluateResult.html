@@ -308,7 +308,6 @@
     let HighLightContradiction = /*[[${responseList[0].HighLightContradiction}]]*/ null;
     let HighLightPrivacy = /*[[${responseList[0].HighLightPrivacy}]]*/ null;
     let eng = /*[[${responseList[5]}]]*/ null;
-    let han = /*[[${responseList[6]}]]*/ null;
     let output = /*[[${outputdata}]]*/ null;
 
     console.log(HighLightContradiction);
@@ -316,7 +315,7 @@
     console.log(eng.length);
     console.log(output);
 
-    function highlightValues(output, eng, han) {
+    function highlightValues1(output, eng) {
       output = output.replace(/^\['|'\]$/g, '');
       let highlightedOutput = output.replace(/</g, '&lt;').replace(/>/g, '&gt;');
       
@@ -324,40 +323,52 @@
         const engRegex = new RegExp(`\\b(${eng.join('|')})\\b`, 'g');
         highlightedOutput = highlightedOutput.replace(engRegex, '<span class="highlighterY">$&</span>');
       }
-    
-      if (han.length > 0) {
-        const hanRegex = new RegExp(`\\b(${han.join('|')})\\b`, 'g');
-        highlightedOutput = highlightedOutput.replace(hanRegex, '<span class="highlighterY">$&</span>');
-      }
-    
       highlightedOutput = highlightedOutput.replace(/\n/g, '<br>');
     
       return highlightedOutput;
     }
 
-    document.getElementById("outputdata").innerHTML = highlightValues(output, eng, han);
+    function highlightValues2(output, HighLightValue) {
+      output = output.replace(/^\['|'\]$/g, '');
+      let highlightedOutput = output.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      highlightedOutput = highlightedOutput.replaceAll(HighLightValue, '<span class="highlighterO">' + HighLightValue + '</span>');
+      highlightedOutput = highlightedOutput.replace(/\n/g, '<br>');
+    
+      return highlightedOutput;
+    }
 
-    document.addEventListener('DOMContentLoaded',function(){
-      const filterRadios = document.querySelectorAll('input[name="filter"]');
-      let currentFilter = '';
+    function highlightValues3(output, HighLightValue) {
+      output = output.replace(/^\['|'\]$/g, '');
+      let highlightedOutput = output.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      highlightedOutput = highlightedOutput.replaceAll(HighLightValue, '<span class="highlighterG">' + HighLightValue + '</span>');
+      highlightedOutput = highlightedOutput.replace(/\n/g, '<br>');
+    
+      return highlightedOutput;
+    }
 
-      filterRadios.forEach(function(radio){
-        radio.addEventListener('change',function(){
-          const selectedFilter = document.querySelector('input[name="filter"]:checked').value;
-          
-          if (selectedFilter !== currentFilter){
-            if(selectedFilter === 'value1'){
-              document.getElementById("outputdata").innerHTML = highlightValues(output, eng, han);
-            } else if (selectedFilter === 'value2') {
-          document.getElementById("outputdata").innerHTML = output.replaceAll(HighLightPrivacy, '<span class="highlighterO">' + HighLightPrivacy + '</span>');
-        } else if (selectedFilter === 'value3') {
-          document.getElementById("outputdata").innerHTML = output.replaceAll(HighLightContradiction, '<span class="highlighterG">' + HighLightContradiction + '</span>');
-        }
-        currentFilter = selectedFilter;
-          }
+    document.getElementById("outputdata").innerHTML = highlightValues1(output, eng);
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        const filterRadios = document.querySelectorAll('input[name="filter"]');
+        let currentFilter = '';
+
+        filterRadios.forEach(function (radio) {
+          radio.addEventListener('change', function () {
+            const selectedFilter = document.querySelector('input[name="filter"]:checked').value;
+
+            if (selectedFilter !== currentFilter) {
+              if (selectedFilter === 'value1') {
+                document.getElementById("outputdata").innerHTML = highlightValues1(output, eng);
+              } else if (selectedFilter === 'value2') {
+                document.getElementById("outputdata").innerHTML = highlightValues2(output, HighLightPrivacy);
+              } else if (selectedFilter === 'value3') {
+                document.getElementById("outputdata").innerHTML = highlightValues3(output, HighLightContradiction);
+              }
+              currentFilter = selectedFilter;
+            }
+          })
         })
       })
-    })
 
     /*]]>*/
 </script>

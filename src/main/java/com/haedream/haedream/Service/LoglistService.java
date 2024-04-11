@@ -24,4 +24,25 @@ public class LoglistService { // SaveLogService를 통해 DB 저장된 로그 �
         logRepository.deleteByApiKeyAndProjectNameAndId(apiKey, projectName, id);
     }
 
+    public List<Log> getLogListEvaluated(String apiKey, String projectName) {
+        Sort sort = Sort.by(Sort.Direction.DESC, "logDate");
+        return logRepository.findByApiKeyAndProjectNameAndIsItEval(apiKey, projectName, "Y", sort);
+    }
+
+    // 평가여부 업데이트 "Y"
+    public void updateIsItEvalY(String logId) {
+        Log log = logRepository.findById(logId).get();
+        log.setIsItEval("Y");
+        logRepository.save(log);
+    }
+
+    // 평가여부 업데이트 "N"
+    public void updateIsItEvalN(String logId) {
+        Log log = logRepository.findById(logId).orElse(null);
+        if(log != null){
+            log.setIsItEval("N");
+            logRepository.save(log);
+        }
+    }
+
 }

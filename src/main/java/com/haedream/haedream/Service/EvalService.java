@@ -1,8 +1,14 @@
 package com.haedream.haedream.service;
 
+import com.haedream.haedream.dto.ListDTO;
 import com.haedream.haedream.dto.request.EvalDTO;
 import com.haedream.haedream.entity.Eval;
+import com.haedream.haedream.entity.Log;
 import com.haedream.haedream.repository.EvalRepository;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -63,6 +69,52 @@ public class EvalService {
     public Eval getEvalByLogIdAndUsernameAndProjectName(String logid, String username, String projectName) {
         Eval eval = evalRepository.findOneByLogIdAndUsernameAndProjectName(logid, username, projectName);
         return eval;
-    }    
+    }
+
+    public List<Eval> getEvalList(List<Log> logList) {
+        List<Eval> evalList = new ArrayList<>();
+        for (Log log : logList) {
+            String logId = log.getId();
+            Eval eval = evalRepository.findOneByLogId(logId);
+            evalList.add(eval);
+          }
+        return evalList;
+    }
+
+    public String[] eng_list(String eng_list) {
+        String[] engList = eng_list.replaceAll("\\[|\\]|'", "").split(",\\s*");
+        return engList;
+    }
+
+    public List<String[]> freqCnt(String freqCnt) {
+        List<String[]> freqCntList = new ArrayList<>();
+        String[] items = freqCnt.split("\\), \\(");
+        for (String item : items) {
+            item = item.replaceAll("\\[|\\]|'|\\(|\\)", "");
+            String[] pair = item.split(", ");
+            freqCntList.add(pair);
+        }
+        return freqCntList;
+    }
+
+    public List<ListDTO> getListDTOList(List<Eval> evalList, List<Log> logList) {
+        ListDTO dto = new ListDTO();
+        List<ListDTO> ListDTOList = new ArrayList<>();
+
+        for (Log log : logList) {
+            dto = new ListDTO();
+            for (Eval eval : evalList) {
+                if (log.getId().equals(eval.getLogId())) {
+                    dto.setModelName(log.getModelName());
+                    dto.setLogId(eval.getLogId());
+                    dto.setEvalLogDate(eval.getEvalLogDate());
+                    dto.setProjectName(eval.getProjectName());
+                }
+            }
+            ListDTOList.add(dto);
+        }
+
+        return ListDTOList;
+    }
 
 }

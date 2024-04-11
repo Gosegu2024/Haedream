@@ -63,7 +63,7 @@
                 <span class="date" th:text="${logList.logDate}"></span>
               </div>
               <!-- 수정중 -->
-              <a th:href="@{/evaluateResult(logId=${logList.id})}" class="evalStart" onclick="showLoading()">평가하기</a>
+              <a th:href="@{/goEvaluateResult(logId=${logList.id})}" class="evalStart" onclick="showLoading()">평가하기</a>
             <div class="delete" th:data-project-name="${logList.projectName}" th:data-api-key="${logList.apiKey}" th:data-log-id="${logList.id}">
                 <button class="delete-evaluate">
                     <i class="fa-solid fa-trash-can"></i>

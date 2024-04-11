@@ -55,15 +55,15 @@
       <div class="con">
         <h1>평가기록</h1>
         <ul class="logList">
-          <li th:each="evalList, index : ${evalList}" >
+          <li th:each="dtoList, index : ${dtoList}" >
               <p class="index" th:text="${index.index + 1 + '.'}">1.</p>
               <div class="mid">
-                <div class="projectName" th:if="${evalList != null}" th:text="${evalList.projectName}"></div>
-                <span class="modelName" th:text="${evalList.username}"></span>
-                <span class="date" th:text="${evalList.evalLogDate}"></span>
+                <div class="projectName" th:if="${dtoList != null}" th:text="${dtoList.projectName}"></div>
+                <span class="modelName" th:text="${dtoList.modelName}"></span>
+                <span class="date" th:text="${dtoList.evalLogDate}"></span>
               </div>
-              <a th:href="@{/evaluateResultCheck(logId=${evalList.logId})}" class="evalStart" onclick="showLoading()">보기</a>
-              <div class="delete" th:data-log-id="${evalList.logId}">
+              <a th:href="@{/goEvaluateResultCheck(logId=${dtoList.logId})}" class="evalStart" onclick="showLoading()">보기</a>
+              <div class="delete" th:data-log-id="${dtoList.logId}">
                 <button class="delete-evaluate">
                   <i class="fa-solid fa-trash-can"></i>
                 </button>
