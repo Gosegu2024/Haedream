@@ -226,6 +226,49 @@ header .con {
   margin-left: 5px;
 }
 
+/* .resultSection:last-child{
+  border: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+} */
+
+#lastResult{
+  border: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.word{
+  display: flex;
+  justify-content: space-between;
+}
+.word1{
+  width: 48%;
+  box-sizing: border-box;
+  border: 2px solid var(--gray-color);
+  border-radius: var(--border-radius-size);
+}
+.word1 h2{
+  width: 100%;
+  text-align: center;
+  margin-top: 15px;
+}
+.word2{
+  width: 48%;
+  box-sizing: border-box;
+  border: 2px solid var(--gray-color);
+  border-radius: var(--border-radius-size);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.word2 h2{
+  width: 100%;
+  text-align: center;
+  margin-top: 15px;
+}
+
 .resultSection{
   padding: 10px 0 20px 0;
   border-bottom: 2px solid var(--gray-color);
@@ -276,6 +319,10 @@ header .con {
   border: 2px solid var(--gray-color);
   border-radius: var(--border-radius-size);
   margin-bottom: 40px;
+}
+
+.all .resultSection{
+  border: none;
 }
 
 .all h2 {

@@ -14,6 +14,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet" />
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- jQuery -->
     <script
       src="https://code.jquery.com/jquery-3.7.1.js"
@@ -22,6 +24,10 @@
     ></script>
     <!-- js -->
     <script th:src="@{/js/evaluateResult.js}" defer></script>
+    <!-- wordCloud js/css-->
+    <script src="https://golangkorea.github.io/js/jqcloud/jqcloud.min.js"></script>
+    <link rel="stylesheet" href="https://golangkorea.github.io/js/jqcloud/jqcloud.min.css">
+  
   </head>
   <body>
     <header>
@@ -99,6 +105,20 @@
           <p th:text="${responseList[0][HighLightContradiction]}"></p><br> 
           <h2>개인정보유출</h2> 
           <p th:text="${responseList[0][HighLightPrivacy]}"></p><br> -->
+          <p class="resultSection" th:text="${responseList[0][checkStandard]}"></p><br>
+          <div class="word">
+            <div class="word1">
+              <h2>많이 나온 단어 비교</h2>
+              <div class="view">
+                <canvas id="myChart1"></canvas>
+              </div>
+            </div>
+            <div class="word2">
+              <h2>단어 워드클라우드</h2>
+              <input type="hidden" id="wordFreq" th:value="${responseList[1]}" />
+              <div class="wordCLoud" style="width: 80%; height: 400px;"></div>
+            </div>
+          </div>
         </div>
         <div class="all">
 
@@ -223,6 +243,7 @@
       </div>
     </div>
     <!-- chatbot end -->
+
     <div class="scrollTop">
       <i class="fa-solid fa-arrow-up"></i>
     </div>
@@ -230,7 +251,69 @@
 
 <script th:inline="javascript" defer async>
     /*<![CDATA[*/
+    // 차트
+        const COLORS = [
+      '#4dc9f6',
+      '#f67019',
+      '#f53794',
+      '#537bc4',
+      '#acc236',
+      '#166a8f',
+      '#00a950',
+      '#58595b',
+      '#8549ba'
+    ];
 
+    const TRANS_COLORS = [
+      '#4dc9f673',
+      '#f6701973',
+      '#f5379473',
+      '#537bc473',
+      '#acc23673',
+      '#166a8f73',
+      '#00a95073',
+      '#58595b73',
+      '#8549ba73'
+    ];
+
+    let freqCnt = /*[[${responseList[1]}]]*/ null;
+    let labels = freqCnt.map(item => item[0]);
+    let values = freqCnt.map(item => item[1]);
+
+      const ctx1 = document.getElementById('myChart1');
+
+    new Chart(ctx1, {
+      type:'doughnut',
+      data : {
+        labels : labels ,
+        datasets:[{
+          label : '등장한 횟수' ,
+          data : values,
+          backgroundColor:[
+            '#ff638473',
+            '#36a2eb73',
+            '#4bc0c073',
+            '#ffcd5673',
+            '#ff9f4073',
+            '#acc23673',
+            '#166a8f73',
+            '#00a95073',
+            '#58595b73',
+            '#8549ba73'
+          ],
+        }]
+      },
+      options:{
+        reponsive:true,
+        plugins:{
+          legend:{
+            position:'top',
+          }
+        }
+      }
+  })
+
+    // 하이라이트 효과
     let HighLightContradiction = /*[[${responseList[0].HighLightContradiction}]]*/ null;
     let HighLightPrivacy = /*[[${responseList[0].HighLightPrivacy}]]*/ null;
     let eng = /*[[${responseList[5]}]]*/ null;
@@ -243,13 +326,22 @@
     console.log(output);
 
     function highlightValues(output, eng, han) {
-  for (let i = 0; i < 100; i++) {
-    output = output.replaceAll(eng[i], '<span class="highlighterY">' + eng[i] + '</span>');
-  }
-  for (let i = 0; i < han.length; i++) {
-    output = output.replaceAll(han[i], '<span class="highlighterY">' + han[i] + '</span>');
-  }
-      return output;
+      output = output.replace(/^\['|'\]$/g, '');
+      let highlightedOutput = output.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      
+      if (eng.length > 0) {
+        const engRegex = new RegExp(`\\b(${eng.join('|')})\\b`, 'g');
+        highlightedOutput = highlightedOutput.replace(engRegex, '<span class="highlighterY">$&</span>');
+      }
+    
+      if (han.length > 0) {
+        const hanRegex = new RegExp(`\\b(${han.join('|')})\\b`, 'g');
+        highlightedOutput = highlightedOutput.replace(hanRegex, '<span class="highlighterY">$&</span>');
+      }
+    
+      highlightedOutput = highlightedOutput.replace(/\n/g, '<br>');
+    
+      return highlightedOutput;
     }
 
     // 피드백 이쁘게 넣기
@@ -324,6 +416,38 @@
   <script type="text/javascript" async defer>
     history.replaceState({},null,location.pathname);
   </script>
+
+<!-- wordCLoud start -->
+<script type="text/javascript">
+  var words = [];
+  var wordFreqArr = [];
+
+  var wordFreqStr = document.getElementById('wordFreq').value;
+  var delbrackets = wordFreqStr.slice(1, -1).replace(/,\s?\[/g, ',').replace('[', '');
+  var splitted = delbrackets.split('],');
+
+  wordFreqArr.push(splitted[0].split(', '));
+  for (var i = 1; i < splitted.length; i++) {
+      wordFreqArr.push(splitted[i].trim().split(', ').map(function(item) {
+          return item;
+      }));
+  }
+  
+  for(var i=0; i<wordFreqArr.length; i++){
+      words.push({ text: wordFreqArr[i][0], weight: wordFreqArr[i][1]})
+  };
+
+  $(document).ready(function(){
+    $(".wordCLoud").jQCloud(words, {
+      autoResize: true,
+      fontSize: {
+        from: 0.25,
+        to: 0.05
+      }
+    });
+  });
+</script>
+<!-- wordCLoud end -->
 
   <!-- chatbot js start -->
   <script type="text/javascript" async defer>
