@@ -101,6 +101,7 @@
           <p class="resultSection" th:text="${responseList[0][checkContradiction]}"></p><br>
           <h3>평가기준 평가</h3>
           <p class="resultSection" th:text="${responseList[0][checkStandard]}"></p><br>
+          <div class="word">
             <div class="word1">
               <h2>많이 나온 단어 비교</h2>
               <div class="view">
@@ -112,11 +113,7 @@
               <input type="hidden" id="wordFreq" th:value="${responseList[1]}" />
               <div class="wordCLoud" style="width: 80%; height: 400px;"></div>
             </div>
-          
-          <!-- <h2>모순점</h2>
-          <p th:text="${responseList[0][HighLightContradiction]}"></p><br> 
-          <h2>개인정보유출</h2> 
-          <p th:text="${responseList[0][HighLightPrivacy]}"></p><br> -->
+          </div>
         </div>
         <div class="all">
 
@@ -395,7 +392,11 @@
 
   $(document).ready(function(){
     $(".wordCLoud").jQCloud(words, {
-      autoResize: true
+      autoResize: true,
+      fontSize: {
+        from: 0.25,
+        to: 0.05
+      }
     });
   });
 </script>

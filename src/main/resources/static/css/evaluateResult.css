@@ -239,13 +239,15 @@ header .con {
   justify-content: space-between;
   align-items: center;
 }
-
+.word{
+  display: flex;
+  justify-content: space-between;
+}
 .word1{
   width: 48%;
   box-sizing: border-box;
   border: 2px solid var(--gray-color);
   border-radius: var(--border-radius-size);
-  display: inline-block;
 }
 .word1 h2{
   width: 100%;
@@ -257,7 +259,9 @@ header .con {
   box-sizing: border-box;
   border: 2px solid var(--gray-color);
   border-radius: var(--border-radius-size);
-  display: inline-block;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .word2 h2{
   width: 100%;
