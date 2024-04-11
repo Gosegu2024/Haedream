@@ -41,6 +41,7 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   padding-top: 30px;
+
 }
 
 header {
@@ -146,7 +147,14 @@ header .con {
   display: none;
 }
 
+.container .con{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
 .container .con h1 {
+  width: 100%;
   font-size: var(--font-title);
   font-weight: 500;
   color: var(--font-color);
@@ -154,7 +162,7 @@ header .con {
 }
 
 .input {
-  width: 100%;
+  width: 48%;
   box-sizing: border-box;
   padding: var(--side-padding);
   border: 2px solid var(--gray-color);

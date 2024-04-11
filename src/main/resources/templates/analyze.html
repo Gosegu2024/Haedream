@@ -16,6 +16,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet" />
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- plotly.js -->
+    <script src="https://cdn.plot.ly/plotly-2.30.0.min.js" charset="utf-8"></script>
     <!-- jQuery -->
     <script
       src="https://code.jquery.com/jquery-3.7.1.js"
@@ -58,7 +60,7 @@
         <div class="filter">
           <div class="radio">
             <input type="radio" name="filter" id="value1" value="value1" checked />
-            <label for="value1">최근 6개월</label>
+            <label for="value1">최근 평가 내역 5개</label>
           </div>
           <!-- <div class="radio">
             <input type="radio" name="filter" id="value2" value="value2" />
@@ -69,24 +71,34 @@
             <label for="value3">평가기준3</label>
           </div> -->
         </div>
-        <div class="input">
-          <h2>영단어/한자 등장 횟수 비교</h2>
+        <div class="output">
+          <h2>평가 항목별 점수 비교</h2>
           <div class="view">
             <canvas id="myChart1"></canvas>
           </div>
         </div>
-
-        <div class="output">
+        <div class="input">
           <h2>토큰수 비교</h2>
           <div class="view">
             <canvas id="myChart2"></canvas>
           </div>
         </div>
-        <div class="all">
-          <h2>어색한 문법 횟수</h2>
+        <div class="input">
+          <h2>글자수 비교</h2>
           <div class="view">
             <canvas id="myChart3"></canvas>
           </div>
+        </div>
+
+        <div class="output">
+          <h2>영단어/한자 빈도</h2>
+          <div class="view">
+            <canvas id="myChart4"></canvas>
+          </div>
+        </div>
+        <div class="all">
+          <h2>평가 항목별 통계량</h2>
+          <canvas id="myChart5"></canvas>
         </div>
       </div>
       <!-- con end -->
@@ -171,7 +183,94 @@
     </div>
   </body>
   <!-- chatbot js start -->
-  <script async defer>
+  <script th:inline="javascript" defer async>
+
+    /*<![CDATA[*/
+    let evalList = /*[[${evalList}]]*/ [];
+
+    let evalLogDateList = [];
+    let evalReadabilityScoreList = [];
+    let evalPurposeScoreList = [];
+    let evalProblemScoreList = [];
+    let evalCreativeScoreList = [];
+    let evalContradictionScoreList = [];
+    let freqCntList = [];
+    let tokenCntList = [];
+    let letterCntList = [];
+    let byteCntList = [];
+    let eng_list = [];
+    let chi_list = [];
+
+    function formatDateStringList(dateList){
+      let formattedDateList = [];
+
+      dateList.forEach(function(dateString){
+        let date = new Date(dateString);
+        let year = date.getFullYear();
+        let month = date.getMonth() + 1;
+        let day = date.getDate();
+
+        if (month < 10){
+          month = "0" + month;
+        }
+
+        if (day < 10) {
+          day = '0' + day;
+        }
+
+        formattedDateList.push(year + '-' + month + '-' + day);
+      });
+
+      return formattedDateList;
+    }
+
+    function newFive(){
+
+      evalLogDateList = [];
+      evalReadabilityScoreList = [];
+      evalPurposeScoreList = [];
+      evalProblemScoreList = [];
+      evalCreativeScoreList = [];
+      evalContradictionScoreList = [];
+      freqCntList = [];
+      tokenCntList = [];
+      letterCntList = [];
+      byteCntList = [];
+      eng_list = [];
+      chi_list = [];
+
+      for (let i = 0; i < 5 && i < evalList.length; i++){
+        let currentEval = evalList[i];
+
+        evalLogDateList.push(currentEval.evalLogDate);
+        evalLogDateList = formatDateStringList(evalLogDateList);
+        evalReadabilityScoreList.push(currentEval.evalReadabilityScore);
+        evalPurposeScoreList.push(currentEval.evalPurposeScore);
+        evalProblemScoreList.push(currentEval.evalProblemScore);
+        evalCreativeScoreList.push(currentEval.evalCreativeScore);
+        evalContradictionScoreList.push(currentEval.evalContradictionScore);
+        let stringData = currentEval.freqCnt;
+        let parsedData = JSON.parse(stringData.replace(/'/g, '"').replace(/\(/g, '[').replace(/\)/g, ']'))
+        freqCntList.push(parsedData[0]);
+        tokenCntList.push(currentEval.tokenCnt);
+        letterCntList.push(currentEval.letterCnt);
+        byteCntList.push(currentEval.byteCnt);
+        let engListSize = currentEval.eng_list.split(",");
+        eng_list.push(engListSize.length);
+        let chiListSize = currentEval.chi_list;
+        if (chiListSize === "[]"){
+          chi_list.push([0]);
+        } else{
+          chiListSize = currentEval.chi_list.split(",");
+          chi_list.push(chiListSize.length);
+        }
+            
+          }
+        }
+
+        newFive();
+
+    /*]]>*/
 
     const COLORS = [
       '#4dc9f6',
@@ -185,24 +284,124 @@
       '#8549ba'
     ];
 
+    const TRANS_COLORS = [
+      '#4dc9f673',
+      '#f6701973',
+      '#f5379473',
+      '#537bc473',
+      '#acc23673',
+      '#166a8f73',
+      '#00a95073',
+      '#58595b73',
+      '#8549ba73'
+    ];
+
 
     const ctx1 = document.getElementById('myChart1');
 
     new Chart(ctx1, {
     type: 'bar',
     data: {
-      labels: ['4월','3월','2월','1월','2023년 12월','2023년 11월'],
+      labels: evalLogDateList,
       datasets: [{
-        label: '영단어',
-        data: [56, 19, 39, 50, 27, 32],
+        label: '가독성',
+        data:evalReadabilityScoreList ,
         borderColor:'#4dc9f6',
         backgroundColor:'#4dc9f673',
       },
       {
-        label: '한자',
-        data: [41, 99, 87, 23, 20, 31],
+        label: '목적성',
+        data: evalPurposeScoreList,
         borderColor:'#f67019',
         backgroundColor:'#f6701973',
+      },{
+        label: '문제해결',
+        data: evalProblemScoreList,
+        borderColor:'#f53794',
+        backgroundColor:'#f5379473',
+      },{
+        label: '창의성',
+        data: evalCreativeScoreList,
+        borderColor:'#537bc4',
+        backgroundColor:'#537bc473',
+      },{
+        label: '모순성',
+        data: evalContradictionScoreList,
+        borderColor:'#acc236',
+        backgroundColor:'#acc23673',
+      }]
+    },
+    options: {
+      responsive:true,
+      pulgins : {
+        legend:{
+          position:'top',
+        },
+      },
+    }
+  });
+  
+  const ctx2 = document.getElementById('myChart2');
+
+  new Chart(ctx2, {
+    type:'line',
+    data : {
+      labels : evalLogDateList ,
+      datasets:[{
+        label : '토큰수' ,
+        data : tokenCntList,
+        borderColor:'#ff6384',
+        backgroundColor:'#ff638473'
+      }]
+    },
+    options:{
+      reponsive:true,
+      plugins:{
+        legend:{
+          position:'top',
+        }
+      }
+    }
+  })
+
+  const ctx3 = document.getElementById('myChart3');
+
+  new Chart(ctx3, {
+    type:'line',
+    data : {
+      labels : evalLogDateList ,
+      datasets:[{
+        label : '글자수' ,
+        data : letterCntList,
+        borderColor:'#36a2eb',
+        backgroundColor:'#36a2eb73'
+      }]
+    },
+    options:{
+      reponsive:true,
+      plugins:{
+        legend:{
+          position:'top',
+        }
+      }
+    }
+  })
+
+  const ctx4 = document.getElementById('myChart4');
+
+      new Chart(ctx4, {
+    type: 'bar',
+    data: {
+      labels: evalLogDateList,
+      datasets: [{
+        label: '영단어',
+        data:eng_list ,
+        backgroundColor:'#f6701973',
+      },
+      {
+        label: '한자',
+        data: chi_list,
+        backgroundColor:'#537bc473',
       }]
     },
     options: {
@@ -215,55 +414,90 @@
     }
   });
 
-  const ctx2 = document.getElementById('myChart2');
+  const labels = ['가독성', '목적성', '문제해결', '창의성', '모순성'];
 
-  new Chart(ctx2, {
-    type:'line',
+  function convertStringToNumberList(stringList) {
+            return stringList.map(val => parseFloat(val));
+        }
+
+  evalReadabilityScoreList = convertStringToNumberList(evalReadabilityScoreList);
+  evalPurposeScoreList = convertStringToNumberList(evalPurposeScoreList);
+  evalProblemScoreList = convertStringToNumberList(evalProblemScoreList);
+  evalCreativeScoreList = convertStringToNumberList(evalCreativeScoreList);
+  evalContradictionScoreList = convertStringToNumberList(evalContradictionScoreList);
+
+  function calculateMean(arr) {
+            const sum = arr.reduce((acc, val) => acc + val, 0);
+            return sum / arr.length;
+        }
+  
+  function calculateMedian(arr) {
+            const sortedArr = arr.slice().sort((a, b) => a - b);
+            const mid = Math.floor(sortedArr.length / 2);
+            return sortedArr.length % 2 !== 0 ? sortedArr[mid] : (sortedArr[mid - 1] + sortedArr[mid]) / 2;
+        }
+
+  function calculateStdDev(arr) {
+            const mean = calculateMean(arr);
+            const squaredDiffs = arr.map(val => Math.pow(val - mean, 2));
+            const variance = squaredDiffs.reduce((acc, val) => acc + val, 0) / arr.length;
+            return Math.sqrt(variance);
+        }
+
+  const means = [
+            calculateMean(evalReadabilityScoreList),
+            calculateMean(evalPurposeScoreList),
+            calculateMean(evalProblemScoreList),
+            calculateMean(evalCreativeScoreList),
+            calculateMean(evalContradictionScoreList)
+        ];
+
+  const medians = [
+            calculateMedian(evalReadabilityScoreList),
+            calculateMedian(evalPurposeScoreList),
+            calculateMedian(evalProblemScoreList),
+            calculateMedian(evalCreativeScoreList),
+            calculateMedian(evalContradictionScoreList)
+        ];
+
+  const stdDevs = [
+            calculateStdDev(evalReadabilityScoreList),
+            calculateStdDev(evalPurposeScoreList),
+            calculateStdDev(evalProblemScoreList),
+            calculateStdDev(evalCreativeScoreList),
+            calculateStdDev(evalContradictionScoreList)
+        ];
+
+  const ctx5 = document.getElementById('myChart5');
+  
+  const myChart = new Chart(ctx5,{
+    type:'bar',
     data : {
-      labels : ['4월','3월','2월','1월','2023년 12월','2023년 11월'] ,
+      labels : labels,
       datasets:[{
-        label : '토큰수',
-        data : [56, 19, 39, 50, 27, 32],
-        borderColor:'#4dc9f6',
+        label : '평균' ,
+        data : means,
         backgroundColor:'#4dc9f673',
-        pointStyle:'circle',
-        pointRadius:10,
-        pointHoverRadius:5
+      },
+      {
+        label : '중앙값' ,
+        data : medians,
+        backgroundColor:'#537bc473',
+      },
+      {
+        label : '표준편차' ,
+        data : stdDevs,
+        backgroundColor:'#8549ba73',
       }]
     },
     options:{
-      reponsive:true,
-      plugins:{
-      }
-    }
-  })
-
-  const ctx3 = document.getElementById('myChart3');
-
-  new Chart(ctx3, {
-    type:'doughnut',
-    data : {
-      labels : ['label1','label2','label3','label4','label5'],
-      datasets : [{
-        label : 'Dataset',
-        data : [56, 19, 39, 50, 27],
-        backgroundColor:['#166a8f73','#8549ba73','#58595b73','#4dc9f673','#f6701973'],
-      }]
-    },
-    options: {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top',
-      },
-      title: {
-        display: true,
-        text: 'Chart.js Doughnut Chart'
+      scales:{
+        y:{
+          beginAtZero:true
         }
       }
     }
   })
-  
 
   </script>
 
