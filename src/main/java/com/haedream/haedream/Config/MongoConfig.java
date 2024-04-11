@@ -9,8 +9,9 @@ import java.util.Arrays;
 public class MongoConfig {
 
     @Bean
-    public MongoCustomConversions mongoCustomConversions() {
+    public MongoCustomConversions customConversions() {
         return new MongoCustomConversions(Arrays.asList(
-                new StringToLocalDateTimeConverter())); // 읽기 컨버터 추가
+                new DateToZonedDateTimeConverter(),
+                new ZonedDateTimeToDateConverter()));
     }
 }
