@@ -14,7 +14,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet" />
-       <!-- Chart.js -->
+    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- jQuery -->
     <script
@@ -24,6 +24,10 @@
     ></script>
     <!-- js -->
     <script th:src="@{/js/evaluateResult.js}" defer></script>
+    <!-- wordCloud js/css-->
+    <script src="https://golangkorea.github.io/js/jqcloud/jqcloud.min.js"></script>
+    <link rel="stylesheet" href="https://golangkorea.github.io/js/jqcloud/jqcloud.min.css">
+  
   </head>
   <body>
     <header>
@@ -105,7 +109,8 @@
             </div>
             <div class="word2">
               <h2>단어 워드클라우드</h2>
-              
+              <input type="hidden" id="wordFreq" th:value="${responseList[1]}" />
+              <div class="wordCLoud" style="width: 80%; height: 400px;"></div>
             </div>
           
           <!-- <h2>모순점</h2>
@@ -235,6 +240,7 @@
       </div>
     </div>
     <!-- chatbot end -->
+
     <div class="scrollTop">
       <i class="fa-solid fa-arrow-up"></i>
     </div>
@@ -366,6 +372,34 @@
   <script type="text/javascript" async defer>
     history.replaceState({},null,location.pathname);
   </script>
+
+<!-- wordCLoud start -->
+<script type="text/javascript">
+  var words = [];
+  var wordFreqArr = [];
+
+  var wordFreqStr = document.getElementById('wordFreq').value;
+  var delbrackets = wordFreqStr.slice(1, -1).replace(/,\s?\[/g, ',').replace('[', '');
+  var splitted = delbrackets.split('],');
+
+  wordFreqArr.push(splitted[0].split(', '));
+  for (var i = 1; i < splitted.length; i++) {
+      wordFreqArr.push(splitted[i].trim().split(', ').map(function(item) {
+          return item;
+      }));
+  }
+  
+  for(var i=0; i<wordFreqArr.length; i++){
+      words.push({ text: wordFreqArr[i][0], weight: wordFreqArr[i][1]})
+  };
+
+  $(document).ready(function(){
+    $(".wordCLoud").jQCloud(words, {
+      autoResize: true
+    });
+  });
+</script>
+<!-- wordCLoud end -->
 
   <!-- chatbot js start -->
   <script type="text/javascript" async defer>
