@@ -1,7 +1,5 @@
 package com.haedream.haedream.dto;
 
-import java.time.LocalDateTime;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,7 +8,7 @@ import lombok.Setter;
 public class ListDTO {
     private String projectName;
     private String modelName;
-    private LocalDateTime evalLogDate;
+    private String FormattedevalLogDate;
     private String logId;
 
 }

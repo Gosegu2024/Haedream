@@ -60,7 +60,7 @@
               <div class="mid">
                 <div class="projectName" th:if="${dtoList != null}" th:text="${dtoList.projectName}"></div>
                 <span class="modelName" th:text="${dtoList.modelName}"></span>
-                <span class="date" th:text="${dtoList.evalLogDate}"></span>
+                <span class="date" th:text="${dtoList.FormattedevalLogDate}"></span>
               </div>
               <a th:href="@{/goEvaluateResultCheck(logId=${dtoList.logId})}" class="evalStart" onclick="showLoading()">보기</a>
               <div class="delete" th:data-log-id="${dtoList.logId}">
