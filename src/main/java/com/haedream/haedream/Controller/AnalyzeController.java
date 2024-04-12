@@ -23,6 +23,9 @@ public class AnalyzeController {
     String projectName = (String) session.getAttribute("projectName");
     String username = (String) session.getAttribute("username");
 
+    if (projectName == null || username == null) {
+      return "redirect:/main";
+    }
     List<Eval> evalList = analyzeService.findByProjectNameAndUsernameOrderByEvalLogDateDesc(projectName, username);
 
     model.addAttribute("evalList", evalList);

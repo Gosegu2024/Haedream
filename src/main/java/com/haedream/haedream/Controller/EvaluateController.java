@@ -84,6 +84,10 @@ public class EvaluateController {
   public String evaluate(HttpSession session, Model model) {
     String projectName = (String) session.getAttribute("projectName");
     String username = (String) session.getAttribute("username");
+
+    if (projectName == null || username == null) {
+      return "redirect:/main";
+    }
     UserEntity user = userRepository.findByUsername(username);
     String apiKey = user.getApi_key();
 
@@ -133,6 +137,10 @@ public class EvaluateController {
     UserEntity user = userRepository.findByUsername(username);
     String apiKey = user.getApi_key();
     String projectName = (String) session.getAttribute("projectName");
+
+    if (projectName == null || username == null) {
+      return "redirect:/main";
+    }
 
     List<Log> logList = loglistService.getLogListEvaluated(apiKey, projectName);
     List<Eval> evalList = evalService.getEvalList(logList);
