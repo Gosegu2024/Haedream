@@ -28,9 +28,11 @@ import com.haedream.haedream.repository.ProjectRepository;
 import com.haedream.haedream.repository.UserRepository;
 import com.haedream.haedream.service.EvalService;
 import com.haedream.haedream.service.LoglistService;
+import com.haedream.haedream.util.DateUtils;
 
 import jakarta.servlet.http.HttpSession;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,13 +68,13 @@ public class EvaluateController {
   }
 
   @GetMapping("/goEvaluateResult")
-  public String goEvaluateResult(@RequestParam("logId") String logId, HttpSession session){
+  public String goEvaluateResult(@RequestParam("logId") String logId, HttpSession session) {
     session.setAttribute("logId", logId);
     return "redirect:/evaluateResult";
   }
 
   @GetMapping("/goEvaluateResultCheck")
-  public String goEvaluateResultCheck(@RequestParam("logId") String logId, HttpSession session){
+  public String goEvaluateResultCheck(@RequestParam("logId") String logId, HttpSession session) {
     session.setAttribute("logId", logId);
     return "redirect:/evaluateResultCheck";
   }
@@ -88,10 +90,21 @@ public class EvaluateController {
     // logListService 호출
     List<Log> logList = loglistService.getLogList(apiKey, projectName);
 
-    // 모델에 값 추가
-    model.addAttribute("logList", logList);
+    // 로그 날짜 포맷팅 및 모델에 추가
+    List<Map<String, String>> formattedLogs = new ArrayList<>();
+    for (Log log : logList) {
+      Map<String, String> logDetails = new HashMap<>();
+      logDetails.put("projectName", log.getProjectName());
+      logDetails.put("modelName", log.getModelName());
+      logDetails.put("logDate", DateUtils.formatZonedDateTime(log.getLogDate()));
+      logDetails.put("id", log.getId()); // 'id' 키를 추가
+      formattedLogs.add(logDetails);
+    }
 
-    return "evaluate";
+    // 모델에 포맷팅된 로그 리스트 추가
+    model.addAttribute("formattedLogs", formattedLogs);
+
+    return "evaluate"; // 반환되는 뷰 이름
   }
 
   // 평가하기 삭제
@@ -125,7 +138,7 @@ public class EvaluateController {
     List<Eval> evalList = evalService.getEvalList(logList);
 
     List<ListDTO> listDTOList = evalService.getListDTOList(evalList, logList);
-    
+
     // 모델에 값 추가
     model.addAttribute("dtoList", listDTOList);
 

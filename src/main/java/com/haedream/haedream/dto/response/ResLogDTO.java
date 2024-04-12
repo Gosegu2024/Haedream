@@ -1,6 +1,7 @@
 package com.haedream.haedream.dto.response;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.ZoneId;
 
 import com.haedream.haedream.entity.Log;
 
@@ -11,14 +12,14 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ResLogDTO {
-    // API 노출 X
     private String modelName;
     private String projectName;
     private String inputData;
     private String outputData;
-    private LocalDateTime logDate;
+    private ZonedDateTime logDate;
     private String id;
     private String isItEval;
+    private String formattedDate; // 포맷된 날짜 문자열 추가
 
     @Builder
     public ResLogDTO(
@@ -26,22 +27,22 @@ public class ResLogDTO {
             String projectName,
             String inputData,
             String outputData,
-            LocalDateTime logDate,
+            ZonedDateTime logDate,
             String id,
-            String isItEval) {
+            String isItEval,
+            String formattedDate) {
         this.modelName = modelName;
         this.projectName = projectName;
         this.inputData = inputData;
         this.outputData = outputData;
-        this.logDate = logDate;
+        this.logDate = logDate.withZoneSameInstant(ZoneId.of("Asia/Seoul"));
         this.id = id;
         this.isItEval = isItEval;
+        this.formattedDate = formattedDate; // 초기화
     }
 
-    // Entity를 DTO로 변환
     public static ResLogDTO fromEntity(Log log) {
-        return ResLogDTO
-                .builder()
+        return ResLogDTO.builder()
                 .modelName(log.getModelName())
                 .projectName(log.getProjectName())
                 .inputData(log.getInputData())
@@ -49,6 +50,7 @@ public class ResLogDTO {
                 .logDate(log.getLogDate())
                 .id(log.getId())
                 .isItEval(log.getIsItEval())
+                .formattedDate(log.getFormattedDate()) // DTO 생성 시 포맷된 날짜도 설정
                 .build();
     }
 }

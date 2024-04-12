@@ -1,11 +1,12 @@
 package com.haedream.haedream.dto;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.ZoneId;
 
 public class ProjectDTO {
     private String id;
     private String projectName;
-    private LocalDateTime createDate;
+    private ZonedDateTime createDate; // ZonedDateTime 사용
     private String username;
     private String standard;
 
@@ -25,12 +26,12 @@ public class ProjectDTO {
         this.projectName = projectName;
     }
 
-    public LocalDateTime getCreateDate() {
+    public ZonedDateTime getCreateDate() {
         return this.createDate;
     }
 
-    public void setCreateDate(LocalDateTime createDate) {
-        this.createDate = createDate;
+    public void setCreateDate(ZonedDateTime createDate) {
+        this.createDate = createDate.withZoneSameInstant(ZoneId.of("Asia/Seoul")); // ZonedDateTime 설정
     }
 
     public String getUsername() {
@@ -45,8 +46,7 @@ public class ProjectDTO {
         return this.standard;
     }
 
-    public void setEvalStandard(String standard) {
+    public void setStandard(String standard) {
         this.standard = standard;
     }
-
 }

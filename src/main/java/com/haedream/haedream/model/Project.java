@@ -1,6 +1,7 @@
 package com.haedream.haedream.model;
 
-import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -21,8 +22,9 @@ public class Project {
     private String id;
     private String projectName;
     private String standard;
-    private LocalDateTime createDate;
+    private ZonedDateTime createDate; // LocalDateTime을 ZonedDateTime으로 변경
     private String username;
+    private String owner;
 
     public String getId() {
         return this.id;
@@ -48,12 +50,12 @@ public class Project {
         this.standard = standard;
     }
 
-    public LocalDateTime getCreateDate() {
+    public ZonedDateTime getCreateDate() {
         return this.createDate;
     }
 
-    public void setCreateDate(LocalDateTime createDate) {
-        this.createDate = createDate;
+    public void setCreateDate(ZonedDateTime createDate) {
+        this.createDate = createDate.withZoneSameInstant(ZoneId.of("Asia/Seoul"));
     }
 
     public String getUsername() {
@@ -64,8 +66,6 @@ public class Project {
         this.username = username;
     }
 
-    private String owner;
-
     public String getOwner() {
         return owner;
     }
@@ -73,5 +73,4 @@ public class Project {
     public void setOwner(String owner) {
         this.owner = owner;
     }
-
 }

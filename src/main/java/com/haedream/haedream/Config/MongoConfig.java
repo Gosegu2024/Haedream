@@ -11,7 +11,7 @@ public class MongoConfig {
     @Bean
     public MongoCustomConversions customConversions() {
         return new MongoCustomConversions(Arrays.asList(
-                new DateToZonedDateTimeConverter(),
-                new ZonedDateTimeToDateConverter()));
+                new ZonedDateTimeToSeoulDateConverter(),
+                new SeoulDateToZonedDateTimeConverter()));
     }
 }

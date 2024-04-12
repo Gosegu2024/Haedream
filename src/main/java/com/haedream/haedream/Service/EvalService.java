@@ -5,6 +5,7 @@ import com.haedream.haedream.dto.request.EvalDTO;
 import com.haedream.haedream.entity.Eval;
 import com.haedream.haedream.entity.Log;
 import com.haedream.haedream.repository.EvalRepository;
+import com.haedream.haedream.util.DateUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,16 +53,17 @@ public class EvalService {
                 .byteCnt(evalDTO.getByteCnt())
                 .eng_list(evalDTO.getEng_list())
                 .chi_list(evalDTO.getChi_list())
+                .formattedevalLogDate(evalDTO.getFormattedevalLogDate())
                 .build();
 
         // MongoDB에 저장
         eval = evalRepository.save(eval);
         return eval;
     }
-        
+
     // 로그 삭제
-    public void deleteEvalsByLogId(String LogId) {       
-    
+    public void deleteEvalsByLogId(String LogId) {
+
         evalRepository.deleteEvalsByLogId(LogId);
     }
 
@@ -77,7 +79,7 @@ public class EvalService {
             String logId = log.getId();
             Eval eval = evalRepository.findOneByLogId(logId);
             evalList.add(eval);
-          }
+        }
         return evalList;
     }
 
@@ -105,9 +107,10 @@ public class EvalService {
             dto = new ListDTO();
             for (Eval eval : evalList) {
                 if (log.getId().equals(eval.getLogId())) {
+                    String formattedDate = DateUtils.formatZonedDateTime(eval.getEvalLogDate());
                     dto.setModelName(log.getModelName());
                     dto.setLogId(eval.getLogId());
-                    dto.setEvalLogDate(eval.getEvalLogDate());
+                    dto.setFormattedevalLogDate(formattedDate);
                     dto.setProjectName(eval.getProjectName());
                 }
             }

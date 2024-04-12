@@ -55,19 +55,21 @@
       <div class="con">
         <h1>평가하기</h1>
         <ul class="logList">
-          <li th:each="logList, index : ${logList}" >
+          <ul class="logList">
+            <li th:each="log, index : ${formattedLogs}">
               <p class="index" th:text="${index.index + 1 + '.'}">1.</p>
               <div class="mid">
-                <div class="projectName" th:text="${logList.projectName}"></div>
-                <span class="modelName" th:text="${logList.modelName}"></span>
-                <span class="date" th:text="${logList.logDate}"></span>
+                <div class="projectName" th:text="${log['projectName']}"></div>
+                <span class="modelName" th:text="${log['modelName']}"></span>
+                <span class="date" th:text="${log['logDate']}"></span>
               </div>
               <!-- 수정중 -->
-              <a th:href="@{/goEvaluateResult(logId=${logList.id})}" class="evalStart" onclick="showLoading()">평가하기</a>
-            <div class="delete" th:data-project-name="${logList.projectName}" th:data-api-key="${logList.apiKey}" th:data-log-id="${logList.id}">
-                <button class="delete-evaluate">
-                    <i class="fa-solid fa-trash-can"></i>
-                </button>
+              <a th:href="@{/goEvaluateResult(logId=${log.id})}" class="evalStart" onclick="showLoading()">평가하기</a>
+          <div class="delete" th:data-project-name="${log['projectName']}" th:data-api-key="${log['apiKey']}"
+            th:data-log-id="${log['id']}">
+            <button class="delete-evaluate">
+              <i class="fa-solid fa-trash-can"></i>
+            </button>
             </div>
           </li>
         </ul>
@@ -163,267 +165,273 @@
   <script th:inline="javascript" async defer>
     history.replaceState({},null,location.pathname);
 
-    function showLoading() {
+  function showLoading() {
     document.getElementById("loading-overlay").style.display = "block";
-}
+  }
 
-    function hideLoading() {
-        document.getElementById("loading-overlay").style.display = "none";
+  function hideLoading() {
+    document.getElementById("loading-overlay").style.display = "none";
+  }
+
+  // 페이지네이션
+  /*<![CDATA[*//*]]>*/
+  const count_per_page = 5;
+  let listCount = $('.logList > li').length;
+  let currentPage = 1;
+  let totalPages;
+
+  const numberButtonWrapper = document.querySelector('.number-button-wrapper');
+
+  const getTotalPageCount = () => {
+    return Math.ceil(listCount / count_per_page);
+  };
+
+  const renderPageButtons = () => {
+    numberButtonWrapper.innerHTML = '';
+
+    const startPage = Math.max(1, currentPage - 2);
+    const endPage = Math.min(totalPages, startPage + count_per_page - 1);
+
+    for (let i = startPage; i <= endPage; i++) {
+      numberButtonWrapper.innerHTML += `<span class="number-button ${currentPage === i ? 'pageActive' : ''}" data-page="${i}">${i}</span>`;
     }
 
-    // 페이지네이션
-    /*<![CDATA[*//*]]>*/
-const count_per_page = 5;
-let listCount = $('.logList > li').length;
-let currentPage = 1;
-let totalPages;
+    if (startPage > 1) {
+      numberButtonWrapper.innerHTML = `<span class="number-button" data-page="1">1</span><span>...</span>` + numberButtonWrapper.innerHTML;
+    }
+    if (endPage < totalPages) {
+      numberButtonWrapper.innerHTML += `<span>...</span><span class="number-button" data-page="${totalPages}">${totalPages}</span>`;
+    }
+  };
 
-const numberButtonWrapper = document.querySelector('.number-button-wrapper');
+  numberButtonWrapper.addEventListener('click', (e) => {
+    if (e.target.classList.contains('number-button')) {
+      currentPage = parseInt(e.target.dataset.page);
+      renderLogs();
+      renderPageButtons();
+    }
+  });
 
-const getTotalPageCount = () => {
-  return Math.ceil(listCount / count_per_page);
-};
+  const prevButton = document.querySelector('.prev-button:first-child');
+  const nextButton = document.querySelector('.prev-button:last-child');
 
-const renderPageButtons = () => {
-  numberButtonWrapper.innerHTML = '';
+  prevButton.addEventListener('click', () => {
+    if (currentPage > 1) {
+      currentPage--;
+      renderLogs();
+      renderPageButtons();
+    }
+  });
 
-  const startPage = Math.max(1, currentPage - 2);
-  const endPage = Math.min(totalPages, startPage + count_per_page - 1);
+  nextButton.addEventListener('click', () => {
+    if (currentPage < totalPages) {
+      currentPage++;
+      renderLogs();
+      renderPageButtons();
+    }
+  });
 
-  for (let i = startPage; i <= endPage; i++) {
-    numberButtonWrapper.innerHTML += `<span class="number-button ${currentPage === i ? 'pageActive' : ''}" data-page="${i}">${i}</span>`;
-  }
+  const renderLogs = () => {
+    let startIdx = (currentPage - 1) * count_per_page;
+    let endIdx = Math.min(startIdx + count_per_page, listCount);
 
-  if (startPage > 1) {
-    numberButtonWrapper.innerHTML = `<span class="number-button" data-page="1">1</span><span>...</span>` + numberButtonWrapper.innerHTML;
-  }
-  if (endPage < totalPages) {
-    numberButtonWrapper.innerHTML += `<span>...</span><span class="number-button" data-page="${totalPages}">${totalPages}</span>`;
-  }
-};
+    $(".logList > li").hide();
+    $(".logList > li").slice(startIdx, endIdx).show();
+  };
 
-numberButtonWrapper.addEventListener('click', (e) => {
-  if (e.target.classList.contains('number-button')) {
-    currentPage = parseInt(e.target.dataset.page);
-    renderLogs();
+  const initializePagination = () => {
+    totalPages = getTotalPageCount();
     renderPageButtons();
-  }
-});
-
-const prevButton = document.querySelector('.prev-button:first-child');
-const nextButton = document.querySelector('.prev-button:last-child');
-
-prevButton.addEventListener('click', () => {
-  if (currentPage > 1) {
-    currentPage--;
     renderLogs();
-    renderPageButtons();
-  }
-});
+  };
 
-nextButton.addEventListener('click', () => {
-  if (currentPage < totalPages) {
-    currentPage++;
-    renderLogs();
-    renderPageButtons();
-  }
-});
+  initializePagination();
 
-const renderLogs = () => {
-  let startIdx = (currentPage - 1) * count_per_page;
-  let endIdx = Math.min(startIdx + count_per_page, listCount);
+  //  챗봇
+  window.addEventListener('message', function (event) {
+    const { e, params } = event.data;
 
-  $(".logList > li").hide();
-  $(".logList > li").slice(startIdx, endIdx).show();
-};
-
-const initializePagination = () => {
-  totalPages = getTotalPageCount();
-  renderPageButtons();
-  renderLogs();
-};
-
-initializePagination();
-
-//  챗봇
-    window.addEventListener('message', function (event) {
-      const { e, params } = event.data;
-
-      if (e === 'widget-load') {
-        const isMobile = /iPhone|iPad|iPod|Android/i.test(window.navigator.userAgent);
-
-        const widgetRoot = document.getElementById('widget-root');
-        const widgetButton = document.getElementById('widget-button');
-        const closeButton = document.getElementById('widget-close-button');
-        const widgetOverlay = document.getElementById('widget-overlay');
-        const iframe = document.getElementById('widget-iframe');
-
-        if (!widgetRoot || !widgetButton || !closeButton || !widgetOverlay || !iframe)
-          throw new Error('Failed to load widget plug-in elements');
-
-        widgetRoot.style.display = 'block';
-        widgetRoot.style.position = 'relative';
-        widgetRoot.style.zIndex = '2147483639';
-
-        widgetButton.style.display = 'flex';
-        widgetButton.style.alignItems = 'center';
-        widgetButton.style.justifyContent = 'center';
-        widgetButton.style.position = 'fixed';
-        widgetButton.style.bottom = params.bottomSpacing + 'px';
-        widgetButton.style.right = params.sideSpacing + 'px';
-        widgetButton.style.background = 'none';
-        widgetButton.style.border = 'none';
-        widgetButton.style.margin = '0';
-        widgetButton.style.padding = '0';
-        widgetButton.style.cursor = 'pointer';
-        widgetButton.style.borderRadius = '32px';
-        widgetButton.style.overflow = 'hidden';
-        widgetButton.style.boxShadow =
-          'rgba(255, 255, 255, 0.12) 0px 0px 2px 0px inset, rgba(0, 0, 0, 0.05) 0px 0px 2px 1px,rgba(0, 0, 0, 0.3) 0px 12px 60px';
-
-        closeButton.style.display = 'none';
-        closeButton.style.alignItems = 'center';
-        closeButton.style.justifyContent = 'center';
-        closeButton.style.position = 'fixed';
-        closeButton.style.bottom = params.bottomSpacing + 'px';
-        closeButton.style.right = params.sideSpacing + 'px';
-        closeButton.style.background = 'none';
-        closeButton.style.border = 'none';
-        closeButton.style.margin = '0';
-        closeButton.style.padding = '0';
-        closeButton.style.cursor = 'pointer';
-        closeButton.style.borderRadius = '32px';
-        closeButton.style.overflow = 'hidden';
-        closeButton.style.boxShadow =
-          'rgba(255, 255, 255, 0.12) 0px 0px 2px 0px inset, rgba(0, 0, 0, 0.05) 0px 0px 2px 1px,rgba(0, 0, 0, 0.3) 0px 12px 60px';
-
-        widgetOverlay.style.display = 'none';
-        widgetOverlay.style.position = 'fixed';
-        widgetOverlay.style.bottom = isMobile ? '0px' : params.bottomSpacing + 96 + 'px';
-        widgetOverlay.style.right = isMobile ? '0px' : params.sideSpacing + 'px';
-        widgetOverlay.style.width = isMobile ? '100%' : '430px';
-        widgetOverlay.style.maxHeight = isMobile ? '100dvh' : '690px';
-        widgetOverlay.style.height = isMobile ? '100dvh' : 'calc(100% - 100px)';
-        widgetOverlay.style.boxShadow =
-          'rgba(255, 255, 255, 0.12) 0px 0px 2px 0px inset, rgba(0, 0, 0, 0.05) 0px 0px 2px 1px,rgba(0, 0, 0, 0.3) 0px 12px 60px';
-        widgetOverlay.style.borderRadius = isMobile ? '0px' : '32px';
-        widgetOverlay.style.overflow = 'hidden';
-
-        iframe.style.pointerEvents = 'all';
-        iframe.style.background = 'none';
-        iframe.style.border = '0px';
-        iframe.style.float = 'none';
-        iframe.style.inset = '0px';
-        iframe.style.width = '100%';
-        iframe.style.height = '100%';
-        iframe.style.margin = '0px';
-        iframe.style.padding = '0px';
-        iframe.style.minHeight = '0px';
-      }
-
-      if (e === 'widget-close') {
-        const closeButton = document.getElementById('widget-close-button');
-        closeButton.style.display = 'none';
-
-        const widgetButton = document.getElementById('widget-button');
-        widgetButton.style.display = 'flex';
-
-        const widgetOverlay = document.getElementById('widget-overlay');
-        widgetOverlay.style.display = 'none';
-
-        const isMobile = /iPhone|iPad|iPod|Android/i.test(window.navigator.userAgent);
-
-        if (isMobile) document.body.style.removeProperty("overflow")
-      }
-    });
-  </script>
-  <script type="text/javascript">
-    function widgetOpen(e) {
+    if (e === 'widget-load') {
       const isMobile = /iPhone|iPad|iPod|Android/i.test(window.navigator.userAgent);
 
-      if (isMobile) document.body.style.overflow = "hidden";
-
-      e.currentTarget.style.display = 'none';
+      const widgetRoot = document.getElementById('widget-root');
+      const widgetButton = document.getElementById('widget-button');
       const closeButton = document.getElementById('widget-close-button');
-      closeButton.style.display = 'flex';
-
       const widgetOverlay = document.getElementById('widget-overlay');
-      widgetOverlay.style.display = 'flex';
-
       const iframe = document.getElementById('widget-iframe');
 
-      if (!iframe) throw new Error('Failed to load widget plug-in elements');
+      if (!widgetRoot || !widgetButton || !closeButton || !widgetOverlay || !iframe)
+        throw new Error('Failed to load widget plug-in elements');
 
-      iframe.contentWindow.postMessage({ e: 'open-widget' }, '*');
+      widgetRoot.style.display = 'block';
+      widgetRoot.style.position = 'relative';
+      widgetRoot.style.zIndex = '2147483639';
+
+      widgetButton.style.display = 'flex';
+      widgetButton.style.alignItems = 'center';
+      widgetButton.style.justifyContent = 'center';
+      widgetButton.style.position = 'fixed';
+      widgetButton.style.bottom = params.bottomSpacing + 'px';
+      widgetButton.style.right = params.sideSpacing + 'px';
+      widgetButton.style.background = 'none';
+      widgetButton.style.border = 'none';
+      widgetButton.style.margin = '0';
+      widgetButton.style.padding = '0';
+      widgetButton.style.cursor = 'pointer';
+      widgetButton.style.borderRadius = '32px';
+      widgetButton.style.overflow = 'hidden';
+      widgetButton.style.boxShadow =
+        'rgba(255, 255, 255, 0.12) 0px 0px 2px 0px inset, rgba(0, 0, 0, 0.05) 0px 0px 2px 1px,rgba(0, 0, 0, 0.3) 0px 12px 60px';
+
+      closeButton.style.display = 'none';
+      closeButton.style.alignItems = 'center';
+      closeButton.style.justifyContent = 'center';
+      closeButton.style.position = 'fixed';
+      closeButton.style.bottom = params.bottomSpacing + 'px';
+      closeButton.style.right = params.sideSpacing + 'px';
+      closeButton.style.background = 'none';
+      closeButton.style.border = 'none';
+      closeButton.style.margin = '0';
+      closeButton.style.padding = '0';
+      closeButton.style.cursor = 'pointer';
+      closeButton.style.borderRadius = '32px';
+      closeButton.style.overflow = 'hidden';
+      closeButton.style.boxShadow =
+        'rgba(255, 255, 255, 0.12) 0px 0px 2px 0px inset, rgba(0, 0, 0, 0.05) 0px 0px 2px 1px,rgba(0, 0, 0, 0.3) 0px 12px 60px';
+
+      widgetOverlay.style.display = 'none';
+      widgetOverlay.style.position = 'fixed';
+      widgetOverlay.style.bottom = isMobile ? '0px' : params.bottomSpacing + 96 + 'px';
+      widgetOverlay.style.right = isMobile ? '0px' : params.sideSpacing + 'px';
+      widgetOverlay.style.width = isMobile ? '100%' : '430px';
+      widgetOverlay.style.maxHeight = isMobile ? '100dvh' : '690px';
+      widgetOverlay.style.height = isMobile ? '100dvh' : 'calc(100% - 100px)';
+      widgetOverlay.style.boxShadow =
+        'rgba(255, 255, 255, 0.12) 0px 0px 2px 0px inset, rgba(0, 0, 0, 0.05) 0px 0px 2px 1px,rgba(0, 0, 0, 0.3) 0px 12px 60px';
+      widgetOverlay.style.borderRadius = isMobile ? '0px' : '32px';
+      widgetOverlay.style.overflow = 'hidden';
+
+      iframe.style.pointerEvents = 'all';
+      iframe.style.background = 'none';
+      iframe.style.border = '0px';
+      iframe.style.float = 'none';
+      iframe.style.inset = '0px';
+      iframe.style.width = '100%';
+      iframe.style.height = '100%';
+      iframe.style.margin = '0px';
+      iframe.style.padding = '0px';
+      iframe.style.minHeight = '0px';
     }
-    function widgetClose(e) {
-      e.currentTarget.style.display = 'none';
+
+    if (e === 'widget-close') {
+      const closeButton = document.getElementById('widget-close-button');
+      closeButton.style.display = 'none';
+
       const widgetButton = document.getElementById('widget-button');
       widgetButton.style.display = 'flex';
 
       const widgetOverlay = document.getElementById('widget-overlay');
       widgetOverlay.style.display = 'none';
+
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(window.navigator.userAgent);
+
+      if (isMobile) document.body.style.removeProperty("overflow")
     }
+  });
 
-    const widgetButton = document.getElementById('widget-button');
+
+</script>
+<script type="text/javascript">
+  function widgetOpen(e) {
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(window.navigator.userAgent);
+
+    if (isMobile) document.body.style.overflow = "hidden";
+
+    e.currentTarget.style.display = 'none';
     const closeButton = document.getElementById('widget-close-button');
+    closeButton.style.display = 'flex';
 
-    if (!widgetButton || !closeButton) throw new Error('No button');
-    widgetButton.addEventListener('click', widgetOpen);
-    closeButton.addEventListener('click', widgetClose);
-  </script>
-  <!-- chatbot js end -->
-  
-  <!-- evalDelete js start -->
-  <script th:inline="javascript">
-      $(document).ready(function() {
-          function updatePaginationAfterDelete() {
-              let currentItemCount = $('.logList > li').length;
+    const widgetOverlay = document.getElementById('widget-overlay');
+    widgetOverlay.style.display = 'flex';
 
-              if (currentItemCount === 0 && currentPage !== 1) {
-                  currentPage--;
-                  totalPages = getTotalPageCount();
-                  renderPageButtons();
-                  renderLogs();
-              }else {
-                  renderLogs();
-              }
-          }
-          $('.delete-evaluate').click(function() {
-              var deleteButton = $(this);
-              var projectName = deleteButton.closest('.delete').attr('data-project-name');
-              var apiKey = deleteButton.closest('.delete').attr('data-api-key');
-              var logId = deleteButton.closest('.delete').attr('data-log-id');
+    const iframe = document.getElementById('widget-iframe');
 
-              $.ajax({
-                  url: '/evaluate/delete',
-                  type: 'POST',
-                  data: JSON.stringify({ apiKey: apiKey, projectName: projectName, id: logId }),
-                  contentType: 'application/json',
-                  dataType: 'json',
-                  success: function(response) {
-                      deleteButton.closest('li').remove();
-                      updateLogNumbers();
-                      updatePaginationAfterDelete();
-                  },
-                  error: function(xhr, status, error) {
-                  }
-              });
-          });
-          function updateLogNumbers() {
-              $('.logList > li').each(function(index) {
-                  var newIndex = index + 1;
-                  $(this).find('.index').text(newIndex + '.');
-              });
-          }
-          $('#refreshButton').click(function() {
-            var deleteButton = $('.delete-evaluate');
-            var projectName = deleteButton.closest('.delete').attr('data-project-name');
+    if (!iframe) throw new Error('Failed to load widget plug-in elements');
 
-            window.location.href = '/evaluate?projectName=' + projectName;
-        });
+    iframe.contentWindow.postMessage({ e: 'open-widget' }, '*');
+  }
+  function widgetClose(e) {
+    e.currentTarget.style.display = 'none';
+    const widgetButton = document.getElementById('widget-button');
+    widgetButton.style.display = 'flex';
+
+    const widgetOverlay = document.getElementById('widget-overlay');
+    widgetOverlay.style.display = 'none';
+  }
+
+  const widgetButton = document.getElementById('widget-button');
+  const closeButton = document.getElementById('widget-close-button');
+
+  if (!widgetButton || !closeButton) throw new Error('No button');
+  widgetButton.addEventListener('click', widgetOpen);
+  closeButton.addEventListener('click', widgetClose);
+</script>
+<!-- chatbot js end -->
+
+<!-- evalDelete js start -->
+<script th:inline="javascript">
+  $(document).ready(function () {
+    function updatePaginationAfterDelete() {
+      let currentItemCount = $('.logList > li').length;
+
+      if (currentItemCount === 0 && currentPage !== 1) {
+        currentPage--;
+        totalPages = getTotalPageCount();
+        renderPageButtons();
+        renderLogs();
+      } else {
+        renderLogs();
+      }
+    }
+    $('.delete-evaluate').click(function () {
+      var deleteButton = $(this);
+      var projectName = deleteButton.closest('.delete').attr('data-project-name');
+      var apiKey = deleteButton.closest('.delete').attr('data-api-key');
+      var logId = deleteButton.closest('.delete').attr('data-log-id');
+
+      $.ajax({
+        url: '/evaluate/delete',
+        type: 'POST',
+        data: JSON.stringify({ apiKey: apiKey, projectName: projectName, id: logId }),
+        contentType: 'application/json',
+        dataType: 'json',
+        success: function (response) {
+          deleteButton.closest('li').remove();
+          updateLogNumbers();
+          updatePaginationAfterDelete();
+        },
+        error: function (xhr, status, error) {
+        }
+      });
     });
-  </script>
-  <!-- evalDelete js end -->
+    function updateLogNumbers() {
+      $('.logList > li').each(function (index) {
+        var newIndex = index + 1;
+        $(this).find('.index').text(newIndex + '.');
+      });
+    }
+    $('#refreshButton').click(function () {
+      var deleteButton = $('.delete-evaluate');
+      var projectName = deleteButton.closest('.delete').attr('data-project-name');
+
+      window.location.href = '/evaluate?projectName=' + projectName;
+    });
+  });
+
+  // 날짜 형식 바꾸기
+
+
+</script>
+<!-- evalDelete js end -->
 
 </html>

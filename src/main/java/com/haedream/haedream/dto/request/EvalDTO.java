@@ -1,10 +1,7 @@
 package com.haedream.haedream.dto.request;
 
-import java.time.LocalDateTime;
-
+import java.time.ZonedDateTime;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.haedream.haedream.config.LocalDateTimeAdapter;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,7 +18,7 @@ public class EvalDTO {
     private String logId;
     private String username;
     private String projectName;
-    private LocalDateTime evalLogDate; // 평가 일시
+    private ZonedDateTime evalLogDate; // 평가 일시
     private String evalSummary;
     private String evalTerminology;
     private String evalHallucination;
@@ -46,18 +43,11 @@ public class EvalDTO {
     private int byteCnt;
     private String eng_list;
     private String chi_list;
+    private String formattedevalLogDate;
 
     // JSON 문자열로부터 EvalDTO 객체를 파싱하는 정적 메소드
     public static EvalDTO parse(String result) {
-        Gson gson = new GsonBuilder()
-                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
-                .create();
-
-        EvalDTO dto = gson.fromJson(result, EvalDTO.class);
-        if (dto.getEvalLogDate() == null) {
-            dto.setEvalLogDate(LocalDateTime.now());
-        }
-
-        return dto;
+        Gson gson = new Gson();
+        return gson.fromJson(result, EvalDTO.class);
     }
 }

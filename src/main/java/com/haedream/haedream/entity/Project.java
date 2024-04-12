@@ -1,9 +1,10 @@
 package com.haedream.haedream.entity;
 
-import java.time.LocalDateTime;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -13,22 +14,26 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@Document(collation = "TB_PROJECT")
+@Document(collection = "TB_PROJECT")
 public class Project {
     @Id
     private String id;
     private String projectName;
     private String standard;
-    private LocalDateTime createDate;
+    private ZonedDateTime createDate;
     private String owner;
-    
+
     @Builder
-    public Project(String id, String projectName, String standard, LocalDateTime createDate, String owner){
+    public Project(String id, String projectName, String standard, ZonedDateTime createDate, String owner) {
         this.id = id;
         this.projectName = projectName;
         this.standard = standard;
-        this.createDate = createDate;
+        this.createDate = createDate.withZoneSameInstant(ZoneId.of("Asia/Seoul")); // 서울 시간대로 설정
         this.owner = owner;
+    }
+
+    public void setCreateDate(ZonedDateTime createDate) {
+        this.createDate = createDate.withZoneSameInstant(ZoneId.of("Asia/Seoul")); // 서울 시간대로 설정
     }
 
     public String getId() {
@@ -55,12 +60,8 @@ public class Project {
         this.standard = standard;
     }
 
-    public LocalDateTime getCreateDate() {
+    public ZonedDateTime getCreateDate() {
         return this.createDate;
-    }
-
-    public void setCreateDate(LocalDateTime createDate) {
-        this.createDate = createDate;
     }
 
     public String getOwner() {
@@ -70,7 +71,5 @@ public class Project {
     public void setOwner(String owner) {
         this.owner = owner;
     }
-    
-
 
 }

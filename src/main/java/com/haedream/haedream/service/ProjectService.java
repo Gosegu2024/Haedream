@@ -2,14 +2,14 @@ package com.haedream.haedream.service;
 
 import java.util.List;
 import java.util.Optional;
-import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 import com.haedream.haedream.model.Project;
 import com.haedream.haedream.repository.ProjectRepository;
 
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
-
 
 @Service
 public class ProjectService {
@@ -21,15 +21,16 @@ public class ProjectService {
     public List<Project> getProjects() {
         return projectRepository.findAll();
     }
-    
-    //  프로젝트 소유자(사용자) 조회
+
+    // 프로젝트 소유자(사용자) 조회
     public List<Project> findProjectsByOwner(String owner) {
         return projectRepository.findByOwner(owner);
     }
 
     // 프로젝트 생성+저장
     public void projectSave(Project project) {
-        project.setCreateDate(LocalDateTime.now());
+        // LocalDateTime.now() 대신 ZonedDateTime을 사용하여 서울 시간대로 설정
+        project.setCreateDate(ZonedDateTime.now(ZoneId.of("Asia/Seoul")));
         projectRepository.save(project);
     }
 
