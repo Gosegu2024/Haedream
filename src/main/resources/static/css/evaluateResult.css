@@ -212,6 +212,15 @@ header .con {
   margin-bottom: 40px;
 }
 
+.output p{
+  padding: 15px 0;
+  border-bottom: 2px solid var(--gray-color);
+}
+
+.output div:last-of-type p{
+  border: none;
+}
+
 .output h2 {
   margin-bottom: 20px;
   color: var(--main-color);
