@@ -1,12 +1,16 @@
 package com.haedream.haedream.dto.request;
 
-import java.time.ZonedDateTime;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.haedream.haedream.config.LocalDateTimeAdapter;
 import com.haedream.haedream.entity.Log;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.time.LocalDateTime;
+
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,13 +22,18 @@ public class LogDTO {
     private String inputData;
     private String outputData;
     private String apiKey;
-    private ZonedDateTime logDate;
+    private LocalDateTime logDate;
     private String id;
-    private String formattedDate; // 포맷된 날짜 문자열 추가
 
     public static LogDTO parse(String jsonStr) {
-        Gson gson = new Gson();
-        return gson.fromJson(jsonStr, LogDTO.class);
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+                .create();
+        LogDTO dto = gson.fromJson(jsonStr, LogDTO.class);
+        if (dto.getLogDate() == null) {
+            dto.setLogDate(LocalDateTime.now());
+        }
+        return dto;
     }
 
     public static Log ofEntity(LogDTO dto) {
@@ -37,7 +46,6 @@ public class LogDTO {
                 .logDate(dto.getLogDate())
                 .id(dto.getId())
                 .isItEval("N")
-                .formattedDate(dto.getFormattedDate()) // 포맷된 날짜 설정
                 .build();
     }
 }

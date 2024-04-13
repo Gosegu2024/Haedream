@@ -28,11 +28,9 @@ import com.haedream.haedream.repository.ProjectRepository;
 import com.haedream.haedream.repository.UserRepository;
 import com.haedream.haedream.service.EvalService;
 import com.haedream.haedream.service.LoglistService;
-import com.haedream.haedream.util.DateUtils;
 
 import jakarta.servlet.http.HttpSession;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -87,24 +85,13 @@ public class EvaluateController {
     UserEntity user = userRepository.findByUsername(username);
     String apiKey = user.getApi_key();
 
-    // logListService 호출
     List<Log> logList = loglistService.getLogList(apiKey, projectName);
 
-    // 로그 날짜 포맷팅 및 모델에 추가
-    List<Map<String, String>> formattedLogs = new ArrayList<>();
-    for (Log log : logList) {
-      Map<String, String> logDetails = new HashMap<>();
-      logDetails.put("projectName", log.getProjectName());
-      logDetails.put("modelName", log.getModelName());
-      logDetails.put("logDate", DateUtils.formatZonedDateTime(log.getLogDate()));
-      logDetails.put("id", log.getId()); // 'id' 키를 추가
-      formattedLogs.add(logDetails);
-    }
-
-    // 모델에 포맷팅된 로그 리스트 추가
+    List<Map<String, String>> formattedLogs = loglistService.logListFormat(logList);
+    
     model.addAttribute("formattedLogs", formattedLogs);
 
-    return "evaluate"; // 반환되는 뷰 이름
+    return "evaluate";
   }
 
   // 평가하기 삭제
@@ -157,12 +144,13 @@ public class EvaluateController {
     String eng_list = evalDTO.getEng_list();
     String freqCnt = evalDTO.getFreqCnt();
 
-    // 데이터 타입 변환
+    // 데이터 전처리
     String[] engList = evalService.eng_list(eng_list);
     List<String[]> freqCntList = evalService.freqCnt(freqCnt);
+    String output = evalService.replaceOutput(outputdata);
 
     model.addAttribute("evalDTO", evalDTO);
-    model.addAttribute("outputdata", outputdata);
+    model.addAttribute("outputdata", output);
     model.addAttribute("eng_list", engList);
     model.addAttribute("freqCnt", freqCntList);
 
@@ -175,7 +163,7 @@ public class EvaluateController {
     Map<String, String> response = new HashMap<>();
     try {
       String logId = requestMap.get("Id");
-
+      
       evalRepository.deleteByLogId(logId);
 
       loglistService.updateIsItEvalN(logId);
@@ -257,8 +245,9 @@ public class EvaluateController {
         // JSON 배열을 읽기 위해 ObjectMapper를 사용하여 리스트로 변환
         List<Object> responseList = objectMapper.readValue(response, new TypeReference<List<Object>>() {
         });
+        String output = evalService.replaceOutput(outputdata);
         model.addAttribute("inputdata", inputdata);
-        model.addAttribute("outputdata", outputdata);
+        model.addAttribute("outputdata", output);
         model.addAttribute("responseList", responseList);
       } catch (JsonProcessingException e) {
         System.err.println("Failed to parse response from server: " + e.getMessage());

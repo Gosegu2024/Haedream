@@ -79,7 +79,7 @@
         </div>
         <div class="input">
           <h2>질의 결과</h2>
-          <p id="outputdata"></p>
+          <div id="outputdata"></div>
         </div>
         <div class="output">
           <h2>평가 및 분석</h2>
@@ -310,44 +310,40 @@
       }
   })
 
-    // 하이라이트 효과
-    let HighLightContradiction = /*[[${evalDTO.HighLightContradiction}]]*/ null;
-    let HighLightPrivacy = /*[[${evalDTO.HighLightPrivacy}]]*/ null;
-    let eng = /*[[${eng_list}]]*/ null;
-    let output = /*[[${outputdata}]]*/ null;
+      // 하이라이트 효과
+      let HighLightContradiction = /*[[${evalDTO.HighLightContradiction}]]*/ null;
+      let HighLightPrivacy = /*[[${evalDTO.HighLightPrivacy}]]*/ null;
+      let eng = /*[[${eng_list}]]*/ null;
+      let output = /*[[${outputdata}]]*/ null;
 
-    function highlightValues1(output, eng) {
-      output = output.replace(/^\['|'\]$/g, '');
-      let highlightedOutput = output.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-      
-      if (eng.length > 0) {
-        const engRegex = new RegExp(`\\b(${eng.join('|')})\\b`, 'g');
-        highlightedOutput = highlightedOutput.replace(engRegex, '<span class="highlighterY">$&</span>');
+      function highlightValues1(output, eng) {
+        let highlightedOutput = output.replace(/^\['|'\]$/g, '');
+        // .replace(/</g, '<').replace(/>/g, '>');
+        if (eng.length > 0) {
+          const engRegex = new RegExp(`\\b(${eng.join('|')})\\b`, 'g');
+          highlightedOutput = output.replace(engRegex, '<span class="highlighterY">$&</span>');
+        }
+
+        return highlightedOutput;
       }
-      highlightedOutput = highlightedOutput.replace(/\n/g, '<br>');
-    
-      return highlightedOutput;
-    }
 
-    function highlightValues2(output, HighLightValue) {
-      output = output.replace(/^\['|'\]$/g, '');
-      let highlightedOutput = output.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-      highlightedOutput = highlightedOutput.replaceAll(HighLightValue, '<span class="highlighterO">' + HighLightValue + '</span>');
-      highlightedOutput = highlightedOutput.replace(/\n/g, '<br>');
-    
-      return highlightedOutput;
-    }
+      function highlightValues2(output, HighLightValue) {
+        let highlightedOutput = output.replace(/^\['|'\]$/g, '');
+        // .replace(/</g, '<').replace(/>/g, '>');
+        highlightedOutput = highlightedOutput.replaceAll(HighLightValue, '<span class="highlighterO">' + HighLightValue + '</span>');
 
-    function highlightValues3(output, HighLightValue) {
-      output = output.replace(/^\['|'\]$/g, '');
-      let highlightedOutput = output.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-      highlightedOutput = highlightedOutput.replaceAll(HighLightValue, '<span class="highlighterG">' + HighLightValue + '</span>');
-      highlightedOutput = highlightedOutput.replace(/\n/g, '<br>');
-    
-      return highlightedOutput;
-    }
+        return highlightedOutput;
+      }
 
-    document.getElementById("outputdata").innerHTML = highlightValues1(output, eng);
+      function highlightValues3(output, HighLightValue) {
+        let highlightedOutput = output.replace(/^\['|'\]$/g, '');
+        // .replace(/</g, '<').replace(/>/g, '>');
+        highlightedOutput = highlightedOutput.replaceAll(HighLightValue, '<span class="highlighterG">' + HighLightValue + '</span>');
+
+        return highlightedOutput;
+      }
+
+      document.getElementById("outputdata").innerHTML = highlightValues1(output, eng);
     
     document.addEventListener('DOMContentLoaded', function() {
         const filterRadios = document.querySelectorAll('input[name="filter"]');
@@ -422,23 +418,18 @@
 
   <!-- wordCLoud start -->
 <script type="text/javascript">
-  var words = [];
-  var wordFreqArr = [];
-
   var wordFreqStr = document.getElementById('wordFreq').value;
-  var delbrackets = wordFreqStr.slice(1, -1).replace(/,\s?\[/g, ',').replace('[', '');
-  var splitted = delbrackets.split('],');
 
-  wordFreqArr.push(splitted[0].split(', '));
-  for (var i = 1; i < splitted.length; i++) {
-      wordFreqArr.push(splitted[i].trim().split(', ').map(function(item) {
-          return item;
-      }));
+  var cleanedStr = wordFreqStr.replace(/[\[\]]/g, '');
+  var wordsAndFreqs = cleanedStr.match(/\('[^']*', \d+\)/g);
+
+  var words = [];
+  for (var i = 0; i < wordsAndFreqs.length; i++) {
+      var wordAndFreq = wordsAndFreqs[i].match(/\('([^']*)', (\d+)\)/);
+      var word = wordAndFreq[1];
+      var freq = parseInt(wordAndFreq[2]);
+      words.push({ text: word, weight: freq });
   }
-  
-  for(var i=0; i<wordFreqArr.length; i++){
-      words.push({ text: wordFreqArr[i][0], weight: wordFreqArr[i][1]})
-  };
 
   $(document).ready(function(){
     $(".wordCLoud").jQCloud(words, {

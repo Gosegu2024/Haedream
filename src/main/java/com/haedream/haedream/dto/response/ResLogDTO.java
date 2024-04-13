@@ -1,7 +1,6 @@
 package com.haedream.haedream.dto.response;
 
-import java.time.ZonedDateTime;
-import java.time.ZoneId;
+import java.time.LocalDateTime;
 
 import com.haedream.haedream.entity.Log;
 
@@ -16,7 +15,7 @@ public class ResLogDTO {
     private String projectName;
     private String inputData;
     private String outputData;
-    private ZonedDateTime logDate;
+    private LocalDateTime logDate;
     private String id;
     private String isItEval;
     private String formattedDate; // 포맷된 날짜 문자열 추가
@@ -27,7 +26,7 @@ public class ResLogDTO {
             String projectName,
             String inputData,
             String outputData,
-            ZonedDateTime logDate,
+            LocalDateTime logDate,
             String id,
             String isItEval,
             String formattedDate) {
@@ -35,7 +34,7 @@ public class ResLogDTO {
         this.projectName = projectName;
         this.inputData = inputData;
         this.outputData = outputData;
-        this.logDate = logDate.withZoneSameInstant(ZoneId.of("Asia/Seoul"));
+        this.logDate = logDate;
         this.id = id;
         this.isItEval = isItEval;
         this.formattedDate = formattedDate; // 초기화

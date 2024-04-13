@@ -120,4 +120,20 @@ public class EvalService {
         return ListDTOList;
     }
 
+    public String replaceOutput(String outputdata) {
+        String output = outputdata.replaceAll("\\\\n", "<br>");
+        output = output.replaceAll(System.getProperty("line.separator"), "<br>");
+        StringBuilder result = new StringBuilder();
+        for (char c : output.toCharArray()) {
+            if (c != '[' && c != ']' && c != '\'') {
+                result.append(c);
+            }
+        }
+        output = result.toString();
+        output = output.replaceAll(">, <", "><");
+        output = output.replaceAll(">,<", "><");
+
+        return output;
+    }
+
 }

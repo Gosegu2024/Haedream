@@ -13,7 +13,7 @@ import com.haedream.haedream.entity.Log;
 public interface LogRepository extends MongoRepository<Log, String> {
   List<Log> findByApiKeyAndProjectNameAndIsItEval(String apiKey, String projectName, String isItEval, Sort sort);
 
-  List<Log> deleteByApiKeyAndProjectNameAndId(String apiKey, String projectName, String id);
+  void deleteByApiKeyAndProjectNameAndId(String apiKey, String projectName, String id);
 
   @SuppressWarnings("null")
   Optional<Log> findById(String id);

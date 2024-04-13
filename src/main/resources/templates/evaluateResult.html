@@ -324,8 +324,8 @@
     console.log(output);
 
     function highlightValues1(output, eng) {
-      output = output.replace(/^\['|'\]$/g, '');
-      let highlightedOutput = output.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      let highlightedOutput = output.replace(/^\['|'\]$/g, '');
+      // let highlightedOutput = output.replace(/</g, '<').replace(/>/g, '>');
       
       if (eng.length > 0) {
         const engRegex = new RegExp(`\\b(${eng.join('|')})\\b`, 'g');
@@ -337,8 +337,8 @@
     }
 
     function highlightValues2(output, HighLightValue) {
-      output = output.replace(/^\['|'\]$/g, '');
-      let highlightedOutput = output.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      let highlightedOutput = output.replace(/^\['|'\]$/g, '');
+      // let highlightedOutput = output.replace(/</g, '<').replace(/>/g, '>');
       highlightedOutput = highlightedOutput.replaceAll(HighLightValue, '<span class="highlighterO">' + HighLightValue + '</span>');
       highlightedOutput = highlightedOutput.replace(/\n/g, '<br>');
     
@@ -346,8 +346,8 @@
     }
     
     function highlightValues3(output, HighLightValue) {
-      output = output.replace(/^\['|'\]$/g, '');
-      let highlightedOutput = output.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      let highlightedOutput = output.replace(/^\['|'\]$/g, '');
+      // let highlightedOutput = output.replace(/</g, '<').replace(/>/g, '>');
       highlightedOutput = highlightedOutput.replaceAll(HighLightValue, '<span class="highlighterG">' + HighLightValue + '</span>');
       highlightedOutput = highlightedOutput.replace(/\n/g, '<br>');
       

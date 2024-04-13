@@ -7,8 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -22,7 +21,7 @@ public class Eval {
     private String username;
     private String logId;
     private String projectName;
-    private ZonedDateTime evalLogDate;
+    private LocalDateTime evalLogDate;
     private String evalSummary;
     private String evalTerminology;
     private String evalHallucination;
@@ -51,7 +50,7 @@ public class Eval {
 
     @Builder
     public Eval(String id, String inputData, String outputData, String username, String logId, String projectName,
-            ZonedDateTime evalLogDate, String evalSummary, String evalTerminology, String evalHallucination,
+    LocalDateTime evalLogDate, String evalSummary, String evalTerminology, String evalHallucination,
             String evalReadability, String evalReadabilityScore, String evalPurpose, String evalPurposeScore,
             String evalProblem, String evalProblemScore, String evalCreative, String evalCreativeScore,
             String evalContradiction, String evalContradictionScore, String HighLightContradiction, String evalStandard,
@@ -63,7 +62,7 @@ public class Eval {
         this.username = username;
         this.logId = logId;
         this.projectName = projectName;
-        this.evalLogDate = evalLogDate.withZoneSameInstant(ZoneId.of("Asia/Seoul"));
+        this.evalLogDate = evalLogDate;
         this.evalSummary = evalSummary;
         this.evalTerminology = evalTerminology;
         this.evalHallucination = evalHallucination;
