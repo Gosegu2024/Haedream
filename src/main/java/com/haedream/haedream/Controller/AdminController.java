@@ -25,11 +25,10 @@ public class AdminController {
     return "admin";
   }
 
-  // 사용자 삭제를 위한 POST 요청 처리
   @PostMapping("/admin/delete/{username}")
   public String deleteUser(@PathVariable String username) {
     adminService.deleteUserByUsername(username);
-    return "redirect:/admin"; // 삭제 후 관리자 페이지로 리디렉션
+    return "redirect:/admin"; 
   }
 
 }

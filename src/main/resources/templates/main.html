@@ -24,13 +24,10 @@
     <script th:src="@{/js/main.js}" defer></script>
   </head>
   <script>
-    // 로그인 후 /main 페이지로 리다이렉트하는 함수
     function redirectToMain() {
       window.location.href = '/main';
     }
-    // 로그인 폼 제출 시 호출되는 함수
     function submitLoginForm() {
-      // 로그인 폼 submit
       document.getElementById('loginForm').submit();
     }
   </script>
@@ -77,7 +74,7 @@
                 th:field="*{standard}"
                 cols="30"
                 rows="20"
-                placeholder="평가 기준을 입력해주세요. ex) 평가기준 블라블라 (어케하누)"
+                placeholder="1.제안 배경 및 필요성은 업계 동향을 분석하여 작성되었는가.&#13;&#10;2.개발 목표는 현실성 있게 작성 되었는가."
               ></textarea>
             </div>
             <div class="make">
@@ -104,7 +101,6 @@
       </div>
       <!-- con end -->
       <script th:inline="javascript">
-        // 프로젝트 삭제
         $(document).ready(function () {
           $('#deleteButton').click(function () {
             let selectedProjectIds = [];
@@ -130,10 +126,7 @@
           });
         });
 
-        
-
-        // 평가기준 안쓰면 못넘어감
-        $(document).ready(function () {
+                $(document).ready(function () {
           $('.projectForm').submit(function (event) {
             let projectNameValue = $('input[name="projectName"]').val().trim();
             let standardValue = $('textarea[name="standard"]').val().trim();
@@ -148,7 +141,6 @@
           });
         });
 
-        // 각 li의 평가기준 보여주기
         $('.standardPopup').hide();
 
         $(document).ready(function () {
@@ -168,7 +160,6 @@
           });
         });
 
-        // 평가기준 팝업 닫기
         $('.standardPopup h2 i').click(function () {
           $('.standardPopup').hide();
         });

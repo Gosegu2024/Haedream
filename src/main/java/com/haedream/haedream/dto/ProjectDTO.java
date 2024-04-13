@@ -6,7 +6,7 @@ import java.time.ZoneId;
 public class ProjectDTO {
     private String id;
     private String projectName;
-    private ZonedDateTime createDate; // ZonedDateTime 사용
+    private ZonedDateTime createDate; 
     private String username;
     private String standard;
 
@@ -31,7 +31,7 @@ public class ProjectDTO {
     }
 
     public void setCreateDate(ZonedDateTime createDate) {
-        this.createDate = createDate.withZoneSameInstant(ZoneId.of("Asia/Seoul")); // ZonedDateTime 설정
+        this.createDate = createDate.withZoneSameInstant(ZoneId.of("Asia/Seoul")); 
     }
 
     public String getUsername() {

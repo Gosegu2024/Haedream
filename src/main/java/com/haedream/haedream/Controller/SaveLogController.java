@@ -16,7 +16,6 @@ public class SaveLogController {
     @Autowired
     private SaveLogService saveLogService;
 
-    // 로그 db에 저장
     @PostMapping("/save_data")
     public ResponseEntity<ResLogDTO> saveData(@RequestParam String js) {
         ResLogDTO saveLogDTO = saveLogService.saveData(LogDTO.parse(js));

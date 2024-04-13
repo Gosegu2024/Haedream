@@ -14,6 +14,7 @@ public interface EvalRepository extends MongoRepository<Eval, String> {
 
   Optional<Eval> deleteEvalsByLogId(String logId);
 
+  @SuppressWarnings("null")
   Optional<Eval> findById(String evalId);
 
   Eval findOneByLogId(String logId);

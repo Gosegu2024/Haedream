@@ -98,7 +98,7 @@ body {
 .loginForm > div > input {
   width: 100%;
   border: none;
-  background-color: var(--gray-color);
+  background-color: #e7e7e7c9;
   outline: none;
   display: block;
   border-radius: 4px;
@@ -221,10 +221,6 @@ body {
 }
 .signUp > .loginForm {
   width: 90%;
-}
-.signUp input {
-  background-color: #1855aa67;
-  color: white;
 }
 .signUp > .loginForm p {
   color: white;

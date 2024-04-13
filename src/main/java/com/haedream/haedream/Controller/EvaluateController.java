@@ -77,7 +77,6 @@ public class EvaluateController {
     return "redirect:/evaluateResultCheck";
   }
 
-  // 평가하기 가져오기
   @GetMapping("/evaluate")
   public String evaluate(HttpSession session, Model model) {
     String projectName = (String) session.getAttribute("projectName");
@@ -98,7 +97,6 @@ public class EvaluateController {
     return "evaluate";
   }
 
-  // 평가하기 삭제
   @PostMapping("/evaluate/delete")
   public ResponseEntity<Map<String, String>> evaluatedelete(@RequestBody Map<String, String> requestMap) {
     Map<String, String> response = new HashMap<>();
@@ -117,7 +115,6 @@ public class EvaluateController {
     }
   }
 
-  // 평가기록 가져오기
   @GetMapping("/evaluateLog")
   public String evaluateLog(HttpSession session, Model model) {
     String username = (String) session.getAttribute("username");
@@ -134,13 +131,11 @@ public class EvaluateController {
 
     List<ListDTO> listDTOList = evalService.getListDTOList(evalList, logList);
 
-    // 모델에 값 추가
     model.addAttribute("dtoList", listDTOList);
 
     return "evaluateLog";
   }
 
-  // 평가 결과 다시보기
   @GetMapping("/evaluateResultCheck")
   public String evaluateResultCheck(HttpSession session, Model model) {
     String username = (String) session.getAttribute("username");
@@ -152,7 +147,6 @@ public class EvaluateController {
     String eng_list = evalDTO.getEng_list();
     String freqCnt = evalDTO.getFreqCnt();
 
-    // 데이터 전처리
     List<String> engList = evalService.eng_list(eng_list);
     List<String[]> freqCntList = evalService.freqCnt(freqCnt);
     String output = evalService.replaceOutput(outputdata);
@@ -165,7 +159,6 @@ public class EvaluateController {
     return "evaluateResultCheck";
   }
 
-  // 평가기록 삭제
   @PostMapping("/evaluateLog/delete")
   public ResponseEntity<Map<String, String>> evaluateLogDelete(@RequestBody Map<String, String> requestMap) {
     Map<String, String> response = new HashMap<>();
@@ -184,7 +177,6 @@ public class EvaluateController {
     }
   }
 
-  // 평가 실행
   @GetMapping("/evaluateResult")
   public String evaluateResult(Model model, HttpSession session) {
     String[] result = getLog(session);
@@ -197,7 +189,6 @@ public class EvaluateController {
     return "evaluateResult";
   }
 
-  // 평가용 로그 조회
   public String[] getLog(HttpSession session) {
     String logId = (String) session.getAttribute("logId");
     String username = (String) session.getAttribute("username");
@@ -216,15 +207,12 @@ public class EvaluateController {
     return result;
   }
 
-  // 평가 모델 실행
   @PostMapping("/sendValues")
   public ResponseEntity<?> sendValues(@RequestParam("outputdata") String outputdata,
       @RequestParam("inputdata") String inputdata,
       @RequestParam("standard") String standard, Model model, HttpSession session) {
-    System.out.println("평가시작");
     String url = "http://localhost:8008/evaluate";
 
-    // 요청 본문에 데이터를 담기
     ObjectMapper objectMapper = new ObjectMapper();
     ObjectNode requestBody = objectMapper.createObjectNode();
     String username = (String) session.getAttribute("username");
@@ -238,19 +226,15 @@ public class EvaluateController {
     requestBody.put("projectName", projectName);
     requestBody.put("logId", logId);
 
-    // HTTP 요청 헤더 설정
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);
 
-    // HTTP 요청 보내기
     HttpEntity<ObjectNode> requestEntity = new HttpEntity<>(requestBody, headers);
     ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, requestEntity, String.class);
 
-    // 반환된 응답 출력
     if (responseEntity.getStatusCode().is2xxSuccessful()) {
       String response = responseEntity.getBody();
       try {
-        // JSON 배열을 읽기 위해 ObjectMapper를 사용하여 리스트로 변환
         List<Object> responseList = objectMapper.readValue(response, new TypeReference<List<Object>>() {
         });
         String output = evalService.replaceOutput(outputdata);
@@ -266,12 +250,10 @@ public class EvaluateController {
       return responseEntity;
 
     } else {
-      System.out.println("Failed to receive response from server. Status code: " + responseEntity.getStatusCode());
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to receive response from server.");
     }
   }
 
-  // 평가결과 DB 저장
   @PostMapping("/save_eval")
   public ResponseEntity<Eval> saveEval(@RequestParam String evalresult, HttpSession session) {
 
@@ -285,7 +267,6 @@ public class EvaluateController {
     String projectName = saveEvalDTO.getProjectName();
     session.setAttribute("projectName", projectName);
 
-    // return ResponseEntity.status(HttpStatus.CREATED).body(saveEvalDTO);
     return null;
   }
 

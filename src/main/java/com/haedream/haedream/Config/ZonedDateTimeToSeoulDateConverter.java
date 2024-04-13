@@ -6,9 +6,9 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Date;
 
-// ZonedDateTime를 Date로 변환하면서 서울 시간대를 적용
 @WritingConverter
 public class ZonedDateTimeToSeoulDateConverter implements Converter<ZonedDateTime, Date> {
+    @SuppressWarnings("null")
     @Override
     public Date convert(ZonedDateTime source) {
         return Date.from(source.withZoneSameInstant(ZoneId.of("Asia/Seoul")).toInstant());

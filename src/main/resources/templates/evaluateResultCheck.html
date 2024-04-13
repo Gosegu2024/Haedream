@@ -101,10 +101,6 @@
           <div id="feedbackDiv8"></div><br><hr>
           <h3>평가기준 평가</h3>
           <div id="feedbackDiv9"></div><br>
-          <!-- <h2>모순점</h2>
-          <p th:text="${evalDTO.HighLightContradiction}"></p><br> 
-          <h2>개인정보유출</h2> 
-          <p th:text="${evalDTO.HighLightPrivacy}"></p><br> -->
           <div class="word">
             <div class="word1">
               <h2>많이 나온 단어 비교</h2>
@@ -124,45 +120,6 @@
           <h2>전체 피드백</h2>
           <div id="feedbackDiv"></div>
         </div>
-
-          <!-- <h2>빈도수</h2>
-          <p th:text="${evalDTO.freqCnt}"></p>
-          <br>
-
-          <h2>토큰수</h2>
-          <p th:text="${evalDTO.tokenCnt}"></p>
-          <br>
-
-          <h2>글자수</h2>
-          <p th:text="${evalDTO.letterCnt}"></p>
-          <br>
-
-          <h2>byte</h2>
-          <p th:text="${evalDTO.byteCnt}"></p>
-          <br>
-
-          <h2>영어리스트</h2>
-          <p th:text="${evalDTO.eng_list}"></p>
-          <br>
-
-          <h2>한자리스트</h2>
-          <p th:text="${evalDTO.chi_list}"></p>
-          <br> -->
-
-          <!-- <p>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Numquam magnam perspiciatis, illum accusantium a deleniti. Nemo ea
-            maiores ad hic, porro illo. Tenetur iusto atque ea optio necessitatibus magni enim? Lorem ipsum,
-            <span class="highlighterO">dolor sit amet consectetur adipisicing elit.</span> Numquam magnam perspiciatis, illum accusantium a
-            deleniti. Nemo ea maiores ad hic, porro illo. Tenetur iusto atque ea optio necessitatibus magni enim? Lorem ipsum, dolor sit
-            amet consectetur adipisicing elit. Numquam magnam perspiciatis, illum accusantium a deleniti. Nemo ea maiores ad hic, porro
-            illo. Tenetur iusto atque ea optio necessitatibus magni enim? Lorem ipsum,
-            <span class="highlighterY">dolor sit amet consectetur</span> adipisicing elit. Numquam magnam perspiciatis, illum accusantium a
-            deleniti. Nemo ea maiores ad hic, porro illo. Tenetur iusto atque ea optio necessitatibus magni enim? Lorem ipsum, dolor sit
-            amet consectetur adipisicing elit. Numquam magnam perspiciatis, illum accusantium a deleniti. Nemo ea maiores ad hic, porro
-            illo. Tenetur iusto atque ea optio necessitatibus magni enim? Lorem ipsum, dolor sit amet consectetur adipisicing elit. Numquam
-            magnam perspiciatis, illum accusantium a deleniti. Nemo ea maiores ad hic, porro illo. Tenetur iusto atque ea optio
-            necessitatibus magni enim?
-          </p> -->
       </div>
       <!-- con end -->
       <div class="popupBack">
@@ -329,7 +286,6 @@
 
       function highlightValues2(output, HighLightValue) {
         let highlightedOutput = output.replace(/^\['|'\]$/g, '');
-        // .replace(/</g, '<').replace(/>/g, '>');
         highlightedOutput = highlightedOutput.replaceAll(HighLightValue, '<span class="highlighterO">' + HighLightValue + '</span>');
 
         return highlightedOutput;
@@ -337,7 +293,6 @@
 
       function highlightValues3(output, HighLightValue) {
         let highlightedOutput = output.replace(/^\['|'\]$/g, '');
-        // .replace(/</g, '<').replace(/>/g, '>');
         highlightedOutput = highlightedOutput.replaceAll(HighLightValue, '<span class="highlighterG">' + HighLightValue + '</span>');
 
         return highlightedOutput;
@@ -441,7 +396,6 @@
     });
   });
 </script>
-<!-- wordCLoud end -->
 
   <!-- chatbot js start -->
   <script type="text/javascript" async defer>
@@ -571,5 +525,4 @@
     widgetButton.addEventListener('click', widgetOpen);
     closeButton.addEventListener('click', widgetClose);
   </script>
-  <!-- chatbot js end -->
 </html>

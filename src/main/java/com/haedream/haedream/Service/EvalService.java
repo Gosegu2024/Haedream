@@ -19,9 +19,8 @@ public class EvalService {
     @Autowired
     private EvalRepository evalRepository;
 
-    public Eval saveEval(EvalDTO evalDTO) { // 평가결과 저장
+    public Eval saveEval(EvalDTO evalDTO) {
 
-        // EvalDTO로부터 Eval 엔티티를 생성
         Eval eval = Eval.builder()
                 .inputData(evalDTO.getInputData())
                 .outputData(evalDTO.getOutputData())
@@ -56,18 +55,15 @@ public class EvalService {
                 .formattedevalLogDate(evalDTO.getFormattedevalLogDate())
                 .build();
 
-        // MongoDB에 저장
         eval = evalRepository.save(eval);
         return eval;
     }
 
-    // 로그 삭제
     public void deleteEvalsByLogId(String LogId) {
 
         evalRepository.deleteEvalsByLogId(LogId);
     }
 
-    // 로그 아이디로 eval 조회
     public Eval getEvalByLogIdAndUsernameAndProjectName(String logid, String username, String projectName) {
         Eval eval = evalRepository.findOneByLogIdAndUsernameAndProjectName(logid, username, projectName);
         return eval;
@@ -88,8 +84,8 @@ public class EvalService {
         String[] engList = eng_list.replaceAll("\\[|\\]|'", "").split(",\\s*");
         List<String> eng_List = new ArrayList<>();
         for (var i : engList) {
-            String trimmed = i.trim(); // 앞뒤 공백 제거
-            if (!trimmed.isEmpty()) { // 공백이 아닌 경우에만 리스트에 추가
+            String trimmed = i.trim(); 
+            if (!trimmed.isEmpty()) { 
                 eng_List.add(trimmed);
             }
         }
@@ -102,8 +98,8 @@ public class EvalService {
         String[] engList = eng_list.replaceAll("\\[|\\]|'", "").split(",\\s*");
         List<String> eng_List = new ArrayList<>();
         for (var i : engList) {
-            String trimmed = i.trim(); // 앞뒤 공백 제거
-            if (!trimmed.isEmpty()) { // 공백이 아닌 경우에만 리스트에 추가
+            String trimmed = i.trim(); 
+            if (!trimmed.isEmpty()) { 
                 eng_List.add(trimmed);
             }
         }

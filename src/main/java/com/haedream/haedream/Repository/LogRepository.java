@@ -18,6 +18,4 @@ public interface LogRepository extends MongoRepository<Log, String> {
   @SuppressWarnings("null")
   Optional<Log> findById(String id);
 
-  List<Log> findByApiKeyAndProjectNameAndIsItEval(String apiKey, String projectName, String IsItEval);
-
 }
