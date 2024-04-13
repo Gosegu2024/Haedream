@@ -20,7 +20,7 @@ public class EvalDTO {
     private String logId;
     private String username;
     private String projectName;
-    private LocalDateTime evalLogDate; // 평가 일시
+    private LocalDateTime evalLogDate;
     private String evalSummary;
     private String evalTerminology;
     private String evalHallucination;
@@ -47,7 +47,6 @@ public class EvalDTO {
     private String chi_list;
     private String formattedevalLogDate;
 
-    // JSON 문자열로부터 EvalDTO 객체를 파싱하는 정적 메소드
     public static EvalDTO parse(String result) {
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())

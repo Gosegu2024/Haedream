@@ -22,7 +22,7 @@ public class Project {
     private String id;
     private String projectName;
     private String standard;
-    private ZonedDateTime createDate; // LocalDateTime을 ZonedDateTime으로 변경
+    private ZonedDateTime createDate; 
     private String username;
     private String owner;
 

@@ -8,7 +8,7 @@ import com.google.gson.stream.JsonWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class LocalDateTimeAdapter extends TypeAdapter<LocalDateTime> { // LocalDateTime 자료형을 Gson타입으로 바꿀수 있게 해줌
+public class LocalDateTimeAdapter extends TypeAdapter<LocalDateTime> { 
 
     private static final DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 

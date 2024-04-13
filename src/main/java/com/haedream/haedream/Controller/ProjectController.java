@@ -19,14 +19,12 @@ public class ProjectController {
   @Autowired
   private ProjectService projectService;
 
-  // 프로젝트 삭제
   @PostMapping("/projectDelete")
   public ResponseEntity<List<String>> projectDelete(@RequestBody List<String> projectIds) {
     projectService.deleteProjects(projectIds);
     return ResponseEntity.ok().body(projectIds);
   }
 
-  // 평가기준 조회
   @PostMapping("/getStandard")
   @ResponseBody
   public String getStandard(@RequestBody ProjectIdRequest request) {

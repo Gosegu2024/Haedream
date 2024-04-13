@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 public class UserEntity {
 
-    private String username; // id를 username 변수로 사용
+    private String username; 
     private String email;
     private String password;
     private String role;

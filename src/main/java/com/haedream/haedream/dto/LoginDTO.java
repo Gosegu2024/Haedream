@@ -12,7 +12,6 @@ public class LoginDTO {
         this.password = password;
     }
 
-    // Getter와 Setter 메서드 추가
     public String getUsername() {
         return username;
     }

@@ -19,38 +19,31 @@ public class SignUpService {
     }
 
     public void signupProcess(SignUpDTO signupDTO) {
-        // 사용자 이름 입력 확인
         if (signupDTO.getUsername() == null || signupDTO.getUsername().trim().isEmpty()) {
             throw new IllegalStateException("아이디를 입력해주세요.");
         }
 
-        // 아이디 중복 체크
         if (userRepository.existsByUsername(signupDTO.getUsername())) {
             throw new IllegalStateException("이미 사용중인 아이디입니다.");
         }
 
-        // 이메일 입력 확인
         if (signupDTO.getEmail() == null || signupDTO.getEmail().trim().isEmpty()) {
             throw new IllegalStateException("이메일을 입력해주세요.");
         }
 
-        // 이메일 중복 체크
         if (userRepository.existsByEmail(signupDTO.getEmail())) {
             throw new IllegalStateException("이미 사용중인 이메일입니다.");
         }
 
-        // 비밀번호 입력 확인
         if ((signupDTO.getPassword() == null || signupDTO.getPassword().trim().isEmpty()) ||
                 (signupDTO.getConfirmPassword() == null || signupDTO.getConfirmPassword().trim().isEmpty())) {
             throw new IllegalStateException("비밀번호를 입력해주세요.");
         }
 
-        // 비밀번호 확인
         if (!signupDTO.getPassword().equals(signupDTO.getConfirmPassword())) {
             throw new IllegalStateException("비밀번호가 일치하지 않습니다.");
         }
 
-        // 사용자 정보 저장
         UserEntity newUser = new UserEntity();
         newUser.setUsername(signupDTO.getUsername());
         newUser.setPassword(bCryptPasswordEncoder.encode(signupDTO.getPassword()));

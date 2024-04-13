@@ -10,7 +10,6 @@ public class LogoutController {
 
     @GetMapping("/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        // 현재 세션 무효화
         HttpSession session = request.getSession(false);
         if (session != null) {
             session.invalidate();

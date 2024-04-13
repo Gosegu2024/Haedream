@@ -15,7 +15,6 @@ public class AdminService {
     @Autowired
     private UserRepository userRepository;
 
-    // 모든 사용자의 username과 email 정보 조회
     public List<SignUpDTO> getAllUsers() {
         List<UserEntity> users = userRepository.findAll();
         return users.stream()
@@ -28,7 +27,6 @@ public class AdminService {
                 .collect(Collectors.toList());
     }
 
-    // username을 기준으로 사용자 삭제
     public void deleteUserByUsername(String username) {
         userRepository.deleteByUsername(username);
     }

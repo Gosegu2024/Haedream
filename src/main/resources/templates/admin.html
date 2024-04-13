@@ -30,15 +30,6 @@
           <a th:href="@{/admin}"><img th:src="@{/img/HaeLogo.png}" alt="해드림로고" /></a>
         </div>
         <ul class="menu">
-          <!-- <li ><a th:href="@{/loglist}">로그</a></li>
-          <li>
-            <a href="#">평가 <i class="fa-solid fa-caret-down"></i></a>
-            <ul class="dropDown">
-              <li><a th:href="@{/evaluate}">평가하기</a></li>
-              <li><a th:href="@{/evaluateLog}">평가기록</a></li>
-            </ul>
-          </li>
-          <li><a th:href="@{/analyze}">분석</a></li> -->
           <li class="nowPage">관리자</li>
           <li>
             <a th:href="@{/logout}" th:onclick="|event.preventDefault(); document.getElementById('logoutForm').submit();|">
@@ -94,23 +85,19 @@
       <i class="fa-regular fa-comments"></i>
     </div>
 
-    <!-- 사용자 삭제 -->
     <script th:inline="javascript">
       
       $(document).ready(function() {
           $('.delete-user').click(function() {
               var username = $(this).attr('data-username');
               if (confirm(username + ' 사용자를 삭제하시겠습니까?')) {
-                  // AJAX 요청으로 사용자 삭제
                   $.ajax({
                       url: '/admin/delete/' + username,
                       type: 'POST',
                       success: function(response) {
-                          // 삭제 성공 후 페이지 새로고침 또는 사용자 목록 업데이트
                           window.location.reload();
                       },
                       error: function(error) {
-                          // 오류 처리
                           alert('사용자 삭제에 실패했습니다.');
                       }
                   });
@@ -121,7 +108,7 @@
       // 페이지네이션
       document.addEventListener('DOMContentLoaded', function() {
     const users = document.querySelectorAll('.userList li');
-    const usersPerPage = 8; // 페이지당 들어갈 유저수
+    const usersPerPage = 8; 
     let currentPage = 1;
     const totalPages = Math.ceil(users.length / usersPerPage);
 

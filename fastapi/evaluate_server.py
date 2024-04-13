@@ -1,3 +1,11 @@
+# 필수 설치
+# pip install fastapi
+# pip install langchain
+# pip install langchain_openai
+# pip install uvicorn
+# pip install haedream==0.0.8
+# pip install konlpy
+
 from fastapi import FastAPI
 from pydantic import BaseModel
 
@@ -17,25 +25,17 @@ import re
 import tiktoken
 
 
-## [setting] ################################################################
-
-# 환경변수 설정
 os.environ["LANGCHAIN_TRACING_V2"] = "true"
-os.environ['LANGCHAIN_API_KEY'] = ''
-os.environ['OPENAI_API_KEY'] = ''
+os.environ["LANGCHAIN_API_KEY"] = ""
+os.environ["OPENAI_API_KEY"] = ""
 
 llm = ChatOpenAI(model="gpt-4-turbo-preview")
-# llm = ChatOpenAI(model="gpt-3.5-turbo-0125")
 okt = Okt()
 
-# 불용어 리스트 불러오기
 f = open("stop_words.txt", "r", encoding="utf-8")
 stop_words = f.read().splitlines()
 
-## [함수] ####################################################################
 
-
-# 평가(+멀티쓰레딩) 함수
 def multithreading_eval(outputData, question_list):
     result_dict = {}
     lock = threading.Lock()
@@ -64,7 +64,6 @@ def multithreading_eval(outputData, question_list):
     return result_dict
 
 
-# 딕셔너리 변환 함수
 def set_key_value(result_dict, question_list, key_list):
     final_dict = {}
     for question, key, value in zip(question_list, key_list, result_dict.values()):
@@ -73,33 +72,26 @@ def set_key_value(result_dict, question_list, key_list):
     return final_dict
 
 
-# 토큰수 계산 함수
 def count_tokens(sentence, encoding_name):
     encoding = tiktoken.get_encoding(encoding_name)
     num_tokens = len(encoding.encode(sentence))
     return num_tokens
 
 
-# byte 계산 함수
 def byte_count(sentence):
     total_bytes = 0
     for char in sentence:
-        # 한글 or 한자
         if "가" <= char <= "힣" or "一" <= char <= "龥":
             total_bytes += 2
-        # 영어 or 숫자
         elif char.encode().isalnum():
             total_bytes += 1
-        # 공백
         elif char.isspace():
             total_bytes += 1
-        # 특수문자 등
         else:
             total_bytes += len(char.encode("utf-8"))
     return total_bytes
 
 
-# 불용어 제거 함수
 def delete_stop_words(nouns, stop_words):
     result = []
     for noun in nouns:
@@ -108,7 +100,6 @@ def delete_stop_words(nouns, stop_words):
     return result
 
 
-# 빈도수 카운트 함수
 def frequency(sentence):
     normal = okt.normalize(sentence)
     normal = re.sub("[^ㄱ-ㅎㅏ-ㅣ가-힣0-9a-zA-Z ]", "", normal)
@@ -118,7 +109,6 @@ def frequency(sentence):
     return cnt_nouns.most_common(10)
 
 
-# 영어, 한자 찾는 함수
 def find_eng_and_chi(sentence):
     eng_list = re.findall(r"[a-zA-Z]+", sentence)
     chi_list = re.findall(r"[\u4e00-\u9fff]+", sentence)
@@ -133,7 +123,7 @@ def find_eng_and_chi(sentence):
         return eng_list, chi_list
 
 
-# DB 저장 함수
+# DB 저장
 class ModelRunner:
     server_url = "http://localhost:8088/save_eval"
 
@@ -170,7 +160,6 @@ class ModelRunner:
         chi_list,
     ):
 
-        # 결과를 JSON 형식으로 변환
         json_evaluation = self._format_evaluation(
             inputData,
             outputData,
@@ -203,10 +192,8 @@ class ModelRunner:
             chi_list,
         )
 
-        # 결과를 서버로 전송하여 저장
         self._save_to_server(json_evaluation)
 
-        # 결과 반환
         return json_evaluation
 
     def _format_evaluation(
@@ -241,7 +228,6 @@ class ModelRunner:
         eng_list,
         chi_list,
     ):
-        # 결과를 JSON 형식으로 포맷팅합니다.
         result = {
             "inputData": inputData,
             "outputData": outputData,
@@ -276,7 +262,6 @@ class ModelRunner:
         return json.dumps(result)
 
     def _save_to_server(self, data):
-        # 서버로 데이터를 전송하여 저장합니다.
 
         data2 = {"evalresult": data}
         with requests.post(self.server_url, data=data2, stream=True) as response:
@@ -286,8 +271,6 @@ class ModelRunner:
                 print("Failed to save data to server.")
                 print(response.status_code)
 
-
-## [FastAPI 서버] ####################################################################
 
 app = FastAPI()
 
@@ -311,7 +294,6 @@ async def receive_data(data: ProcessData):
     projectName = data.projectName
     logId = data.logId
 
-    # 질의 설정
     checkSummary = """{input}에서 전체 요약(summary)을 구해줘 
     개행표시는 쓰지말고 <br>태그를 넣어줘. 
     제목과 소제목을 강조해줘. 특수문자 *를 절대로 쓰지 말고 대신 <b> 태그를 넣어서 강조를 해줘. 강조된 text의 뒤쪽에는 <br>태그를 써줘. output을 쓰기 전에 다시 한번 * 특수문자를 썼는지 다시 한번 검토해. 
@@ -328,15 +310,13 @@ async def receive_data(data: ProcessData):
         <br><b>전문용어1</b>:내용<br><b>전문용어2</b>:내용..."""
     )
     checkHallucination = "{input}에서 불확실하거나 틀린 정보, 출처가 명확하지 않은 정보(거짓말, hallucination)가 있는지 알려주고 없다면 '불확실한 정보 없음'으로 출력해줘."
-    checkReadability = (
-        """{input}을 보고 가독성을 향상시킬 수 있는 방법을 최대 네 문장으로 알려줘.
+    checkReadability = """{input}을 보고 가독성을 향상시킬 수 있는 방법을 최대 네 문장으로 알려줘.
         예시를 알려줄게 
         <br><b>1.가독성을 향상시킬 수 있는 방법 제목1</b><br>내용적는곳
         <br><b>2.가독성을 향상시킬 수 있는 방법 제목2</b><br>내용적는곳
         <br><b>3.가독성을 향상시킬 수 있는 방법 제목3</b><br>내용적는곳
         <br><b>4.가독성을 향상시킬 수 있는 방법 제목4</b><br>내용적는곳
         """
-    )
     checkReadabilityScore = "{input}을 보고 가독성 점수를 나타내줘. 점수는 0점부터 10점까지 0.1 단위로 아무말도 붙이지 말고 '1','1.5' 처럼 숫자만 보여줘"
     checkPurpose = "{input}을 보고 목적과 목표가 분명한지 최대 네 문장으로 평가해줘."
     checkPurposeScore = "{input}을 보고 목적과 목표가 분명한지 점수를 나타내줘. 점수는 0점부터 10점까지 0.1 단위로 아무말도 붙이지 말고 '1','1.5' 처럼 숫자만 보여줘"
@@ -348,7 +328,6 @@ async def receive_data(data: ProcessData):
         "{input}을 보고 "
         + f"{inputData}에 대한 아이디어가 창의적인지, 진부한지 최대 네 문장으로 평가해줘."
     )
-    # 여기까지 10개
     checkCreativeScore = (
         "{input}을 보고 "
         + f"{inputData}에 대한 아이디어가 창의적인지, 진부한지 점수를 나타내줘. 점수는 0점부터 10점까지 0.1 단위로 아무말도 붙이지 말고 '1','1.5' 처럼 숫자만 보여줘"
@@ -357,10 +336,8 @@ async def receive_data(data: ProcessData):
         "{input}을 보고 전체 글에 모순된 부분은 없는지 최대 네 문장으로 평가해줘."
     )
     checkContradictionScore = "{input}을 보고 전체 글에 모순된 부분은 없는지 점수를 나타내줘. 점수는 0점부터 10점까지 0.1 단위로 아무말도 붙이지 말고 '1','1.5' 처럼 숫자만 보여줘"
-    # HighLightContradiction = "{input}을 보고 'A는 사과이다','A는 바나나이다' 처럼 모순 되는 부분이 있다면 아무말도 붙이지 말고 두 문장 모두 span태그로 감싸서 '<span>A는 사과이다</span>','<span>A는 바나나이다</span>' 이런식으로만 출력해줘. 모순되는 부분이 없다면 아무것도 출력하지 말아줘."
-    HighLightContradiction = (
-        "{input}을 보고 아우말도 붙이지 말고 첫번째 문장 원본만 출력해줘."
-    )
+    HighLightContradiction = "{input}을 보고 'A는 사과이다','A는 바나나이다' 처럼 모순 되는 부분이 있다면 아무말도 붙이지 말고 문장 원본만 출력해줘. 모순되는 부분이 없다면 아무것도 출력하지 말아줘."
+
     checkStandard = (
         "{input}를 보고 "
         + f"""평가기준 {standard}에 부합하는지 각각 최대 네 문장으로 평가해주고 평가기준도 앞에 같이 나타내줘.
@@ -376,10 +353,7 @@ async def receive_data(data: ProcessData):
     <br><b>7.강조하고싶은 text</b><br>피드백내용적는곳"""
     )
     checkPrivacy = "{input}을 보고 전체 글에 '이름 : 홍길동' 이처럼 개인정보가 담겨있는 부분이 있다면 출력해주고 없다면 '개인정보가 유출된 부분이 없습니다'라고 출력해줘."
-    # HighLightPrivacy = "{input}을 보고 전체 글에 '이름 : 홍길동' 이처럼 개인정보가 담겨있는 부분이 있다면 아무말도 붙이지 말고 '<span>이름 : 홍길동</span>' 이 예시처럼 span태그로만 감싸서 출력해줘 개인정보가 담겨있는 부분이 없다면 아무것도 출력하지 말아줘."
-    HighLightPrivacy = (
-        "{input}을 보고 아무말도 붙이지 말고 두번째 문장 원본만 출력해줘."
-    )
+    HighLightPrivacy = "{input}을 보고 전체 글에 '이름 : 홍길동' 이처럼 개인정보가 담겨있는 부분이 있다면 아무말도 붙이지 말고 문장 원본만 출력해줘. 개인정보가 담겨있는 부분이 없다면 아무것도 출력하지 말아줘."
     feedback = """{input}를 보고 글에 대한 전반적인 피드백을 자세하고 명확하게 해줘. 피드백을 할 때 개행표시는 쓰지말고 <br>태그를 넣어줘. 
     숫자 뒤의 소제목에는 **를 써서 강조하는 대신 <b> 태그를 넣어서 강조를 해주고 강조된 text의 뒤쪽에는 <br>태그를 써줘. 특수문자도 쓰지 마.
     강조할때의 예시를 알려줄게

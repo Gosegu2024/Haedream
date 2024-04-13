@@ -28,12 +28,12 @@ public class Project {
         this.id = id;
         this.projectName = projectName;
         this.standard = standard;
-        this.createDate = createDate.withZoneSameInstant(ZoneId.of("Asia/Seoul")); // 서울 시간대로 설정
+        this.createDate = createDate.withZoneSameInstant(ZoneId.of("Asia/Seoul")); 
         this.owner = owner;
     }
 
     public void setCreateDate(ZonedDateTime createDate) {
-        this.createDate = createDate.withZoneSameInstant(ZoneId.of("Asia/Seoul")); // 서울 시간대로 설정
+        this.createDate = createDate.withZoneSameInstant(ZoneId.of("Asia/Seoul")); 
     }
 
     public String getId() {

@@ -28,7 +28,6 @@ public class MainController {
 
     @GetMapping("/main")
     public String mainPage(Model model, HttpSession session) {
-        // 현재 인증된 사용자 정보 가져오기
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         UserEntity user = userRepository.findByUsername(username);
@@ -63,9 +62,6 @@ public class MainController {
 
             projectService.projectSave(project);
 
-        } else {
-
-            System.out.println("프로젝트 이름 또는 평가 기준이 없습니다.");
         }
 
         return "redirect:/main";
