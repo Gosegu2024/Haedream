@@ -39,7 +39,10 @@
         <div class="logo">
           <img th:src="@{/img/HaeLogo.png}" alt="해드림로고" />
         </div>
-        <div class="exam wow animate__fadeInUp animate__animated"></div>
+        <div class="exam wow animate__fadeInUp animate__animated">
+          <img th:src="@{/img/main.png}" alt="메인">
+
+        </div>
         <div class="Login">
           <p>작문 AI를 해드림으로 평가해보세요!</p>
           <a th:href="@{/login}" class="getLogin">로그인</a>
@@ -48,19 +51,24 @@
       <!-- con1 end -->
       <div class="con2" data-wow-offset="10">
         <div class="fast">
-          <div class="miniExam wow animate__fadeInBottomLeft animate__animated"></div>
-          <div class="fast_text">
-            <h2>빠르다!</h2>
-            <p>해드림은 빠르게 한국어 작문 AI를 평가 할 수 있습니다!</p>
+          <div class="miniExam wow animate__fadeInBottomLeft animate__animated">
+            <img th:src="@{/img/easy.png}" alt="쉽다 이미지">
           </div>
-        </div>
-        <div class="easy">
-          <div class="easy_text">
+          <div class="fast_text">
             <h2>쉽다!</h2>
             <p>해드림은 평가하기가 아주 쉽습니다!</p>
           </div>
-          <div class="miniExam wow animate__fadeInBottomRight animate__animated"></div>
         </div>
+                <div class="easy">
+          <div class="easy_text">
+            <h2>편하다!</h2>
+            <p>해드림은 평가결과를 한눈에 볼 수 있습니다! </p>
+          </div>
+          <div class="miniExam wow animate__fadeInBottomRight animate__animated">
+            <img th:src="@{/img/comfor.png}" alt="편하다 이미지">
+          </div>
+        </div>
+
         <div class="Join">
           <h1>바로 회원가입 해보세요!</h1>
           <a th:href="@{/login}" class="getJoin">회원가입</a>
@@ -69,5 +77,24 @@
       <!-- con2 end -->
     </div>
     <!-- container end -->
+        <div class="scrollTop">
+      <i class="fa-solid fa-arrow-up"></i>
+    </div>
+    <script>
+      // scrollTop
+
+      $('.scrollTop').hide();
+      $(window).scroll(function () {
+        if ($(this).scrollTop() > 100) {
+          $('.scrollTop').fadeIn();
+        } else {
+          $('.scrollTop').fadeOut();
+        }
+      });
+
+      $('.scrollTop').click(function () {
+        $('html, body').animate({ scrollTop: 0 }, '300');
+      });
+    </script>
   </body>
 </html>
