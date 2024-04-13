@@ -72,7 +72,7 @@ public class SecurityConfig {
 
                 http
                                 .sessionManagement((auth) -> auth 
-                                                .maximumSessions(10) // 하나의 아이디에 대한 다중 로그인 허용 가능 수
+                                                .maximumSessions(1) // 하나의 아이디에 대한 다중 로그인 허용 가능 수
                                                 .maxSessionsPreventsLogin(true));
                                                 // 다중 로그인 개수를 초과한 경우(true:새로운 로그인 차단, false:기존 세션 하나 삭제)
                                                 

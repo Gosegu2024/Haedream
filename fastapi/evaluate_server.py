@@ -24,8 +24,8 @@ os.environ["LANGCHAIN_TRACING_V2"] = "true"
 os.environ['LANGCHAIN_API_KEY'] = ''
 os.environ['OPENAI_API_KEY'] = ''
 
-# llm = ChatOpenAI(model="gpt-4-turbo-preview")
-llm = ChatOpenAI(model="gpt-3.5-turbo-0125")
+llm = ChatOpenAI(model="gpt-4-turbo-preview")
+# llm = ChatOpenAI(model="gpt-3.5-turbo-0125")
 okt = Okt()
 
 # 불용어 리스트 불러오기

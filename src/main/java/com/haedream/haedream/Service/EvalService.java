@@ -83,9 +83,32 @@ public class EvalService {
         return evalList;
     }
 
-    public String[] eng_list(String eng_list) {
+    public List<String> eng_list(String eng_list) {
+        eng_list = eng_list.replaceAll("'b'","").replaceAll("'br'", "").replaceAll("\\s+", "");
         String[] engList = eng_list.replaceAll("\\[|\\]|'", "").split(",\\s*");
-        return engList;
+        List<String> eng_List = new ArrayList<>();
+        for (var i : engList) {
+            String trimmed = i.trim(); // 앞뒤 공백 제거
+            if (!trimmed.isEmpty()) { // 공백이 아닌 경우에만 리스트에 추가
+                eng_List.add(trimmed);
+            }
+        }
+
+        return eng_List;
+    }
+
+    public List<String> eng_list2(String eng_list) {
+        eng_list = eng_list.replaceAll("b","").replaceAll("br", "").replaceAll("\\s+", "");
+        String[] engList = eng_list.replaceAll("\\[|\\]|'", "").split(",\\s*");
+        List<String> eng_List = new ArrayList<>();
+        for (var i : engList) {
+            String trimmed = i.trim(); // 앞뒤 공백 제거
+            if (!trimmed.isEmpty()) { // 공백이 아닌 경우에만 리스트에 추가
+                eng_List.add(trimmed);
+            }
+        }
+
+        return eng_List;
     }
 
     public List<String[]> freqCnt(String freqCnt) {
@@ -122,6 +145,8 @@ public class EvalService {
 
     public String replaceOutput(String outputdata) {
         String output = outputdata.replaceAll("\\\\n", "<br>");
+        output = output.replaceAll("\"", "\'");
+        output = output.replaceAll("\', \'", "<br><br>");
         output = output.replaceAll(System.getProperty("line.separator"), "<br>");
         StringBuilder result = new StringBuilder();
         for (char c : output.toCharArray()) {
@@ -130,8 +155,6 @@ public class EvalService {
             }
         }
         output = result.toString();
-        output = output.replaceAll(">, <", "><");
-        output = output.replaceAll(">,<", "><");
 
         return output;
     }

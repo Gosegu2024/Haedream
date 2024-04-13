@@ -66,7 +66,7 @@
         <div class="filter">
           <div class="radio">
             <input type="radio" name="filter" id="value1" value="value1" checked />
-            <label for="value1">영단어•한자</label>
+            <label for="value1">영단어</label>
           </div>
           <div class="radio">
             <input type="radio" name="filter" id="value2" value="value2" />
@@ -79,7 +79,7 @@
         </div>
         <div class="input">
           <h2>질의 결과</h2>
-          <p id="outputdata"></p>
+          <div id="outputdata"></div>
         </div>
         <div class="output">
           <h2>평가 및 분석</h2>
@@ -315,7 +315,8 @@
     // 하이라이트 효과
     let HighLightContradiction = /*[[${responseList[0].HighLightContradiction}]]*/ null;
     let HighLightPrivacy = /*[[${responseList[0].HighLightPrivacy}]]*/ null;
-    let eng = /*[[${responseList[5]}]]*/ null;
+    let eng = /*[[${eng_list}]]*/ null;
+    console.log(eng)
     let output = /*[[${outputdata}]]*/ null;
 
     console.log(HighLightContradiction);
@@ -329,7 +330,7 @@
       
       if (eng.length > 0) {
         const engRegex = new RegExp(`\\b(${eng.join('|')})\\b`, 'g');
-        highlightedOutput = highlightedOutput.replace(engRegex, '<span class="highlighterY">$&</span>');
+        highlightedOutput = highlightedOutput.replaceAll(engRegex, '<span class="highlighterY">$&</span>');
       }
       highlightedOutput = highlightedOutput.replace(/\n/g, '<br>');
     

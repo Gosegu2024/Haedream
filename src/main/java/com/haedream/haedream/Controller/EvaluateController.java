@@ -153,7 +153,7 @@ public class EvaluateController {
     String freqCnt = evalDTO.getFreqCnt();
 
     // 데이터 전처리
-    String[] engList = evalService.eng_list(eng_list);
+    List<String> engList = evalService.eng_list(eng_list);
     List<String[]> freqCntList = evalService.freqCnt(freqCnt);
     String output = evalService.replaceOutput(outputdata);
 
@@ -254,6 +254,8 @@ public class EvaluateController {
         List<Object> responseList = objectMapper.readValue(response, new TypeReference<List<Object>>() {
         });
         String output = evalService.replaceOutput(outputdata);
+        List<String> eng_list = evalService.eng_list2(responseList.get(5).toString());
+        model.addAttribute("eng_list", eng_list);
         model.addAttribute("inputdata", inputdata);
         model.addAttribute("outputdata", output);
         model.addAttribute("responseList", responseList);
