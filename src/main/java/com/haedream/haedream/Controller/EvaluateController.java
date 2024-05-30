@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -255,6 +256,7 @@ public class EvaluateController {
   }
 
   @PostMapping("/save_eval")
+  @CrossOrigin(origins = "*", allowedHeaders = "*")
   public ResponseEntity<Eval> saveEval(@RequestParam String evalresult, HttpSession session) {
 
     Eval saveEvalDTO = evalService.saveEval(EvalDTO.parse(evalresult));

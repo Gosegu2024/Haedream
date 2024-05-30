@@ -5,6 +5,10 @@
 # pip install uvicorn
 # pip install haedream==0.0.8
 # pip install konlpy
+# pip install python-dotenv
+
+from dotenv import load_dotenv
+load_dotenv()
 
 from fastapi import FastAPI
 from pydantic import BaseModel
@@ -25,9 +29,9 @@ import re
 import tiktoken
 
 
-os.environ["LANGCHAIN_TRACING_V2"] = "true"
-os.environ["LANGCHAIN_API_KEY"] = ""
-os.environ["OPENAI_API_KEY"] = ""
+os.environ["LANGCHAIN_TRACING_V2"] = os.getenv('LANGCHAIN_TRACING_V2')
+os.environ["LANGCHAIN_API_KEY"] = os.getenv('LANGCHAIN_API_KEY')
+os.environ["OPENAI_API_KEY"] = os.getenv('OPENAI_API_KEY')
 
 llm = ChatOpenAI(model="gpt-3.5-turbo")
 okt = Okt()
@@ -282,6 +286,11 @@ class ProcessData(BaseModel):
     username: str
     projectName: str
     logId: str
+    
+    
+@app.get("/")
+def root():
+    return "Hello World"
 
 
 # 평가
