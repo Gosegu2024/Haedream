@@ -17,9 +17,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 @EnableWebSecurity
 public class SecurityConfig {
 
-        @Autowired
-        private CorsFilter corsFilter;
-
         @Bean
         public BCryptPasswordEncoder bCryptPasswordEncoder() {
 
@@ -28,9 +25,6 @@ public class SecurityConfig {
 
         @Bean
         public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-                http
-                                .cors();
-
                 http
                                 .headers(headers -> headers
                                         .addHeaderWriter(new StaticHeadersWriter("X-Content-Type-Options", "nosniff"))
