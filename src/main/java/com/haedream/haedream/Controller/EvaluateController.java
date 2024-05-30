@@ -257,7 +257,6 @@ public class EvaluateController {
   }
 
   @PostMapping("/save_eval")
-  @CrossOrigin("https://port-0-haedream-python-ss7z32llwpyqpf9.sel5.cloudtype.app")
   public ResponseEntity<Eval> saveEval(@RequestParam String evalresult, HttpSession session) {
 
     Eval saveEvalDTO = evalService.saveEval(EvalDTO.parse(evalresult));
