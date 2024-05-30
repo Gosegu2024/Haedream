@@ -129,7 +129,7 @@ def find_eng_and_chi(sentence):
 
 # DB 저장
 class ModelRunner:
-    server_url = "http://localhost:8088/save_eval"
+    server_url = "http://3.222.36.157:8088/save_eval"
 
     def run_model(
         self,
