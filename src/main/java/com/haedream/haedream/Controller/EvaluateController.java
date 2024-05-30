@@ -209,10 +209,11 @@ public class EvaluateController {
   }
 
   @PostMapping("/sendValues")
+  @CrossOrigin("https://port-0-haedream-python-ss7z32llwpyqpf9.sel5.cloudtype.app")
   public ResponseEntity<?> sendValues(@RequestParam("outputdata") String outputdata,
       @RequestParam("inputdata") String inputdata,
       @RequestParam("standard") String standard, Model model, HttpSession session) {
-    String url = "http://localhost:8008/evaluate";
+    String url = "https://port-0-haedream-python-ss7z32llwpyqpf9.sel5.cloudtype.app/evaluate";
 
     ObjectMapper objectMapper = new ObjectMapper();
     ObjectNode requestBody = objectMapper.createObjectNode();
@@ -256,7 +257,7 @@ public class EvaluateController {
   }
 
   @PostMapping("/save_eval")
-  @CrossOrigin(origins = "*", allowedHeaders = "*")
+  @CrossOrigin("https://port-0-haedream-python-ss7z32llwpyqpf9.sel5.cloudtype.app")
   public ResponseEntity<Eval> saveEval(@RequestParam String evalresult, HttpSession session) {
 
     Eval saveEvalDTO = evalService.saveEval(EvalDTO.parse(evalresult));
