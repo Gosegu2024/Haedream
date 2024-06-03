@@ -35,3 +35,6 @@
 
 ## 🔨 Server Architecture
 ![아키텍쳐 사진](./해드림_깃헙/아키텍처.png)
+
+## Role
+![역할](./해드림_깃헙/cap4.png)
