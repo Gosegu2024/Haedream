@@ -8,7 +8,7 @@
 
 사용 API : <img src="https://img.shields.io/badge/fastapi-009688?style=flat-square&logo=fastapi&logoColor=white"> <img src="https://img.shields.io/badge/pypi-3775A9?style=flat-square&logo=pypi&logoColor=white">  GPT4, LangChain </br></br>
 
-> 주제만 입력하면 기획서를 생성해주는 써드림! 👉 [해드림 바로가기](https://haedream-pafljma3ia-du.a.run.app) </br></br>
+> 작문 LLM 평가•개선 서비스 해드림! 👉 [해드림 바로가기](https://haedream-pafljma3ia-du.a.run.app) </br></br>
 
 ![해드림 로고](./해드림_깃헙/KakaoTalk_20240312_154237983_04.png) </br></br>
 
